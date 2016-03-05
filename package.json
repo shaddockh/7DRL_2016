@@ -1,0 +1,26 @@
+{
+  "name": "7drl2016",
+  "version": "1.0.0",
+  "description": "2016 7DRL Entry",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "./compile.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://shaddockh@github.com/shaddockh/7DRL_2016.git"
+  },
+  "keywords": [
+    "7drl"
+  ],
+  "author": "T. Shaddock Heath",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/shaddockh/7DRL_2016/issues"
+  },
+  "homepage": "https://github.com/shaddockh/7DRL_2016#readme",
+  "devDependencies": {
+    "rot-js": "^0.6.2"
+  }
+}
