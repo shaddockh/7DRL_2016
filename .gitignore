@@ -1,3 +1,5 @@
 Cache
 node_modules
 tsconfig.atomic
+pubsub-js.js
+rot.js

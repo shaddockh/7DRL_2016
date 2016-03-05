@@ -1,0 +1,7 @@
+WindowInfo
+	title titlescreen
+TBLayout: axis: y, size: available
+	TBTextField: text: "Persephone"
+		@include definitions>LargeText
+	TBLayout: axis: x, distribution: gravity
+		TBButton: text: "Play", id: "btnPlay"

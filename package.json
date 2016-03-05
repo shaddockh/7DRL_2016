@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/shaddockh/7DRL_2016#readme",
   "devDependencies": {
+    "pubsub-js": "^1.5.3",
     "rot-js": "^0.6.2"
   }
 }

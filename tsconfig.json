@@ -14,14 +14,27 @@
         "typings/**/*.ts"
     ],
     "files": [
-        "Resources/Components/Star.ts",
+        "Resources/Components/SceneControllers/AttributeSelectionSceneController.ts",
+        "Resources/Components/SceneControllers/BaseSceneController.ts",
+        "Resources/Components/SceneControllers/PlayfieldSceneController.ts",
+        "Resources/Components/SceneControllers/TitleSceneController.ts",
+        "Resources/Modules/CustomJSComponent.ts",
+        "Resources/Modules/GameController.ts",
         "Resources/Scripts/main.ts",
+        "Resources/UI/AttributeSelection.ui.ts",
+        "Resources/UI/CustomUIWindow.ts",
+        "Resources/UI/TitleScreen.ui.ts",
+        "Resources/UI/ui.ts",
+        "typings/7DRL_2016/interfaces.d.ts",
         "typings/Atomic/Atomic.d.ts",
         "typings/Atomic/AtomicNET.d.ts",
         "typings/Atomic/AtomicPlayer.d.ts",
         "typings/Atomic/AtomicWork.d.ts",
         "typings/Atomic/Editor.d.ts",
-        "typings/Atomic/ToolCore.d.ts"
+        "typings/Atomic/ToolCore.d.ts",
+        "typings/duktape/duktape.d.ts",
+        "typings/pubsubjs/pubsub.d.ts",
+        "typings/rot-js/rot-js.d.ts"
     ],
     "atom": {
         "rewriteTsconfig": true
