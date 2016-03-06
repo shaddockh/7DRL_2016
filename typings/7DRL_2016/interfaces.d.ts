@@ -5,6 +5,7 @@ declare interface ActionMessage {
 }
 
 declare interface SceneActionMessage extends ActionMessage {
+    scene?: string;
 }
 
 declare interface TitleSceneActionMessage extends SceneActionMessage {

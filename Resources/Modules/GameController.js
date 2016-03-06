@@ -1,9 +1,7 @@
 "use strict";
 var PubSub = require("pubsub-js");
 var ui = require("../UI/ui");
-var Scenes = {
-    title: "Scenes/game.scene"
-};
+var SceneManager_1 = require("./SceneManager");
 /**
  * singleton class for game controller
  */
@@ -12,25 +10,14 @@ var GameController = (function () {
     }
     GameController.init = function () {
         ui.init();
-        //PubSub.subscribe("game:title_scene.show", () => GameController.switchScene(Scenes.title));
-        //PubSub.subscribe("game:attribute_selection_scene.show", () => GameController.switchScene(Scenes.assignAttributes));
-        //PubSub.subscribe("game:playfield_scene.show", () => GameController.switchScene(Scenes.playfield));
-        Atomic.player.loadScene(Scenes.title);
+        PubSub.subscribe("game.scene.switch", function (message, data) {
+            GameController.sceneManager.switchToScene(SceneManager_1.default.scenes[data.scene]);
+        });
     };
     GameController.showTitleScene = function () {
-        PubSub.publish("game.title_scene.show", null);
+        GameController.sceneManager.switchToScene(SceneManager_1.default.scenes.title);
     };
-    // switching scenes doesn't seem to work correclty
-    GameController.switchScene = function (sceneName) {
-        var firstScene = Atomic.player.currentScene == null;
-        var scene = Atomic.player.loadScene(sceneName);
-        if (!firstScene) {
-            var viewPort = Atomic.renderer.getViewport(0);
-            var cameras = scene.getChildrenWithComponent("Camera", true);
-            viewPort.setScene(scene);
-            viewPort.setCamera((cameras[0].getComponent("Camera")));
-        }
-    };
+    GameController.sceneManager = new SceneManager_1.default();
     return GameController;
 }());
 Object.defineProperty(exports, "__esModule", { value: true });

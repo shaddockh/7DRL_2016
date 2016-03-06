@@ -7,28 +7,39 @@ export default class BaseSceneController extends CustomJSComponent {
         debug: false,
     };
 
-    constructor(sceneKey:string) {
+    private subscriptionTokens = [];
+    constructor() {
         super();
-        PubSub.subscribe(`game.${sceneKey}.show`, this.show.bind(this));
-        PubSub.subscribe(`game.${sceneKey}.hide`, this.hide.bind(this));
-        PubSub.subscribe(`game.${sceneKey}.action`, this.doSceneAction.bind(this));
-        PubSub.subscribe("game.all_scenes.hide", this.hide.bind(this));
+        this.addSubscription("game.scene.loaded", this.sceneLoaded.bind(this));
+        this.addSubscription("game.scene.unloaded", this.sceneUnloaded.bind(this));
+        this.addSubscription("game.scene.action", this.doSceneAction.bind(this));
     }
 
-    hide() {
-        // override
+    addSubscription(key:string, handler: any) {
+        this.subscriptionTokens.push(PubSub.subscribe(key, handler));
     }
 
-    show() {
-        // override
+    sceneLoaded(message: string, data: SceneActionMessage) {
+        this.DEBUG(`Scene Loaded: ${data.scene}`);
     }
 
-    doSceneAction(message:string, data:SceneActionMessage) {
-        console.log("Got the action");
-        // override
+    sceneUnloaded(message: string, data: SceneActionMessage) {
+        this.DEBUG(`Scene Unloaded: ${data.scene}`);
+        this.subscriptionTokens.forEach((token) => PubSub.unsubscribe(token));
+        this.subscriptionTokens = [];
     }
 
-    openScene(sceneKey : string) {
+    doSceneAction(message: string, data: SceneActionMessage) {
+        this.DEBUG(`Scene Action: ${data.action}`);
+    }
+
+    openScene(sceneKey: string) {
         PubSub.publish(`game.${sceneKey}.show`, null);
+    }
+
+    switchScene(sceneKey: string) {
+        PubSub.publish("game.scene.switch", {
+            scene: sceneKey
+        });
     }
 }

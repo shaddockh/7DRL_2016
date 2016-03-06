@@ -6,28 +6,30 @@ class AttributeSelectionSceneController extends BaseSceneController {
 
     inspectorFields = {
         debug: false,
+        scenePlay: "intro",
+        sceneTitle: "title"
     };
 
-    constructor() {
-        super("attribute_selection_scene");
-    }
+    scenePlay:string;
+    sceneTitle:string;
 
-    show() {
-        this.DEBUG("About to show scene");
+    sceneLoaded(message: string, data: SceneActionMessage) {
+        super.sceneLoaded(message, data);
         PubSub.publish("ui.attributeselection.show", {});
     }
 
-    hide() {
-        this.DEBUG("About to hide scene");
+    sceneUnloaded(message: string, data: SceneActionMessage) {
         PubSub.publish("ui.attributeselection.hide", {});
+        super.sceneUnloaded(message, data);
     }
 
+
     doSceneAction(message: string, data: TitleSceneActionMessage) {
-        this.DEBUG("Performing action: " + data.action);
+        super.doSceneAction(message, data);
 
         switch (data.action) {
             case "show_playfield":
-                this.openScene("playfield_scene");
+                this.switchScene(this.scenePlay);
                 break;
         }
     }

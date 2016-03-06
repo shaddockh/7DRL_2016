@@ -10,24 +10,26 @@ var BaseSceneController_1 = require("./BaseSceneController");
 var AttributeSelectionSceneController = (function (_super) {
     __extends(AttributeSelectionSceneController, _super);
     function AttributeSelectionSceneController() {
-        _super.call(this, "attribute_selection_scene");
+        _super.apply(this, arguments);
         this.inspectorFields = {
             debug: false,
+            scenePlay: "intro",
+            sceneTitle: "title"
         };
     }
-    AttributeSelectionSceneController.prototype.show = function () {
-        this.DEBUG("About to show scene");
+    AttributeSelectionSceneController.prototype.sceneLoaded = function (message, data) {
+        _super.prototype.sceneLoaded.call(this, message, data);
         PubSub.publish("ui.attributeselection.show", {});
     };
-    AttributeSelectionSceneController.prototype.hide = function () {
-        this.DEBUG("About to hide scene");
+    AttributeSelectionSceneController.prototype.sceneUnloaded = function (message, data) {
         PubSub.publish("ui.attributeselection.hide", {});
+        _super.prototype.sceneUnloaded.call(this, message, data);
     };
     AttributeSelectionSceneController.prototype.doSceneAction = function (message, data) {
-        this.DEBUG("Performing action: " + data.action);
+        _super.prototype.doSceneAction.call(this, message, data);
         switch (data.action) {
             case "show_playfield":
-                this.openScene("playfield_scene");
+                this.switchScene(this.scenePlay);
                 break;
         }
     };

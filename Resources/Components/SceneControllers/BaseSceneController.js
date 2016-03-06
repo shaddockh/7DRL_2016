@@ -8,28 +8,37 @@ var CustomJSComponent_1 = require("CustomJSComponent");
 var PubSub = require("pubsub-js");
 var BaseSceneController = (function (_super) {
     __extends(BaseSceneController, _super);
-    function BaseSceneController(sceneKey) {
+    function BaseSceneController() {
         _super.call(this);
         this.inspectorFields = {
             debug: false,
         };
-        PubSub.subscribe("game." + sceneKey + ".show", this.show.bind(this));
-        PubSub.subscribe("game." + sceneKey + ".hide", this.hide.bind(this));
-        PubSub.subscribe("game." + sceneKey + ".action", this.doSceneAction.bind(this));
-        PubSub.subscribe("game.all_scenes.hide", this.hide.bind(this));
+        this.subscriptionTokens = [];
+        this.addSubscription("game.scene.loaded", this.sceneLoaded.bind(this));
+        this.addSubscription("game.scene.unloaded", this.sceneUnloaded.bind(this));
+        this.addSubscription("game.scene.action", this.doSceneAction.bind(this));
     }
-    BaseSceneController.prototype.hide = function () {
-        // override
+    BaseSceneController.prototype.addSubscription = function (key, handler) {
+        this.subscriptionTokens.push(PubSub.subscribe(key, handler));
     };
-    BaseSceneController.prototype.show = function () {
-        // override
+    BaseSceneController.prototype.sceneLoaded = function (message, data) {
+        this.DEBUG("Scene Loaded: " + data.scene);
+    };
+    BaseSceneController.prototype.sceneUnloaded = function (message, data) {
+        this.DEBUG("Scene Unloaded: " + data.scene);
+        this.subscriptionTokens.forEach(function (token) { return PubSub.unsubscribe(token); });
+        this.subscriptionTokens = [];
     };
     BaseSceneController.prototype.doSceneAction = function (message, data) {
-        console.log("Got the action");
-        // override
+        this.DEBUG("Scene Action: " + data.action);
     };
     BaseSceneController.prototype.openScene = function (sceneKey) {
         PubSub.publish("game." + sceneKey + ".show", null);
+    };
+    BaseSceneController.prototype.switchScene = function (sceneKey) {
+        PubSub.publish("game.scene.switch", {
+            scene: sceneKey
+        });
     };
     return BaseSceneController;
 }(CustomJSComponent_1.default));

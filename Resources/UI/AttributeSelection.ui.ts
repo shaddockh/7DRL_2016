@@ -34,7 +34,7 @@ export default class AttributeSelectionUi extends CustomUIWindow {
                 action: "show_playfield"
             };
 
-            PubSub.publish("game.attribute_selection_scene.action", action);
+            PubSub.publish("game.scene.action", action);
         };
 
         wnd.center();

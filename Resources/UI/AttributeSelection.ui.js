@@ -33,7 +33,7 @@ var AttributeSelectionUi = (function (_super) {
             var action = {
                 action: "show_playfield"
             };
-            PubSub.publish("game.attribute_selection_scene.action", action);
+            PubSub.publish("game.scene.action", action);
         };
         wnd.center();
     };

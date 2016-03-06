@@ -26,6 +26,7 @@
         "Resources/Modules/GameController.ts",
         "Resources/Modules/Generators/DefaultGenerator.ts",
         "Resources/Modules/Generators/LevelData.ts",
+        "Resources/Modules/SceneManager.ts",
         "Resources/Scripts/main.ts",
         "Resources/UI/AttributeSelection.ui.ts",
         "Resources/UI/CustomUIWindow.ts",

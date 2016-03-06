@@ -33,7 +33,7 @@ export default class TitleScreenUi extends CustomUIWindow {
                 action: "show_attribute_selection"
             };
 
-            PubSub.publish("game.title_scene.action", action);
+            PubSub.publish("game.scene.action", action);
         };
 
         wnd.center();

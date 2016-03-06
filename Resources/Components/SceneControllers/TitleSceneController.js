@@ -5,29 +5,30 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var PubSub = require("pubsub-js");
 var BaseSceneController_1 = require("./BaseSceneController");
+var PubSub = require("pubsub-js");
 var TitleScreenController = (function (_super) {
     __extends(TitleScreenController, _super);
     function TitleScreenController() {
-        _super.call(this, "title_scene");
+        _super.apply(this, arguments);
         this.inspectorFields = {
             debug: false,
+            sceneAttrSelection: "attributeSel"
         };
     }
-    TitleScreenController.prototype.show = function () {
-        this.DEBUG("About to show scene");
+    TitleScreenController.prototype.sceneLoaded = function (message, data) {
+        _super.prototype.sceneLoaded.call(this, message, data);
         PubSub.publish("ui.titlescreen.show", {});
     };
-    TitleScreenController.prototype.hide = function () {
-        this.DEBUG("About to hide scene");
+    TitleScreenController.prototype.sceneUnloaded = function (message, data) {
         PubSub.publish("ui.titlescreen.hide", {});
+        _super.prototype.sceneUnloaded.call(this, message, data);
     };
     TitleScreenController.prototype.doSceneAction = function (message, data) {
-        this.DEBUG("Performing action: " + data.action);
+        _super.prototype.doSceneAction.call(this, message, data);
         switch (data.action) {
             case "show_attribute_selection":
-                this.openScene("attribute_selection_scene");
+                this.switchScene(this.sceneAttrSelection);
                 break;
         }
     };

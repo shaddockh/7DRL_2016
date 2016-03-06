@@ -1,33 +1,32 @@
 "atomic component";
-import * as PubSub from "pubsub-js";
 import BaseSceneController from "./BaseSceneController";
+import * as PubSub from "pubsub-js";
 
 class TitleScreenController extends BaseSceneController {
 
     inspectorFields = {
         debug: false,
+        sceneAttrSelection: "attributeSel"
     };
 
-    constructor() {
-        super("title_scene");
-    }
+    sceneAttrSelection:string;
 
-    show() {
-        this.DEBUG("About to show scene");
+    sceneLoaded(message: string, data: SceneActionMessage) {
+        super.sceneLoaded(message, data);
         PubSub.publish("ui.titlescreen.show", {});
     }
 
-    hide() {
-        this.DEBUG("About to hide scene");
+    sceneUnloaded(message: string, data: SceneActionMessage) {
         PubSub.publish("ui.titlescreen.hide", {});
+        super.sceneUnloaded(message, data);
     }
 
-    doSceneAction(message: string, data: TitleSceneActionMessage) {
-        this.DEBUG("Performing action: " + data.action);
+    doSceneAction(message: string, data: SceneActionMessage) {
+        super.doSceneAction(message, data);
 
         switch (data.action) {
             case "show_attribute_selection":
-                this.openScene("attribute_selection_scene");
+                this.switchScene(this.sceneAttrSelection);
                 break;
         }
     }

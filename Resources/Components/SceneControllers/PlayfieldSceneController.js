@@ -10,18 +10,18 @@ var BaseSceneController_1 = require("./BaseSceneController");
 var PlayfieldSceneController = (function (_super) {
     __extends(PlayfieldSceneController, _super);
     function PlayfieldSceneController() {
-        _super.call(this, "playfield_scene");
+        _super.apply(this, arguments);
         this.inspectorFields = {
             debug: false,
         };
     }
-    PlayfieldSceneController.prototype.show = function () {
-        this.DEBUG("About to show scene");
+    PlayfieldSceneController.prototype.sceneLoaded = function (message, data) {
+        _super.prototype.sceneLoaded.call(this, message, data);
         PubSub.publish("game.level.generate", null);
     };
-    PlayfieldSceneController.prototype.hide = function () {
-        this.DEBUG("About to hide scene");
-        //PubSub.publish("ui.titlescreen.hide", {});
+    PlayfieldSceneController.prototype.sceneUnloaded = function (message, data) {
+        PubSub.publish("ui.attributeselection.hide", {});
+        _super.prototype.sceneUnloaded.call(this, message, data);
     };
     PlayfieldSceneController.prototype.doSceneAction = function (message, data) {
         this.DEBUG("Performing action: " + data.action);

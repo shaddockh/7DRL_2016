@@ -8,18 +8,14 @@ class PlayfieldSceneController extends BaseSceneController {
         debug: false,
     };
 
-    constructor() {
-        super("playfield_scene");
-    }
-
-    show() {
-        this.DEBUG("About to show scene");
+    sceneLoaded(message: string, data: SceneActionMessage) {
+        super.sceneLoaded(message, data);
         PubSub.publish("game.level.generate", null);
     }
 
-    hide() {
-        this.DEBUG("About to hide scene");
-        //PubSub.publish("ui.titlescreen.hide", {});
+    sceneUnloaded(message: string, data: SceneActionMessage) {
+        PubSub.publish("ui.attributeselection.hide", {});
+        super.sceneUnloaded(message, data);
     }
 
     doSceneAction(message: string, data: TitleSceneActionMessage) {
