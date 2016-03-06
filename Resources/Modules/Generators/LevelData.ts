@@ -4,10 +4,14 @@
  */
 export default class LevelData {
 
-    private tiles: Array<Array<Tile>>;
+    tiles: Array<Array<Tile>>;
 
+    width: number;
+    height: number;
 
-    constructor(private width: number, height: number) {
+    constructor(width: number, height: number) {
+        this.width = width;
+        this.height = height;
         this.tiles = LevelData.createEmptyMap(width, height);
     }
 
@@ -15,10 +19,8 @@ export default class LevelData {
         this.tiles[x][y].terrainType = terrainType;
     }
 
-    static createEmptyMap(width, height, defaultValue: Tile = {
-        x: 0,
-        y: 0,
-        terrainType: TileType.none
+    static createEmptyMap(width, height, defaultValue = {
+        terrainType:  TileType.none
     }) {
         let arr = [];
         for (let x = 0; x < width; x++) {

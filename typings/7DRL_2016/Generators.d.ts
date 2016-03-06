@@ -3,8 +3,9 @@ declare module "Generators/LevelData" {
      * Stored Level data for a level
      */
     export default class LevelData {
-        private width;
-        private tiles;
+        width:number;
+        height:number;
+        tiles:Array<Array<Tile>>;
         constructor(width: number, height: number);
         setTile(x: number, y: number, terrainType: TileType): void;
         static createEmptyMap(width: any, height: any, defaultValue?: Tile): any[];

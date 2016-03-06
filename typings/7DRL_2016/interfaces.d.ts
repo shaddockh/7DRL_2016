@@ -16,7 +16,8 @@ declare interface AttributeSelectionSceneActionMessage extends SceneActionMessag
 }
 
 declare interface Tile {
-    x:number;
-    y:number;
-    terrainType:TileType;
+    x: number;
+    y: number;
+    terrainType: TileType;
+    blueprint?: string;
 }

@@ -5,6 +5,7 @@
 var LevelData = (function () {
     function LevelData(width, height) {
         this.width = width;
+        this.height = height;
         this.tiles = LevelData.createEmptyMap(width, height);
     }
     LevelData.prototype.setTile = function (x, y, terrainType) {
@@ -12,8 +13,6 @@ var LevelData = (function () {
     };
     LevelData.createEmptyMap = function (width, height, defaultValue) {
         if (defaultValue === void 0) { defaultValue = {
-            x: 0,
-            y: 0,
             terrainType: 0 /* none */
         }; }
         var arr = [];
