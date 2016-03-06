@@ -7,6 +7,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var PubSub = require("pubsub-js");
 var BaseSceneController_1 = require("./BaseSceneController");
+var Constants_1 = require("Constants");
 var PlayfieldSceneController = (function (_super) {
     __extends(PlayfieldSceneController, _super);
     function PlayfieldSceneController() {
@@ -17,10 +18,10 @@ var PlayfieldSceneController = (function (_super) {
     }
     PlayfieldSceneController.prototype.sceneLoaded = function (message, data) {
         _super.prototype.sceneLoaded.call(this, message, data);
-        PubSub.publish("game.level.generate", null);
+        PubSub.publish(Constants_1.BroadcastEvents.gameLevelGenerate, null);
     };
     PlayfieldSceneController.prototype.sceneUnloaded = function (message, data) {
-        PubSub.publish("ui.attributeselection.hide", {});
+        //PubSub.publish(BroadcastEvents.uiAttributeSelectionHide, {});
         _super.prototype.sceneUnloaded.call(this, message, data);
     };
     PlayfieldSceneController.prototype.doSceneAction = function (message, data) {

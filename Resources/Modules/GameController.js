@@ -2,6 +2,7 @@
 var PubSub = require("pubsub-js");
 var ui = require("../UI/ui");
 var SceneManager_1 = require("./SceneManager");
+var Constants_1 = require("./Constants");
 /**
  * singleton class for game controller
  */
@@ -10,7 +11,7 @@ var GameController = (function () {
     }
     GameController.init = function () {
         ui.init();
-        PubSub.subscribe("game.scene.switch", function (message, data) {
+        PubSub.subscribe(Constants_1.BroadcastEvents.gameSceneSwitch, function (message, data) {
             GameController.sceneManager.switchToScene(SceneManager_1.default.scenes[data.scene]);
         });
     };

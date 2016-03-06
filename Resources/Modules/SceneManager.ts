@@ -1,4 +1,5 @@
 import * as PubSub from "pubsub-js";
+import {BroadcastEvents} from "./Constants";
 
 export const Scenes = {
     title: "Scenes/title.scene",
@@ -16,8 +17,7 @@ export default class SceneManager {
     switchToScene(sceneName: string) {
         const firstScene = this.currentScene == null;
         if (!firstScene) {
-            console.log("unloading " + this.currentSceneName);
-            PubSub.publishSync("game.scene.unloaded", {
+            PubSub.publishSync(BroadcastEvents.gameSceneUnloaded, {
                 scene: this.currentSceneName
             });
         }
@@ -30,7 +30,7 @@ export default class SceneManager {
         }
         this.currentScene = scene;
         this.currentSceneName = sceneName;
-        PubSub.publish("game.scene.loaded", {
+        PubSub.publish(BroadcastEvents.gameSceneLoaded, {
             scene: this.currentSceneName
         });
     }

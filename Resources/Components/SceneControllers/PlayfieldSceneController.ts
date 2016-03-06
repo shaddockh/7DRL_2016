@@ -1,6 +1,7 @@
 "atomic component";
 import * as PubSub from "pubsub-js";
 import BaseSceneController from "./BaseSceneController";
+import {BroadcastEvents} from "Constants";
 
 class PlayfieldSceneController extends BaseSceneController {
 
@@ -10,11 +11,11 @@ class PlayfieldSceneController extends BaseSceneController {
 
     sceneLoaded(message: string, data: SceneActionMessage) {
         super.sceneLoaded(message, data);
-        PubSub.publish("game.level.generate", null);
+        PubSub.publish(BroadcastEvents.gameLevelGenerate, null);
     }
 
     sceneUnloaded(message: string, data: SceneActionMessage) {
-        PubSub.publish("ui.attributeselection.hide", {});
+        //PubSub.publish(BroadcastEvents.uiAttributeSelectionHide, {});
         super.sceneUnloaded(message, data);
     }
 

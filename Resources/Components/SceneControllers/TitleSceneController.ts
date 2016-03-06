@@ -1,6 +1,7 @@
 "atomic component";
 import BaseSceneController from "./BaseSceneController";
 import * as PubSub from "pubsub-js";
+import {BroadcastEvents} from "Constants";
 
 class TitleScreenController extends BaseSceneController {
 
@@ -13,11 +14,11 @@ class TitleScreenController extends BaseSceneController {
 
     sceneLoaded(message: string, data: SceneActionMessage) {
         super.sceneLoaded(message, data);
-        PubSub.publish("ui.titlescreen.show", {});
+        PubSub.publish(BroadcastEvents.uiTitleScreenShow, {});
     }
 
     sceneUnloaded(message: string, data: SceneActionMessage) {
-        PubSub.publish("ui.titlescreen.hide", {});
+        PubSub.publish(BroadcastEvents.uiTitleScreenHide, {});
         super.sceneUnloaded(message, data);
     }
 

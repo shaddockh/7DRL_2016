@@ -1,6 +1,7 @@
 import CustomJSComponent from "CustomJSComponent";
 import * as PubSub from "pubsub-js";
 
+import {BroadcastEvents} from "Constants";
 export default class BaseSceneController extends CustomJSComponent {
 
     inspectorFields = {
@@ -10,9 +11,9 @@ export default class BaseSceneController extends CustomJSComponent {
     private subscriptionTokens = [];
     constructor() {
         super();
-        this.addSubscription("game.scene.loaded", this.sceneLoaded.bind(this));
-        this.addSubscription("game.scene.unloaded", this.sceneUnloaded.bind(this));
-        this.addSubscription("game.scene.action", this.doSceneAction.bind(this));
+        this.addSubscription(BroadcastEvents.gameSceneLoaded, this.sceneLoaded.bind(this));
+        this.addSubscription(BroadcastEvents.gameSceneUnloaded, this.sceneUnloaded.bind(this));
+        this.addSubscription(BroadcastEvents.gameSceneAction, this.doSceneAction.bind(this));
     }
 
     addSubscription(key:string, handler: any) {
@@ -33,12 +34,8 @@ export default class BaseSceneController extends CustomJSComponent {
         this.DEBUG(`Scene Action: ${data.action}`);
     }
 
-    openScene(sceneKey: string) {
-        PubSub.publish(`game.${sceneKey}.show`, null);
-    }
-
     switchScene(sceneKey: string) {
-        PubSub.publish("game.scene.switch", {
+        PubSub.publish(BroadcastEvents.gameSceneSwitch, {
             scene: sceneKey
         });
     }

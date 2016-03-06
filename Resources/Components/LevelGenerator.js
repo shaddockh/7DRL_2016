@@ -8,6 +8,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 var CustomJSComponent_1 = require("CustomJSComponent");
 var PubSub = require("pubsub-js");
 var DefaultGenerator_1 = require("Generators/DefaultGenerator");
+var Constants_1 = require("Constants");
 var LevelGenerator = (function (_super) {
     __extends(LevelGenerator, _super);
     function LevelGenerator() {
@@ -20,7 +21,7 @@ var LevelGenerator = (function (_super) {
         this.width = 80;
         this.height = 25;
         this.debug = false;
-        PubSub.subscribe("game.level.generate", this.generateLevel.bind(this));
+        PubSub.subscribe(Constants_1.BroadcastEvents.gameLevelGenerate, this.generateLevel.bind(this));
     }
     LevelGenerator.prototype.generateLevel = function () {
         // generate the level
@@ -29,7 +30,7 @@ var LevelGenerator = (function (_super) {
         this.DEBUG("generating level");
         generator.debug = this.debug;
         var levelData = generator.generate();
-        PubSub.publish("game.level.load", { level: levelData });
+        PubSub.publish(Constants_1.BroadcastEvents.gameLevelLoad, { level: levelData });
     };
     LevelGenerator.prototype.getGenerator = function () {
         return new DefaultGenerator_1.default(this.width, this.height);

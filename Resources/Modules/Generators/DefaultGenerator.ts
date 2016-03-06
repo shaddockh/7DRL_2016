@@ -16,16 +16,32 @@ export default class DefaultGenerator {
             const levelData = new LevelData(this.width, this.height);
             const builder = new ROT.Map.Uniform(this.width, this.height, this);
             builder.create((x, y, value) => {
+                const tile = levelData.getTile(x, y);
                 if (value) {
-                    return;
-                } /* do not store walls */
-                levelData.setTile(x, y, TileType.floor);
+                    tile.terrainType = TileType.none;
+                } else {
+                    tile.terrainType = TileType.floor;
+                }
             });
+
+            this.generateWalls(levelData);
 
             return levelData;
         } finally {
             this.DEBUG(`Generation complete after ${new Date().getTime() - start} ms`);
         }
+    }
+
+    generateWalls(levelData: LevelData) {
+        levelData.iterate((tile: Tile) => {
+            if (tile.terrainType == TileType.floor) {
+                levelData.getNeighborTiles(tile.x, tile.y).forEach((tile) => {
+                    if (tile.terrainType == TileType.none) {
+                        tile.terrainType = TileType.wall;
+                    }
+                });
+            }
+        });
     }
 
     DEBUG(message: string) {

@@ -1,5 +1,6 @@
 "use strict";
 var PubSub = require("pubsub-js");
+var Constants_1 = require("./Constants");
 exports.Scenes = {
     title: "Scenes/title.scene",
     attributeSel: "Scenes/attribute_sel.scene",
@@ -11,8 +12,7 @@ var SceneManager = (function () {
     SceneManager.prototype.switchToScene = function (sceneName) {
         var firstScene = this.currentScene == null;
         if (!firstScene) {
-            console.log("unloading " + this.currentSceneName);
-            PubSub.publishSync("game.scene.unloaded", {
+            PubSub.publishSync(Constants_1.BroadcastEvents.gameSceneUnloaded, {
                 scene: this.currentSceneName
             });
         }
@@ -24,7 +24,7 @@ var SceneManager = (function () {
         }
         this.currentScene = scene;
         this.currentSceneName = sceneName;
-        PubSub.publish("game.scene.loaded", {
+        PubSub.publish(Constants_1.BroadcastEvents.gameSceneLoaded, {
             scene: this.currentSceneName
         });
     };

@@ -2,6 +2,7 @@
 import CustomJSComponent from "CustomJSComponent";
 import * as PubSub from "pubsub-js";
 import LevelData from "Generators/LevelData";
+import {BroadcastEvents} from "Constants";
 
 class LevelRenderer extends CustomJSComponent {
 
@@ -18,7 +19,7 @@ class LevelRenderer extends CustomJSComponent {
     constructor() {
         super();
         this.cellUnitSize = this.cellPixelSize * Atomic.PIXEL_SIZE;
-        PubSub.subscribe("game.level.load", (message: string, data: any) => {
+        PubSub.subscribe(BroadcastEvents.gameLevelLoad, (message: string, data: any) => {
             this.loadLevel(data.level);
         });
     }
@@ -38,7 +39,7 @@ class LevelRenderer extends CustomJSComponent {
             this.levelData.tiles.forEach((cols: Array<Tile>) => {
                 cols.forEach((tile: Tile) => {
                     if (tile.terrainType !== TileType.none) {
-                        this.DEBUG(`Construction cell [${tile.x},${tile.y}] - ${tile.blueprint}`);
+                        //this.DEBUG(`Construction cell [${tile.x},${tile.y}] - ${tile.blueprint}`);
                         const tileNode = this.node.createChildPrefab(tile.x + "-" + tile.y, "Prefabs/Tiles/FloorTile.prefab");
                         tileNode.position2D = [tile.x * scale, tile.y * scale];
                         //let tileNode = nodeBuilder.createChildAtPosition(this.node, tile.blueprint, [tile.x * scale, tile.y * scale]);

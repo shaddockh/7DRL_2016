@@ -3,6 +3,7 @@
 import CustomJSComponent from "CustomJSComponent";
 import * as PubSub from "pubsub-js";
 import DefaultGenerator from "Generators/DefaultGenerator";
+import {BroadcastEvents} from "Constants";
 
 class LevelGenerator extends CustomJSComponent {
 
@@ -18,7 +19,7 @@ class LevelGenerator extends CustomJSComponent {
 
     constructor() {
         super();
-        PubSub.subscribe("game.level.generate", this.generateLevel.bind(this));
+        PubSub.subscribe(BroadcastEvents.gameLevelGenerate, this.generateLevel.bind(this));
     }
 
 
@@ -29,7 +30,7 @@ class LevelGenerator extends CustomJSComponent {
         this.DEBUG("generating level");
         generator.debug = this.debug;
         const levelData = generator.generate();
-        PubSub.publish("game.level.load", { level: levelData });
+        PubSub.publish(BroadcastEvents.gameLevelLoad, { level: levelData });
     }
 
     getGenerator(): DefaultGenerator {

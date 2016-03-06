@@ -7,6 +7,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var CustomJSComponent_1 = require("CustomJSComponent");
 var PubSub = require("pubsub-js");
+var Constants_1 = require("Constants");
 var LevelRenderer = (function (_super) {
     __extends(LevelRenderer, _super);
     function LevelRenderer() {
@@ -19,7 +20,7 @@ var LevelRenderer = (function (_super) {
         this.levelData = null;
         this.children = [];
         this.cellUnitSize = this.cellPixelSize * Atomic.PIXEL_SIZE;
-        PubSub.subscribe("game.level.load", function (message, data) {
+        PubSub.subscribe(Constants_1.BroadcastEvents.gameLevelLoad, function (message, data) {
             _this.loadLevel(data.level);
         });
     }
@@ -35,7 +36,7 @@ var LevelRenderer = (function (_super) {
             this.levelData.tiles.forEach(function (cols) {
                 cols.forEach(function (tile) {
                     if (tile.terrainType !== 0 /* none */) {
-                        _this.DEBUG("Construction cell [" + tile.x + "," + tile.y + "] - " + tile.blueprint);
+                        //this.DEBUG(`Construction cell [${tile.x},${tile.y}] - ${tile.blueprint}`);
                         var tileNode = _this.node.createChildPrefab(tile.x + "-" + tile.y, "Prefabs/Tiles/FloorTile.prefab");
                         tileNode.position2D = [tile.x * scale_1, tile.y * scale_1];
                         //let tileNode = nodeBuilder.createChildAtPosition(this.node, tile.blueprint, [tile.x * scale, tile.y * scale]);

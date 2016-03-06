@@ -15,16 +15,31 @@ var DefaultGenerator = (function () {
             var levelData_1 = new LevelData_1.default(this.width, this.height);
             var builder = new ROT.Map.Uniform(this.width, this.height, this);
             builder.create(function (x, y, value) {
+                var tile = levelData_1.getTile(x, y);
                 if (value) {
-                    return;
-                } /* do not store walls */
-                levelData_1.setTile(x, y, 1 /* floor */);
+                    tile.terrainType = 0 /* none */;
+                }
+                else {
+                    tile.terrainType = 1 /* floor */;
+                }
             });
+            this.generateWalls(levelData_1);
             return levelData_1;
         }
         finally {
             this.DEBUG("Generation complete after " + (new Date().getTime() - start) + " ms");
         }
+    };
+    DefaultGenerator.prototype.generateWalls = function (levelData) {
+        levelData.iterate(function (tile) {
+            if (tile.terrainType == 1 /* floor */) {
+                levelData.getNeighborTiles(tile.x, tile.y).forEach(function (tile) {
+                    if (tile.terrainType == 0 /* none */) {
+                        tile.terrainType = 2 /* wall */;
+                    }
+                });
+            }
+        });
     };
     DefaultGenerator.prototype.DEBUG = function (message) {
         if (this.debug) {

@@ -7,6 +7,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var BaseSceneController_1 = require("./BaseSceneController");
 var PubSub = require("pubsub-js");
+var Constants_1 = require("Constants");
 var TitleScreenController = (function (_super) {
     __extends(TitleScreenController, _super);
     function TitleScreenController() {
@@ -18,10 +19,10 @@ var TitleScreenController = (function (_super) {
     }
     TitleScreenController.prototype.sceneLoaded = function (message, data) {
         _super.prototype.sceneLoaded.call(this, message, data);
-        PubSub.publish("ui.titlescreen.show", {});
+        PubSub.publish(Constants_1.BroadcastEvents.uiTitleScreenShow, {});
     };
     TitleScreenController.prototype.sceneUnloaded = function (message, data) {
-        PubSub.publish("ui.titlescreen.hide", {});
+        PubSub.publish(Constants_1.BroadcastEvents.uiTitleScreenHide, {});
         _super.prototype.sceneUnloaded.call(this, message, data);
     };
     TitleScreenController.prototype.doSceneAction = function (message, data) {

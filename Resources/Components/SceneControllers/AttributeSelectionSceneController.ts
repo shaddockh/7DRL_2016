@@ -1,6 +1,7 @@
 "atomic component";
 import * as PubSub from "pubsub-js";
 import BaseSceneController from "./BaseSceneController";
+import {BroadcastEvents} from "Constants";
 
 class AttributeSelectionSceneController extends BaseSceneController {
 
@@ -15,11 +16,11 @@ class AttributeSelectionSceneController extends BaseSceneController {
 
     sceneLoaded(message: string, data: SceneActionMessage) {
         super.sceneLoaded(message, data);
-        PubSub.publish("ui.attributeselection.show", {});
+        PubSub.publish(BroadcastEvents.uiAttributeSelectionShow, {});
     }
 
     sceneUnloaded(message: string, data: SceneActionMessage) {
-        PubSub.publish("ui.attributeselection.hide", {});
+        PubSub.publish(BroadcastEvents.uiAttributeSelectionHide, {});
         super.sceneUnloaded(message, data);
     }
 

@@ -6,6 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 };
 var CustomJSComponent_1 = require("CustomJSComponent");
 var PubSub = require("pubsub-js");
+var Constants_1 = require("Constants");
 var BaseSceneController = (function (_super) {
     __extends(BaseSceneController, _super);
     function BaseSceneController() {
@@ -14,9 +15,9 @@ var BaseSceneController = (function (_super) {
             debug: false,
         };
         this.subscriptionTokens = [];
-        this.addSubscription("game.scene.loaded", this.sceneLoaded.bind(this));
-        this.addSubscription("game.scene.unloaded", this.sceneUnloaded.bind(this));
-        this.addSubscription("game.scene.action", this.doSceneAction.bind(this));
+        this.addSubscription(Constants_1.BroadcastEvents.gameSceneLoaded, this.sceneLoaded.bind(this));
+        this.addSubscription(Constants_1.BroadcastEvents.gameSceneUnloaded, this.sceneUnloaded.bind(this));
+        this.addSubscription(Constants_1.BroadcastEvents.gameSceneAction, this.doSceneAction.bind(this));
     }
     BaseSceneController.prototype.addSubscription = function (key, handler) {
         this.subscriptionTokens.push(PubSub.subscribe(key, handler));
@@ -32,11 +33,8 @@ var BaseSceneController = (function (_super) {
     BaseSceneController.prototype.doSceneAction = function (message, data) {
         this.DEBUG("Scene Action: " + data.action);
     };
-    BaseSceneController.prototype.openScene = function (sceneKey) {
-        PubSub.publish("game." + sceneKey + ".show", null);
-    };
     BaseSceneController.prototype.switchScene = function (sceneKey) {
-        PubSub.publish("game.scene.switch", {
+        PubSub.publish(Constants_1.BroadcastEvents.gameSceneSwitch, {
             scene: sceneKey
         });
     };
