@@ -20,6 +20,17 @@ var GameController = (function () {
     GameController.showTitleScene = function () {
         PubSub.publish("game.title_scene.show", null);
     };
+    // switching scenes doesn't seem to work correclty
+    GameController.switchScene = function (sceneName) {
+        var firstScene = Atomic.player.currentScene == null;
+        var scene = Atomic.player.loadScene(sceneName);
+        if (!firstScene) {
+            var viewPort = Atomic.renderer.getViewport(0);
+            var cameras = scene.getChildrenWithComponent("Camera", true);
+            viewPort.setScene(scene);
+            viewPort.setCamera((cameras[0].getComponent("Camera")));
+        }
+    };
     return GameController;
 }());
 Object.defineProperty(exports, "__esModule", { value: true });

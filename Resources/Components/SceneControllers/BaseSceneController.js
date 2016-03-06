@@ -4,7 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var CustomJSComponent_1 = require("../../Modules/CustomJSComponent");
+var CustomJSComponent_1 = require("CustomJSComponent");
 var PubSub = require("pubsub-js");
 var BaseSceneController = (function (_super) {
     __extends(BaseSceneController, _super);

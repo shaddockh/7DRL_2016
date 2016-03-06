@@ -5,8 +5,8 @@
 	<attribute name="Smoothing Constant" value="50" />
 	<attribute name="Snap Threshold" value="5" />
 	<attribute name="Elapsed Time" value="0" />
-	<attribute name="Next Replicated Node ID" value="367" />
-	<attribute name="Next Replicated Component ID" value="1978" />
+	<attribute name="Next Replicated Node ID" value="369" />
+	<attribute name="Next Replicated Component ID" value="1980" />
 	<attribute name="Next Local Node ID" value="16778496" />
 	<attribute name="Next Local Component ID" value="16777216" />
 	<attribute name="Variables" />
@@ -102,5 +102,19 @@
 				</attribute>
 			</component>
 		</node>
+	</node>
+	<node id="367">
+		<attribute name="Is Enabled" value="true" />
+		<attribute name="Name" value="LevelGenerator" />
+		<attribute name="Position" value="0 0 0" />
+		<attribute name="Rotation" value="1 0 0 0" />
+		<attribute name="Scale" value="1 1 1" />
+		<attribute name="Variables" />
+		<component type="JSComponent" id="1978">
+			<attribute name="ComponentFile" value="JSComponentFile;Components/LevelGenerator.js" />
+			<attribute name="FieldValues">
+				<variant hash="339510355" type="Bool" value="true" />
+			</attribute>
+		</component>
 	</node>
 </scene>

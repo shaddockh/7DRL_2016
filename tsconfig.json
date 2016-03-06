@@ -5,27 +5,36 @@
         "module": "commonjs",
         "declaration": false,
         "inlineSourceMap": false,
-        "removeComments": false
+        "removeComments": false,
+        "preserveConstEnums": false
     },
     "filesGlob": [
         "!node_modules/**",
         "!build/**",
         "Resources/**/*.ts",
-        "typings/**/*.ts"
+        "typings/**/*.ts",
+        "!temp/**"
     ],
     "files": [
+        "Resources/Components/LevelGenerator.ts",
+        "Resources/Components/LevelRenderer.ts",
         "Resources/Components/SceneControllers/AttributeSelectionSceneController.ts",
         "Resources/Components/SceneControllers/BaseSceneController.ts",
         "Resources/Components/SceneControllers/PlayfieldSceneController.ts",
         "Resources/Components/SceneControllers/TitleSceneController.ts",
         "Resources/Modules/CustomJSComponent.ts",
         "Resources/Modules/GameController.ts",
+        "Resources/Modules/Generators/DefaultGenerator.ts",
+        "Resources/Modules/Generators/LevelData.ts",
         "Resources/Scripts/main.ts",
         "Resources/UI/AttributeSelection.ui.ts",
         "Resources/UI/CustomUIWindow.ts",
         "Resources/UI/TitleScreen.ui.ts",
         "Resources/UI/ui.ts",
+        "typings/7DRL_2016/constants.d.ts",
+        "typings/7DRL_2016/Generators.d.ts",
         "typings/7DRL_2016/interfaces.d.ts",
+        "typings/7DRL_2016/Modules.d.ts",
         "typings/Atomic/Atomic.d.ts",
         "typings/Atomic/AtomicNET.d.ts",
         "typings/Atomic/AtomicPlayer.d.ts",

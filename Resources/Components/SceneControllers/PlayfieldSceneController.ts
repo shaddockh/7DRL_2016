@@ -14,7 +14,7 @@ class PlayfieldSceneController extends BaseSceneController {
 
     show() {
         this.DEBUG("About to show scene");
-        //PubSub.publish("ui.titlescreen.show", {});
+        PubSub.publish("game.level.generate", null);
     }
 
     hide() {

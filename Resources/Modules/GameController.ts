@@ -27,18 +27,16 @@ export default class GameController {
 
 
     // switching scenes doesn't seem to work correclty
-    // private static switchScene(sceneName: string) {
-    //     const firstScene = Atomic.player.currentScene == null;
-    //
-    //     const scene = Atomic.player.loadScene(sceneName);
-    //     if (!firstScene) {
-    //          const viewPort = Atomic.renderer.getViewport(0);
-    //          const cameras = scene.getChildrenWithComponent("Camera", true);
-    //          viewPort.setScene(scene);
-    //          viewPort.setCamera(<Atomic.Camera>(cameras[0].getComponent("Camera")));
-    //         console.log("d");
-    //         scene.updateEnabled = true;
-    //     }
-    // }
+    static switchScene(sceneName: string) {
+        const firstScene = Atomic.player.currentScene == null;
+
+        const scene = Atomic.player.loadScene(sceneName);
+        if (!firstScene) {
+             const viewPort = Atomic.renderer.getViewport(0);
+             const cameras = scene.getChildrenWithComponent("Camera", true);
+             viewPort.setScene(scene);
+             viewPort.setCamera(<Atomic.Camera>(cameras[0].getComponent("Camera")));
+        }
+    }
 
 }

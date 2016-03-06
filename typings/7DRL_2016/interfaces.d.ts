@@ -14,3 +14,9 @@ declare interface TitleSceneActionMessage extends SceneActionMessage {
 declare interface AttributeSelectionSceneActionMessage extends SceneActionMessage {
     action: "show_playfield";
 }
+
+declare interface Tile {
+    x:number;
+    y:number;
+    terrainType:TileType;
+}

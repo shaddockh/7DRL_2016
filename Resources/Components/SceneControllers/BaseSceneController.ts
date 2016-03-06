@@ -1,4 +1,4 @@
-import CustomJSComponent from "../../Modules/CustomJSComponent";
+import CustomJSComponent from "CustomJSComponent";
 import * as PubSub from "pubsub-js";
 
 export default class BaseSceneController extends CustomJSComponent {

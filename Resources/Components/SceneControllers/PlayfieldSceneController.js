@@ -5,6 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var PubSub = require("pubsub-js");
 var BaseSceneController_1 = require("./BaseSceneController");
 var PlayfieldSceneController = (function (_super) {
     __extends(PlayfieldSceneController, _super);
@@ -16,7 +17,7 @@ var PlayfieldSceneController = (function (_super) {
     }
     PlayfieldSceneController.prototype.show = function () {
         this.DEBUG("About to show scene");
-        //PubSub.publish("ui.titlescreen.show", {});
+        PubSub.publish("game.level.generate", null);
     };
     PlayfieldSceneController.prototype.hide = function () {
         this.DEBUG("About to hide scene");
