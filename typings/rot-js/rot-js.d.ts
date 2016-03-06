@@ -1,4 +1,5 @@
-declare module "rot-js" {
+declare module "rot" {
+
     module ROT {
 
         module Path {
