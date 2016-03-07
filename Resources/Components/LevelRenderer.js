@@ -37,16 +37,11 @@ var LevelRenderer = (function (_super) {
             this.levelData.iterate(function (tile) {
                 if (tile.terrainType !== 0 /* none */) {
                     //this.DEBUG(`Construction cell [${tile.x},${tile.y}] - ${tile.blueprint}`);
-                    //const tileNode = this.node.createChildPrefab(tile.x + "-" + tile.y, "Prefabs/Tiles/FloorTile.prefab");
-                    //tileNode.position2D = [tile.x * scale, tile.y * scale];
-                    //this.node.position2D = [offsetX, offsetY];
                     var tileNode = atomic_blueprintLib_1.nodeBuilder.createChildAtPosition(_this.node, tile.blueprint, [tile.x * scale_1, tile.y * scale_1]);
-                    //const tileNode = nodeBuilder.createChildAtPosition(this.node, tile.blueprint, [tile.x * scale, tile.y * scale]);
-                    // const tileComponent = <Tile>(tileNode.getJSComponent("Tile"));
-                    // if (tileComponent) {
-                    //     tileComponent.setMapReference(tile);
-                    //     tileComponent.onUpdateFov(1);
-                    // }
+                    var tileComponent = (tileNode.getJSComponent("Tile"));
+                    if (tileComponent) {
+                        tileComponent.setMapReference(tile);
+                    }
                     _this.children.push(tileNode);
                 }
             });

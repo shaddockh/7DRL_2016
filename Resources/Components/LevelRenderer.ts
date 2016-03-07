@@ -43,17 +43,11 @@ class LevelRenderer extends CustomJSComponent {
             this.levelData.iterate((tile) => {
                 if (tile.terrainType !== TileType.none) {
                     //this.DEBUG(`Construction cell [${tile.x},${tile.y}] - ${tile.blueprint}`);
-                    //const tileNode = this.node.createChildPrefab(tile.x + "-" + tile.y, "Prefabs/Tiles/FloorTile.prefab");
-                    //tileNode.position2D = [tile.x * scale, tile.y * scale];
-
-                    //this.node.position2D = [offsetX, offsetY];
                     const tileNode = nodeBuilder.createChildAtPosition(this.node, tile.blueprint, [tile.x * scale, tile.y * scale]);
-                    //const tileNode = nodeBuilder.createChildAtPosition(this.node, tile.blueprint, [tile.x * scale, tile.y * scale]);
-                    // const tileComponent = <Tile>(tileNode.getJSComponent("Tile"));
-                    // if (tileComponent) {
-                    //     tileComponent.setMapReference(tile);
-                    //     tileComponent.onUpdateFov(1);
-                    // }
+                    const tileComponent = <Tile>(tileNode.getJSComponent("Tile"));
+                    if (tileComponent) {
+                        tileComponent.setMapReference(tile);
+                    }
                     this.children.push(tileNode);
                 }
             });

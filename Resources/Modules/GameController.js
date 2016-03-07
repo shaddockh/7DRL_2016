@@ -1,6 +1,6 @@
 "use strict";
 var PubSub = require("pubsub-js");
-var ui = require("../UI/ui");
+var ui = require("./Ui/ui");
 var SceneManager_1 = require("./SceneManager");
 var Constants_1 = require("./Constants");
 /**

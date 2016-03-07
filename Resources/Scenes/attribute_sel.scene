@@ -5,8 +5,8 @@
 	<attribute name="Smoothing Constant" value="50" />
 	<attribute name="Snap Threshold" value="5" />
 	<attribute name="Elapsed Time" value="0" />
-	<attribute name="Next Replicated Node ID" value="365" />
-	<attribute name="Next Replicated Component ID" value="1977" />
+	<attribute name="Next Replicated Node ID" value="368" />
+	<attribute name="Next Replicated Component ID" value="1982" />
 	<attribute name="Next Local Node ID" value="16778496" />
 	<attribute name="Next Local Component ID" value="16777216" />
 	<attribute name="Variables" />
@@ -14,6 +14,7 @@
 	<component type="PhysicsWorld" id="1" />
 	<component type="Octree" id="2" />
 	<component type="DebugRenderer" id="3" />
+	<component type="Renderer2D" id="1980" />
 	<node id="2">
 		<attribute name="Is Enabled" value="true" />
 		<attribute name="Name" value="Zone" />
