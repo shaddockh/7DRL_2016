@@ -8,6 +8,7 @@ var __extends = (this && this.__extends) || function (d, b) {
 var CustomJSComponent_1 = require("CustomJSComponent");
 var PubSub = require("pubsub-js");
 var Constants_1 = require("Constants");
+var atomic_blueprintLib_1 = require("atomic-blueprintLib");
 var LevelRenderer = (function (_super) {
     __extends(LevelRenderer, _super);
     function LevelRenderer() {
@@ -33,20 +34,21 @@ var LevelRenderer = (function (_super) {
         var start = new Date().getTime();
         try {
             var scale_1 = this.cellPixelSize * Atomic.PIXEL_SIZE, offsetX = this.levelData.width / 2 * scale_1 * -1, offsetY = this.levelData.height / 2 * scale_1 * -1;
-            this.levelData.tiles.forEach(function (cols) {
-                cols.forEach(function (tile) {
-                    if (tile.terrainType !== 0 /* none */) {
-                        //this.DEBUG(`Construction cell [${tile.x},${tile.y}] - ${tile.blueprint}`);
-                        var tileNode = _this.node.createChildPrefab(tile.x + "-" + tile.y, "Prefabs/Tiles/FloorTile.prefab");
-                        tileNode.position2D = [tile.x * scale_1, tile.y * scale_1];
-                        //let tileNode = nodeBuilder.createChildAtPosition(this.node, tile.blueprint, [tile.x * scale, tile.y * scale]);
-                        // let tileComponent = tileNode.getJSComponent<Tile>("Tile");
-                        // if (tileComponent) {
-                        //     tileComponent.setMapReference(tile);
-                        // }
-                        _this.children.push(tileNode);
-                    }
-                });
+            this.levelData.iterate(function (tile) {
+                if (tile.terrainType !== 0 /* none */) {
+                    //this.DEBUG(`Construction cell [${tile.x},${tile.y}] - ${tile.blueprint}`);
+                    //const tileNode = this.node.createChildPrefab(tile.x + "-" + tile.y, "Prefabs/Tiles/FloorTile.prefab");
+                    //tileNode.position2D = [tile.x * scale, tile.y * scale];
+                    //this.node.position2D = [offsetX, offsetY];
+                    var tileNode = atomic_blueprintLib_1.nodeBuilder.createChildAtPosition(_this.node, tile.blueprint, [tile.x * scale_1, tile.y * scale_1]);
+                    //const tileNode = nodeBuilder.createChildAtPosition(this.node, tile.blueprint, [tile.x * scale, tile.y * scale]);
+                    // const tileComponent = <Tile>(tileNode.getJSComponent("Tile"));
+                    // if (tileComponent) {
+                    //     tileComponent.setMapReference(tile);
+                    //     tileComponent.onUpdateFov(1);
+                    // }
+                    _this.children.push(tileNode);
+                }
             });
             this.node.position2D = [offsetX, offsetY];
         }

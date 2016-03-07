@@ -3,12 +3,18 @@ declare module "Generators/LevelData" {
      * Stored Level data for a level
      */
     export default class LevelData {
-        width:number;
-        height:number;
-        tiles:Array<Array<Tile>>;
+        tiles: Array<Array<TileData>>;
+        width: number;
+        height: number;
         constructor(width: number, height: number);
-        setTile(x: number, y: number, terrainType: TileType): void;
-        static createEmptyMap(width: any, height: any, defaultValue?: Tile): any[];
+        inBounds(x: any, y: any): boolean;
+        setTileTerrain(x: number, y: number, terrainType: TileType): void;
+        getTile(x: number, y: number): TileData;
+        getNeighborTiles(x: number, y: number, radius?: number): Array<TileData>;
+        iterate(callback: (tile: TileData) => void): void;
+        static createEmptyMap(width: any, height: any, defaultValue?: {
+            terrainType: TileType;
+        }): any[];
     }
 }
 

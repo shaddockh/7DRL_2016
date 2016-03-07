@@ -16,9 +16,12 @@ declare interface AttributeSelectionSceneActionMessage extends SceneActionMessag
     action: "show_playfield";
 }
 
-declare interface Tile {
+declare interface TileData {
     x: number;
     y: number;
     terrainType: TileType;
     blueprint?: string;
+    node?:Atomic.Node;
+    tileComponent?:any;
+    seen?:boolean;
 }

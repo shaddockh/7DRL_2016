@@ -16,6 +16,10 @@
         "!temp/**"
     ],
     "files": [
+        "Resources/Blueprints/_index.ts",
+        "Resources/Blueprints/Entities.ts",
+        "Resources/Blueprints/Tiles.ts",
+        "Resources/Components/common/Tile.ts",
         "Resources/Components/LevelGenerator.ts",
         "Resources/Components/LevelRenderer.ts",
         "Resources/Components/SceneControllers/AttributeSelectionSceneController.ts",

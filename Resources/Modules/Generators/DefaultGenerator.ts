@@ -21,6 +21,7 @@ export default class DefaultGenerator {
                     tile.terrainType = TileType.none;
                 } else {
                     tile.terrainType = TileType.floor;
+                    tile.blueprint = "tile_floor_generic";
                 }
             });
 
@@ -33,11 +34,12 @@ export default class DefaultGenerator {
     }
 
     generateWalls(levelData: LevelData) {
-        levelData.iterate((tile: Tile) => {
+        levelData.iterate((tile: TileData) => {
             if (tile.terrainType == TileType.floor) {
                 levelData.getNeighborTiles(tile.x, tile.y).forEach((tile) => {
                     if (tile.terrainType == TileType.none) {
                         tile.terrainType = TileType.wall;
+                        tile.blueprint = "tile_wall_generic";
                     }
                 });
             }

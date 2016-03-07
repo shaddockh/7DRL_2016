@@ -3,6 +3,10 @@ import CustomJSComponent from "CustomJSComponent";
 import * as PubSub from "pubsub-js";
 import LevelData from "Generators/LevelData";
 import {BroadcastEvents} from "Constants";
+import {nodeBuilder} from "atomic-blueprintLib";
+
+// JSComponents are defined non-standard so we need to import them appropriately
+import Tile = require("./common/Tile");
 
 class LevelRenderer extends CustomJSComponent {
 
@@ -14,7 +18,7 @@ class LevelRenderer extends CustomJSComponent {
     private cellPixelSize: number = 16;
 
     levelData: LevelData = null;
-    children: Array<any> = [];
+    children: Array<Atomic.Node> = [];
 
     constructor() {
         super();
@@ -36,23 +40,25 @@ class LevelRenderer extends CustomJSComponent {
                 offsetX = this.levelData.width / 2 * scale * -1,
                 offsetY = this.levelData.height / 2 * scale * -1;
 
-            this.levelData.tiles.forEach((cols: Array<Tile>) => {
-                cols.forEach((tile: Tile) => {
-                    if (tile.terrainType !== TileType.none) {
-                        //this.DEBUG(`Construction cell [${tile.x},${tile.y}] - ${tile.blueprint}`);
-                        const tileNode = this.node.createChildPrefab(tile.x + "-" + tile.y, "Prefabs/Tiles/FloorTile.prefab");
-                        tileNode.position2D = [tile.x * scale, tile.y * scale];
-                        //let tileNode = nodeBuilder.createChildAtPosition(this.node, tile.blueprint, [tile.x * scale, tile.y * scale]);
-                        // let tileComponent = tileNode.getJSComponent<Tile>("Tile");
-                        // if (tileComponent) {
-                        //     tileComponent.setMapReference(tile);
-                        // }
-                        this.children.push(tileNode);
-                    }
+            this.levelData.iterate((tile) => {
+                if (tile.terrainType !== TileType.none) {
+                    //this.DEBUG(`Construction cell [${tile.x},${tile.y}] - ${tile.blueprint}`);
+                    //const tileNode = this.node.createChildPrefab(tile.x + "-" + tile.y, "Prefabs/Tiles/FloorTile.prefab");
+                    //tileNode.position2D = [tile.x * scale, tile.y * scale];
 
-                });
+                    //this.node.position2D = [offsetX, offsetY];
+                    const tileNode = nodeBuilder.createChildAtPosition(this.node, tile.blueprint, [tile.x * scale, tile.y * scale]);
+                    //const tileNode = nodeBuilder.createChildAtPosition(this.node, tile.blueprint, [tile.x * scale, tile.y * scale]);
+                    // const tileComponent = <Tile>(tileNode.getJSComponent("Tile"));
+                    // if (tileComponent) {
+                    //     tileComponent.setMapReference(tile);
+                    //     tileComponent.onUpdateFov(1);
+                    // }
+                    this.children.push(tileNode);
+                }
             });
             this.node.position2D = [offsetX, offsetY];
+
         } finally {
             this.DEBUG(`Rendering complete after ${new Date().getTime() - start} ms`);
         }

@@ -7,6 +7,11 @@ var PREFABS_DIR = 'Prefabs';
 var GENERATED_PREFABS_DIR = Atomic.addTrailingSlash(PREFABS_DIR) + 'Generated';
 var DEBUG = true;
 
+function debug(message) {
+    if (DEBUG) {
+        console.log(message);
+    }
+}
 var BlueprintCatalog = _dereq_('entity-blueprint-manager').BlueprintCatalog;
 
 var blueprintCatalog = new BlueprintCatalog({
@@ -15,7 +20,7 @@ var blueprintCatalog = new BlueprintCatalog({
 });
 
 /**
- * Builders for the various types of components.  These are in charge of mapping the blueprint properties to 
+ * Builders for the various types of components.  These are in charge of mapping the blueprint properties to
  * the component.  JSComponents are generic, but native components may require specific builders
  *
  * Component builders must adhere to the interface:
@@ -64,7 +69,7 @@ var componentBuilders = {
 
 var cachedNativeComponentProps = {};
 /**
- * maps blueprint properties to a native component.  Will cache the native component type attributes for speed. 
+ * maps blueprint properties to a native component.  Will cache the native component type attributes for speed.
  * @method
  * @param {AObject} component the component to map
  * @param {object} blueprint the blueprint to map to the component
@@ -143,7 +148,7 @@ function generatePrefab(scene, blueprint, path) {
 
     // build the prefab
     // TODO: Need to figure out how update an existing prefab if it exists
-    var node = createChild(scene, blueprint);
+    var node = createChild(scene, blueprint, true);
     var file = new Atomic.File(path, Atomic.FILE_WRITE);
     node.saveXML(file);
     file.close();
@@ -165,17 +170,22 @@ function generatePrefabs() {
     var scene = new Atomic.Scene();
     scene.setUpdateEnabled(false);
 
-    // Build the directory that our generated prefabs will go into  
+    // Build the directory that our generated prefabs will go into
     // TODO: Could be cleaner
     var fs = Atomic.fileSystem;
-    var path = Atomic.addTrailingSlash(RESOURCES_DIR) + GENERATED_PREFABS_DIR;
-    if (fs.checkAccess(projectRoot + path)) {
-        fs.createDirs(projectRoot, path);
-
-        for (var bpName in blueprintCatalog.getAllBlueprintNames()) {
-            var blueprint = blueprintCatalog.getBlueprint(bpName);
+    var defaultPath = Atomic.addTrailingSlash(RESOURCES_DIR) + GENERATED_PREFABS_DIR;
+    if (fs.checkAccess(projectRoot + defaultPath)) {
+        var blueprintNames = blueprintCatalog.getAllBlueprintNames();
+        for (var i = 0; i < blueprintNames.length; i++) {
+            var blueprint = blueprintCatalog.getBlueprint(blueprintNames[i]);
             if (blueprint.isPrefab) {
-                generatePrefab(scene, blueprint, Atomic.addTrailingSlash(path) + bpName + '.prefab');
+                var path = defaultPath;
+                if (blueprint.prefabDir) {
+                    path = Atomic.addTrailingSlash(RESOURCES_DIR) + blueprint.prefabDir;
+                }
+                fs.createDirs(projectRoot, path);
+                debug("Generating prefab: " +  Atomic.addTrailingSlash(path) + blueprintNames[i] + '.prefab');
+                generatePrefab(scene, blueprint, projectRoot + Atomic.addTrailingSlash(path) + blueprintNames[i] + '.prefab');
             }
         }
     } else {
@@ -423,13 +433,23 @@ function buildEntity(node, blueprint) {
     return node;
 }
 
-function createChild(parent, blueprint) {
+function createChild(parent, blueprint, forceCreateFromBlueprint) {
     if (typeof (blueprint) === 'string') {
         blueprint = getBlueprint(blueprint);
     }
 
-    var node = parent.createChild(blueprint.name);
-    return buildEntity(node, blueprint);
+    var node;
+    if (blueprint.isPrefab && !forceCreateFromBlueprint) {
+        var prefabPath = Atomic.addTrailingSlash(RESOURCES_DIR) + GENERATED_PREFABS_DIR;
+        if (blueprint.prefabDir) {
+            prefabPath = blueprint.prefabDir;
+        }
+        node = parent.createChildPrefab(blueprint.name, Atomic.addTrailingSlash(prefabPath) + blueprint.name + ".prefab");
+    } else {
+        node = parent.createChild(blueprint.name);
+        buildEntity(node, blueprint);
+    }
+    return node;
 }
 
 function createChildAtPosition(parent, blueprint, spawnPosition) {

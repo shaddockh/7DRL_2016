@@ -1,0 +1,6 @@
+Tile=Components/common/Tile.js
+LevelGenerator=Components/LevelGenerator.js
+LevelRenderer=Components/LevelRenderer.js
+AttributeSelectionSceneController=Components/SceneControllers/AttributeSelectionSceneController.js
+PlayfieldSceneController=Components/SceneControllers/PlayfieldSceneController.js
+TitleSceneController=Components/SceneControllers/TitleSceneController.js

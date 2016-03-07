@@ -21,6 +21,7 @@ var DefaultGenerator = (function () {
                 }
                 else {
                     tile.terrainType = 1 /* floor */;
+                    tile.blueprint = "tile_floor_generic";
                 }
             });
             this.generateWalls(levelData_1);
@@ -36,6 +37,7 @@ var DefaultGenerator = (function () {
                 levelData.getNeighborTiles(tile.x, tile.y).forEach(function (tile) {
                     if (tile.terrainType == 0 /* none */) {
                         tile.terrainType = 2 /* wall */;
+                        tile.blueprint = "tile_wall_generic";
                     }
                 });
             }
