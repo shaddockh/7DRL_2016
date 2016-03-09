@@ -33,6 +33,18 @@ var CustomJSComponent = (function (_super) {
             console.log(this.node.name + "." + this._componentName + ": " + msg);
         }
     };
+    /**
+     * Returns a component on this node cast to the appropriate type
+     */
+    CustomJSComponent.prototype.getComponent = function (componentName) {
+        return this.node.getComponent(componentName);
+    };
+    /**
+     * Returns a JSComponent on this node cast to the appropriate type
+     */
+    CustomJSComponent.prototype.getJSComponent = function (componentName) {
+        return this.node.getJSComponent(componentName);
+    };
     return CustomJSComponent;
 }(Atomic.JSComponent));
 Object.defineProperty(exports, "__esModule", { value: true });

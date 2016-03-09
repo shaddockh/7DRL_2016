@@ -12,3 +12,15 @@ var BroadcastEvents;
     BroadcastEvents.uiTitleScreenShow = "ui.titlescreen.show";
     BroadcastEvents.uiTitleScreenHide = "ui.titlescreen.hide";
 })(BroadcastEvents = exports.BroadcastEvents || (exports.BroadcastEvents = {}));
+var ComponentEvents;
+(function (ComponentEvents) {
+    ComponentEvents.onTryMove = "onTryMove";
+    ComponentEvents.onSkipTurn = "onSkipTurn";
+    ComponentEvents.onLogAction = "onLogAction";
+    ComponentEvents.onMoveBlocked = "onMoveBlocked";
+    ComponentEvents.onMoveStart = "onMoveStart";
+    ComponentEvents.onMoveComplete = "onMoveComplete";
+    ComponentEvents.onHandleBump = "onHandleBump";
+    ComponentEvents.onUpdateFov = "onUpdateFov";
+    ComponentEvents.onDestroy = "onDestroy";
+})(ComponentEvents = exports.ComponentEvents || (exports.ComponentEvents = {}));

@@ -1,3 +1,6 @@
+Entity=Components/common/Entity.js
+GridMover=Components/common/GridMover.js
+PlayerInputHandler=Components/common/PlayerInputHandler.js
 Tile=Components/common/Tile.js
 LevelGenerator=Components/LevelGenerator.js
 LevelRenderer=Components/LevelRenderer.js

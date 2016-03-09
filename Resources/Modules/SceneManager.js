@@ -1,6 +1,6 @@
 "use strict";
 var PubSub = require("pubsub-js");
-var Constants_1 = require("./Constants");
+var Constants_1 = require("Constants");
 exports.Scenes = {
     title: "Scenes/title.scene",
     attributeSel: "Scenes/attribute_sel.scene",

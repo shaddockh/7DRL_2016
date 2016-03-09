@@ -1,12 +1,12 @@
 "atomic component";
 import * as PubSub from "pubsub-js";
-import BaseSceneController from "./BaseSceneController";
+import BaseSceneController from "BaseSceneController";
 import {BroadcastEvents} from "Constants";
 
 class PlayfieldSceneController extends BaseSceneController {
 
     inspectorFields = {
-        debug: false,
+        debug: false
     };
 
     sceneLoaded(message: string, data: SceneActionMessage) {

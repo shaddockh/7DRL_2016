@@ -21,13 +21,14 @@ export default class TitleScreenUi extends CustomUIWindow {
     openWindow(parms?: any) {
 
         super.openWindow({ windowSettings: Atomic.UI_WINDOW_SETTINGS_NONE });
-
         let wnd = this.window;
-        //wnd.setRect([0, 0, 400, 300]);
-        //wnd.text = "Play Game";
-
+        console.log("finding button");
         let btn = <Atomic.UIButton> wnd.getWidget("btnPlay");
+        if (btn) {
+            console.log("found");
+        }
         btn.onClick = () => {
+            console.log("yes");
             this.closeWindow();
             let action : TitleSceneActionMessage = {
                 action: "show_attribute_selection"

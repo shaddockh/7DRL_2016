@@ -9,6 +9,7 @@ var CustomJSComponent_1 = require("CustomJSComponent");
 var PubSub = require("pubsub-js");
 var Constants_1 = require("Constants");
 var atomic_blueprintLib_1 = require("atomic-blueprintLib");
+var GameController_1 = require("GameController");
 var LevelRenderer = (function (_super) {
     __extends(LevelRenderer, _super);
     function LevelRenderer() {
@@ -26,6 +27,7 @@ var LevelRenderer = (function (_super) {
         });
     }
     LevelRenderer.prototype.loadLevel = function (level) {
+        GameController_1.default.gameState.currentLevelData = level;
         this.levelData = level;
         this.render();
     };
@@ -34,15 +36,27 @@ var LevelRenderer = (function (_super) {
         var start = new Date().getTime();
         try {
             var scale_1 = this.cellPixelSize * Atomic.PIXEL_SIZE, offsetX = this.levelData.width / 2 * scale_1 * -1, offsetY = this.levelData.height / 2 * scale_1 * -1;
-            this.levelData.iterate(function (tile) {
+            this.levelData.iterateTiles(function (tile) {
                 if (tile.terrainType !== 0 /* none */) {
                     //this.DEBUG(`Construction cell [${tile.x},${tile.y}] - ${tile.blueprint}`);
                     var tileNode = atomic_blueprintLib_1.nodeBuilder.createChildAtPosition(_this.node, tile.blueprint, [tile.x * scale_1, tile.y * scale_1]);
-                    var tileComponent = (tileNode.getJSComponent("Tile"));
+                    var tileComponent = _this.getJSComponent("Tile");
                     if (tileComponent) {
                         tileComponent.setMapReference(tile);
                     }
                     _this.children.push(tileNode);
+                }
+            });
+            this.levelData.iterateEntities(function (entity) {
+                if (entity.blueprint) {
+                    var blueprint = entity.blueprint;
+                    _this.DEBUG("Constructing entity [" + entity.x + "," + entity.y + "] - " + blueprint);
+                    var entityNode = atomic_blueprintLib_1.nodeBuilder.createChildAtPosition(_this.node, blueprint, [entity.x * scale_1, entity.y * scale_1]);
+                    var entityComponent = entityNode.getJSComponent("Entity");
+                    if (entityComponent) {
+                        entityComponent.setMapReference(entity);
+                    }
+                    _this.children.push(entityNode);
                 }
             });
             this.node.position2D = [offsetX, offsetY];

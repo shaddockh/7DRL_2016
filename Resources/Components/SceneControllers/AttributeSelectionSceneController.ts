@@ -1,6 +1,6 @@
 "atomic component";
 import * as PubSub from "pubsub-js";
-import BaseSceneController from "./BaseSceneController";
+import BaseSceneController from "BaseSceneController";
 import {BroadcastEvents} from "Constants";
 
 class AttributeSelectionSceneController extends BaseSceneController {

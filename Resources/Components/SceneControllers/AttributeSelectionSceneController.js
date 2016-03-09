@@ -6,7 +6,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var PubSub = require("pubsub-js");
-var BaseSceneController_1 = require("./BaseSceneController");
+var BaseSceneController_1 = require("BaseSceneController");
 var Constants_1 = require("Constants");
 var AttributeSelectionSceneController = (function (_super) {
     __extends(AttributeSelectionSceneController, _super);

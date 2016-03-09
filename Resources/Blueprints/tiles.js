@@ -5,7 +5,6 @@ exports.tile_base = {
     Tile: {
         debug: false
     },
-    // MessageDispatcher: {},
     StaticSprite2D: {
         blendMode: Atomic.BLEND_ALPHA,
         orderInLayer: 0,

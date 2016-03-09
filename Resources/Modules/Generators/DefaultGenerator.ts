@@ -27,6 +27,13 @@ export default class DefaultGenerator {
 
             this.generateWalls(levelData);
 
+            let player = levelData.getRandomEmptyPosition();
+            levelData.addEntityAtPosition(player[0], player[1], {
+                x:0,
+                y:0,
+                blueprint: "hero"
+            });
+
             return levelData;
         } finally {
             this.DEBUG(`Generation complete after ${new Date().getTime() - start} ms`);
@@ -34,7 +41,7 @@ export default class DefaultGenerator {
     }
 
     generateWalls(levelData: LevelData) {
-        levelData.iterate((tile: TileData) => {
+        levelData.iterateTiles((tile: TileData) => {
             if (tile.terrainType == TileType.floor) {
                 levelData.getNeighborTiles(tile.x, tile.y).forEach((tile) => {
                     if (tile.terrainType == TileType.none) {

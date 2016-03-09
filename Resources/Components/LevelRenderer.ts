@@ -4,9 +4,11 @@ import * as PubSub from "pubsub-js";
 import LevelData from "Generators/LevelData";
 import {BroadcastEvents} from "Constants";
 import {nodeBuilder} from "atomic-blueprintLib";
+import GameController from "GameController";
 
 // JSComponents are defined non-standard so we need to import them appropriately
 import Tile = require("./common/Tile");
+import Entity = require("./common/Entity");
 
 class LevelRenderer extends CustomJSComponent {
 
@@ -29,6 +31,7 @@ class LevelRenderer extends CustomJSComponent {
     }
 
     loadLevel(level: LevelData) {
+        GameController.gameState.currentLevelData = level;
         this.levelData = level;
         this.render();
     }
@@ -40,17 +43,31 @@ class LevelRenderer extends CustomJSComponent {
                 offsetX = this.levelData.width / 2 * scale * -1,
                 offsetY = this.levelData.height / 2 * scale * -1;
 
-            this.levelData.iterate((tile) => {
+            this.levelData.iterateTiles((tile) => {
                 if (tile.terrainType !== TileType.none) {
                     //this.DEBUG(`Construction cell [${tile.x},${tile.y}] - ${tile.blueprint}`);
                     const tileNode = nodeBuilder.createChildAtPosition(this.node, tile.blueprint, [tile.x * scale, tile.y * scale]);
-                    const tileComponent = <Tile>(tileNode.getJSComponent("Tile"));
+                    const tileComponent = this.getJSComponent<Tile>("Tile");
                     if (tileComponent) {
                         tileComponent.setMapReference(tile);
                     }
                     this.children.push(tileNode);
                 }
             });
+
+            this.levelData.iterateEntities((entity) => {
+                if (entity.blueprint) {
+                    let blueprint = entity.blueprint;
+                    this.DEBUG(`Constructing entity [${entity.x},${entity.y}] - ${blueprint}`);
+                    let entityNode = nodeBuilder.createChildAtPosition(this.node, blueprint, [entity.x * scale, entity.y * scale]);
+                    let entityComponent = <Entity>entityNode.getJSComponent("Entity");
+                    if (entityComponent) {
+                        entityComponent.setMapReference(entity);
+                    }
+                    this.children.push(entityNode);
+                }
+            });
+
             this.node.position2D = [offsetX, offsetY];
 
         } finally {

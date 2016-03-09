@@ -12,7 +12,7 @@ var BaseSceneController = (function (_super) {
     function BaseSceneController() {
         _super.call(this);
         this.inspectorFields = {
-            debug: false,
+            debug: false
         };
         this.subscriptionTokens = [];
         this.addSubscription(Constants_1.BroadcastEvents.gameSceneLoaded, this.sceneLoaded.bind(this));

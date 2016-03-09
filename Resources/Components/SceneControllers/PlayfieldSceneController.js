@@ -6,14 +6,14 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var PubSub = require("pubsub-js");
-var BaseSceneController_1 = require("./BaseSceneController");
+var BaseSceneController_1 = require("BaseSceneController");
 var Constants_1 = require("Constants");
 var PlayfieldSceneController = (function (_super) {
     __extends(PlayfieldSceneController, _super);
     function PlayfieldSceneController() {
         _super.apply(this, arguments);
         this.inspectorFields = {
-            debug: false,
+            debug: false
         };
     }
     PlayfieldSceneController.prototype.sceneLoaded = function (message, data) {

@@ -1,5 +1,5 @@
 "atomic component";
-import BaseSceneController from "./BaseSceneController";
+import BaseSceneController from "BaseSceneController";
 import * as PubSub from "pubsub-js";
 import {BroadcastEvents} from "Constants";
 

@@ -3,7 +3,7 @@
 require("AtomicEventLoop");
 require("../Blueprints/_index"); // Load all the blueprints into the catalog
 var GameController_1 = require("../Modules/GameController");
-var atomic_blueprintLib_1 = require("atomic-blueprintLib");
-atomic_blueprintLib_1.nodeBuilder.generatePrefabs();
+// Comment out before trying to play -- it messes with the timers
+//nodeBuilder.generatePrefabs();
 GameController_1.default.init();
 GameController_1.default.showTitleScene();

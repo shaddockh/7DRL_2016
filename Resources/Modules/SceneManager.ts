@@ -1,5 +1,6 @@
 import * as PubSub from "pubsub-js";
-import {BroadcastEvents} from "./Constants";
+import {BroadcastEvents} from "Constants";
+import BaseSceneController from "BaseSceneController";
 
 export const Scenes = {
     title: "Scenes/title.scene",

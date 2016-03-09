@@ -5,7 +5,7 @@ import {BroadcastEvents} from "Constants";
 export default class BaseSceneController extends CustomJSComponent {
 
     inspectorFields = {
-        debug: false,
+        debug: false
     };
 
     private subscriptionTokens = [];

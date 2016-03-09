@@ -24,10 +24,13 @@ var TitleScreenUi = (function (_super) {
         var _this = this;
         _super.prototype.openWindow.call(this, { windowSettings: Atomic.UI_WINDOW_SETTINGS_NONE });
         var wnd = this.window;
-        //wnd.setRect([0, 0, 400, 300]);
-        //wnd.text = "Play Game";
+        console.log("finding button");
         var btn = wnd.getWidget("btnPlay");
+        if (btn) {
+            console.log("found");
+        }
         btn.onClick = function () {
+            console.log("yes");
             _this.closeWindow();
             var action = {
                 action: "show_attribute_selection"

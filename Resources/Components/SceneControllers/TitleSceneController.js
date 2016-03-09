@@ -5,7 +5,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
-var BaseSceneController_1 = require("./BaseSceneController");
+var BaseSceneController_1 = require("BaseSceneController");
 var PubSub = require("pubsub-js");
 var Constants_1 = require("Constants");
 var TitleScreenController = (function (_super) {

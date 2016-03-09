@@ -25,6 +25,12 @@ var DefaultGenerator = (function () {
                 }
             });
             this.generateWalls(levelData_1);
+            var player = levelData_1.getRandomEmptyPosition();
+            levelData_1.addEntityAtPosition(player[0], player[1], {
+                x: 0,
+                y: 0,
+                blueprint: "hero"
+            });
             return levelData_1;
         }
         finally {
@@ -32,7 +38,7 @@ var DefaultGenerator = (function () {
         }
     };
     DefaultGenerator.prototype.generateWalls = function (levelData) {
-        levelData.iterate(function (tile) {
+        levelData.iterateTiles(function (tile) {
             if (tile.terrainType == 1 /* floor */) {
                 levelData.getNeighborTiles(tile.x, tile.y).forEach(function (tile) {
                     if (tile.terrainType == 0 /* none */) {

@@ -6,7 +6,8 @@ import * as PubSub from "pubsub-js";
 
 import {nodeBuilder} from "atomic-blueprintLib";
 
-nodeBuilder.generatePrefabs();
+// Comment out before trying to play -- it messes with the timers
+//nodeBuilder.generatePrefabs();
 
 GameController.init();
 GameController.showTitleScene();

@@ -28,4 +28,20 @@ export default class CustomJSComponent extends Atomic.JSComponent {
             console.log(`${this.node.name}.${this._componentName}: ${msg}`);
         }
     }
+
+
+    /**
+     * Returns a component on this node cast to the appropriate type
+     */
+    getComponent<T extends Atomic.Component>(componentName:string):T {
+        return <T>this.node.getComponent(componentName);
+    }
+
+    /**
+     * Returns a JSComponent on this node cast to the appropriate type
+     */
+    getJSComponent<T extends Atomic.JSComponent>(componentName:string):T {
+        return <T>this.node.getJSComponent(componentName);
+    }
+
 }
