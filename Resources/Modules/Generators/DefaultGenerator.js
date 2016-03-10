@@ -31,12 +31,9 @@ var DefaultGenerator = (function () {
                 }
             });
             this.generateWalls(levelData_1);
-            var player = levelData_1.getRandomEmptyPosition();
-            levelData_1.addEntityAtPosition(player[0], player[1], {
-                x: 0,
-                y: 0,
-                blueprint: "hero"
-            });
+            this.generateCreatures(levelData_1);
+            var playerPos = levelData_1.getRandomEmptyPosition();
+            levelData_1.addEntityBlueprintAtPosition(playerPos, "hero");
             return levelData_1;
         }
         finally {
@@ -55,6 +52,13 @@ var DefaultGenerator = (function () {
                 });
             }
         });
+    };
+    DefaultGenerator.prototype.generateCreatures = function (levelData) {
+        this.DEBUG("Generating creatures");
+        for (var i = 0; i < 10; i++) {
+            var spawnPos = levelData.getRandomEmptyPosition();
+            levelData.addEntityBlueprintAtPosition(spawnPos, "lost_soul");
+        }
     };
     DefaultGenerator.prototype.DEBUG = function (message) {
         if (this.debug) {

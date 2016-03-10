@@ -14,12 +14,14 @@ exports.tile_base = {
 exports.tile_floor_generic = {
     inherits: "tile_base",
     StaticSprite2D: {
-        sprite: "Sprites/tile_floor_overview.png"
+        sprite: "Sprites/spritesheet_2.png",
+        color: [0.5, 0.5, 0.5, 0.5]
     }
 };
 exports.tile_wall_generic = {
     inherits: "tile_base",
     StaticSprite2D: {
-        sprite: "Sprites/tile_floor_overview.png"
+        sprite: "Sprites/spritesheet_0.png",
+        color: [0.7, 0.7, 0.5, 0.8]
     }
 };

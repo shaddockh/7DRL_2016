@@ -1,9 +1,9 @@
 import {GLM} from "gl-matrix";
 import * as utils from "utils";
 
-export class EntityList extends utils.List<EntityData> {}
+export class EntityList extends utils.List<EntityData> { }
 
-export class TileDataGrid extends utils.Grid<TileData> {}
+export class TileDataGrid extends utils.Grid<TileData> { }
 /**
  * Stored Level data for a level
  */
@@ -129,7 +129,8 @@ export default class LevelData {
         });
     }
 
-    addEntityAtPosition(x: number, y: number, entity: EntityData) {
+    addEntityAtPosition(position: Position2D, entity: EntityData) {
+        let [x, y] = position;
         if (this.tiles.inBounds(x, y)) {
             if (!entity.blueprint) {
                 throw new Error(`Cannot add an entity without a blueprint. ${x},${y}`);
@@ -138,6 +139,14 @@ export default class LevelData {
             entity.y = y;
             this.entities.add(entity);
         }
+    }
+
+    addEntityBlueprintAtPosition(position: Position2D, blueprint: string) {
+        this.addEntityAtPosition(position, {
+            x: 0,
+            y: 0,
+            blueprint: blueprint
+        });
     }
 
     removeEntity(entity: EntityData): EntityData {

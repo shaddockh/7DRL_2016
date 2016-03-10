@@ -31,12 +31,10 @@ export default class DefaultGenerator {
 
             this.generateWalls(levelData);
 
-            let player = levelData.getRandomEmptyPosition();
-            levelData.addEntityAtPosition(player[0], player[1], {
-                x: 0,
-                y: 0,
-                blueprint: "hero"
-            });
+            this.generateCreatures(levelData);
+
+            let playerPos = levelData.getRandomEmptyPosition();
+            levelData.addEntityBlueprintAtPosition(playerPos, "hero");
 
             return levelData;
         } finally {
@@ -56,6 +54,14 @@ export default class DefaultGenerator {
                 });
             }
         });
+    }
+
+    generateCreatures(levelData: LevelData) {
+        this.DEBUG("Generating creatures");
+        for (let i = 0; i < 10; i++) {
+            let spawnPos = levelData.getRandomEmptyPosition();
+            levelData.addEntityBlueprintAtPosition(spawnPos, "lost_soul");
+        }
     }
 
     DEBUG(message: string) {

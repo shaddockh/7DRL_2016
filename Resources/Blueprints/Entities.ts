@@ -22,29 +22,14 @@ export const hero = {
         screenName: "Hero"
     },
     StaticSprite2D: {
-        sprite: "Sprites/player.png",
+        sprite: "Sprites/spritesheet_1.png",
         orderInLayer: 12
     },
     PlayerInputHandler: {
         debug: false
     },
-    // PointLight2D: {
-    //     castShadows: true,
-    //     radius: 2,
-    //     numRays: 64,
-    //     color: [0.9, 0.7, 0.5, 0.7],
-    //     backtrace: true
-    // },
-    /*
-     *LightFlicker: {
-     *    baseRange: 2,
-     *    speed: 0.2
-     *},
-     */
     GridMover: {
         debug: false,
-        speed: 0.25,
-        constantMotion: true
     },
     // Make sure our actions are reported to the log
     //ActionLogger: {},
@@ -60,4 +45,43 @@ export const hero = {
     // Health: {
     //     life: 10
     // }
+};
+
+export const enemy_base = {
+
+    inherits: "actor",
+    Entity: {
+        screenName: "Enemy"
+    },
+    StaticSprite2D: {
+        sprite: "Sprites/spritesheet_3.png",
+        orderInLayer: 12
+    },
+    GridMover: {
+        debug: false,
+    },
+    // Make sure our actions are reported to the log
+    //ActionLogger: {},
+    // EventSound: {
+    //     eventMap: {
+    //         onMoveStart: "Sounds/footstep02.ogg",
+    //         onAttack: "Sounds/knifeSlice.ogg"
+    //     }
+    // },
+    // EnemyAi: {
+    //     debug: false
+    // },
+    // Health: {
+    //     life: 10
+    // }
+};
+
+export const lost_soul = {
+    inherits: "enemy_base",
+    Entity: {
+        screenName: "Lost Soul"
+    },
+    StaticSprite2D: {
+        color: [1, 0, 1, 1]
+    }
 };

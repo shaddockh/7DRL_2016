@@ -1,32 +1,27 @@
 <?xml version="1.0"?>
-<node id="7">
+<node id="9">
 	<attribute name="Is Enabled" value="true" />
-	<attribute name="Name" value="hero" />
+	<attribute name="Name" value="lost_soul" />
 	<attribute name="Position" value="0 0 0" />
 	<attribute name="Rotation" value="1 0 0 0" />
 	<attribute name="Scale" value="1 1 1" />
 	<attribute name="Variables" />
-	<component type="JSComponent" id="16777221">
+	<component type="JSComponent" id="16777226">
 		<attribute name="ComponentFile" value="JSComponentFile;Components/common/Entity.js" />
 		<attribute name="FieldValues">
 			<variant hash="3427235179" type="Bool" value="true" />
 			<variant hash="421471792" type="Bool" value="false" />
 			<variant hash="1215768336" type="Bool" value="true" />
 			<variant hash="2894794562" type="Bool" value="true" />
-			<variant hash="2263931415" type="String" value="Hero" />
+			<variant hash="2263931415" type="String" value="Lost Soul" />
 		</attribute>
 	</component>
-	<component type="StaticSprite2D" id="5">
+	<component type="StaticSprite2D" id="7">
 		<attribute name="Order in Layer" value="12" />
-		<attribute name="Sprite" value="Sprite2D;Sprites/spritesheet_1.png" />
+		<attribute name="Sprite" value="Sprite2D;Sprites/spritesheet_3.png" />
+		<attribute name="Color" value="1 0 1 1" />
 	</component>
-	<component type="JSComponent" id="16777222">
-		<attribute name="ComponentFile" value="JSComponentFile;Components/common/PlayerInputHandler.js" />
-		<attribute name="FieldValues">
-			<variant hash="339510355" type="Bool" value="false" />
-		</attribute>
-	</component>
-	<component type="JSComponent" id="16777223">
+	<component type="JSComponent" id="16777227">
 		<attribute name="ComponentFile" value="JSComponentFile;Components/common/GridMover.js" />
 		<attribute name="FieldValues">
 			<variant hash="339510355" type="Bool" value="false" />

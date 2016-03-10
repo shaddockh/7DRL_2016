@@ -11,6 +11,7 @@ var GameController = (function () {
     function GameController() {
     }
     GameController.init = function () {
+        Atomic.renderer.textureFilterMode = Atomic.FILTER_NEAREST;
         GameController.gameState.init();
         ui.init();
         PubSub.subscribe(Constants_1.BroadcastEvents.gameSceneSwitch, function (message, data) {

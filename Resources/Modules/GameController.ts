@@ -12,6 +12,7 @@ export default class GameController {
     static sceneManager: SceneManager = new SceneManager();
     static gameState: GameState = new GameState();
     static init() {
+        Atomic.renderer.textureFilterMode = Atomic.FILTER_NEAREST;
         GameController.gameState.init();
 
         ui.init();

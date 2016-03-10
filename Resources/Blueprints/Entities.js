@@ -20,28 +20,35 @@ exports.hero = {
         screenName: "Hero"
     },
     StaticSprite2D: {
-        sprite: "Sprites/player.png",
+        sprite: "Sprites/spritesheet_1.png",
         orderInLayer: 12
     },
     PlayerInputHandler: {
         debug: false
     },
-    // PointLight2D: {
-    //     castShadows: true,
-    //     radius: 2,
-    //     numRays: 64,
-    //     color: [0.9, 0.7, 0.5, 0.7],
-    //     backtrace: true
-    // },
-    /*
-     *LightFlicker: {
-     *    baseRange: 2,
-     *    speed: 0.2
-     *},
-     */
     GridMover: {
         debug: false,
-        speed: 0.25,
-        constantMotion: true
     },
+};
+exports.enemy_base = {
+    inherits: "actor",
+    Entity: {
+        screenName: "Enemy"
+    },
+    StaticSprite2D: {
+        sprite: "Sprites/spritesheet_3.png",
+        orderInLayer: 12
+    },
+    GridMover: {
+        debug: false,
+    },
+};
+exports.lost_soul = {
+    inherits: "enemy_base",
+    Entity: {
+        screenName: "Lost Soul"
+    },
+    StaticSprite2D: {
+        color: [1, 0, 1, 1]
+    }
 };

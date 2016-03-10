@@ -127,7 +127,8 @@ var LevelData = (function () {
             }
         });
     };
-    LevelData.prototype.addEntityAtPosition = function (x, y, entity) {
+    LevelData.prototype.addEntityAtPosition = function (position, entity) {
+        var x = position[0], y = position[1];
         if (this.tiles.inBounds(x, y)) {
             if (!entity.blueprint) {
                 throw new Error("Cannot add an entity without a blueprint. " + x + "," + y);
@@ -136,6 +137,13 @@ var LevelData = (function () {
             entity.y = y;
             this.entities.add(entity);
         }
+    };
+    LevelData.prototype.addEntityBlueprintAtPosition = function (position, blueprint) {
+        this.addEntityAtPosition(position, {
+            x: 0,
+            y: 0,
+            blueprint: blueprint
+        });
     };
     LevelData.prototype.removeEntity = function (entity) {
         return this.entities.remove(entity);
