@@ -9,6 +9,7 @@ var DefaultGenerator = (function () {
         // constructs
     }
     DefaultGenerator.prototype.generate = function () {
+        var _this = this;
         var start = new Date().getTime();
         try {
             this.DEBUG("creating map: " + this.width + " x " + this.height);
@@ -16,12 +17,17 @@ var DefaultGenerator = (function () {
             var builder = new ROT.Map.Uniform(this.width, this.height, this);
             builder.create(function (x, y, value) {
                 var tile = levelData_1.getTile(x, y);
-                if (value) {
-                    tile.terrainType = 0 /* none */;
+                if (tile) {
+                    if (value) {
+                        tile.terrainType = 0 /* none */;
+                    }
+                    else {
+                        tile.terrainType = 1 /* floor */;
+                        tile.blueprint = "tile_floor_generic";
+                    }
                 }
                 else {
-                    tile.terrainType = 1 /* floor */;
-                    tile.blueprint = "tile_floor_generic";
+                    _this.DEBUG("assiging to tile out of bounds: " + x + "," + y);
                 }
             });
             this.generateWalls(levelData_1);
@@ -38,6 +44,7 @@ var DefaultGenerator = (function () {
         }
     };
     DefaultGenerator.prototype.generateWalls = function (levelData) {
+        this.DEBUG("Generating walls");
         levelData.iterateTiles(function (tile) {
             if (tile.terrainType == 1 /* floor */) {
                 levelData.getNeighborTiles(tile.x, tile.y).forEach(function (tile) {

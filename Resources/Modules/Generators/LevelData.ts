@@ -1,13 +1,16 @@
 import {GLM} from "gl-matrix";
 import * as utils from "utils";
 
+export class EntityList extends utils.List<EntityData> {}
+
+export class TileDataGrid extends utils.Grid<TileData> {}
 /**
  * Stored Level data for a level
  */
 export default class LevelData {
 
-    tiles: Array<Array<TileData>>;
-    entities: Array<EntityData>;
+    tiles: TileDataGrid;
+    entities: EntityList;
 
     width: number;
     height: number;
@@ -15,50 +18,42 @@ export default class LevelData {
     constructor(width: number, height: number) {
         this.width = width;
         this.height = height;
-        this.tiles = LevelData.createEmptyMap(width, height);
-        this.entities = [];
-    }
-
-    inBounds(x: number, y: number): boolean {
-        return x >= 0 && x < this.width && y >= 0 && y < this.height;
+        this.tiles = new TileDataGrid(width, height, {
+            x: 0,
+            y: 0,
+            terrainType: TileType.none
+        });
+        this.entities = new EntityList();
     }
 
     inBoundsPos(pos: Position2D|GLM.IArray): boolean {
-        return pos[0] >= 0 && pos[0] < this.width && pos[1] >= 0 && pos[1] < this.height;
+        return this.tiles.inBounds(pos[0], pos[1]);
     }
 
     setTileTerrain(x: number, y: number, terrainType: TileType) {
-        if (this.inBounds(x, y)) {
-            this.tiles[x][y].terrainType = terrainType;
+        if (this.tiles.inBounds(x, y)) {
+            this.tiles.getCell(x, y).terrainType = terrainType;
         }
     }
 
     getTile(x: number, y: number): TileData {
-        if (this.inBounds(x, y)) {
-            return this.tiles[x][y];
-        }
-        return null;
+        return this.tiles.getCell(x, y);
     }
 
     getTilePos(pos: Position2D|GLM.IArray): TileData {
-        if (this.inBoundsPos(pos)) {
-            return this.tiles[pos[0]][pos[1]];
-        }
-        return null;
+        return this.tiles.getCell(pos[0], pos[1]);
     }
 
     getNeighborTiles(x: number, y: number, radius: number = 1): Array<TileData> {
         let neighbors: Array<TileData> = [];
-        if (this.inBounds(x, y)) {
+        if (this.tiles.inBounds(x, y)) {
             for (let offsetX = 0 - radius; offsetX <= radius; offsetX++) {
                 for (let offsetY = 0 - radius; offsetY <= radius; offsetY++) {
                     if (offsetX !== 0 && offsetY !== 0) {
-                        if (this.inBounds(x + offsetX, y + offsetY)) {
-                            neighbors.push(this.tiles[x + offsetX][y + offsetY]);
+                        if (this.tiles.inBounds(x + offsetX, y + offsetY)) {
+                            neighbors.push(this.tiles.getCell(x + offsetX, y + offsetY));
                         }
-
                     }
-
                 }
             }
         }
@@ -66,13 +61,14 @@ export default class LevelData {
     }
 
     isEntityAt(x: number, y: number): boolean {
-        for (let i = 0, iEnd = this.entities.length; i < iEnd; i++) {
-            let entity = this.entities[i];
+        let found = false;
+        this.entities.iterate((entity) => {
             if (entity.x == x && entity.y == y) {
+                found = true;
                 return true;
             }
-        }
-        return false;
+        });
+        return found;
     }
 
     isEmpty(x: number, y: number): boolean {
@@ -100,14 +96,7 @@ export default class LevelData {
      * @return {[type]}
      */
     iterateTiles(callback: ListCallback<TileData>) {
-        const tiles = this.tiles;
-        for (let x = 0, xend = this.width; x < xend; x++) {
-            for (let y = 0, yend = this.height; y < yend; y++) {
-                if (callback(tiles[x][y])) {
-                    return;
-                }
-            }
-        }
+        this.tiles.iterate(callback);
     }
 
     /**
@@ -117,78 +106,42 @@ export default class LevelData {
      * @return {[type]}
      */
     iterateEntities(callback: ListCallback<EntityData>) {
-        const entities = this.entities;
-        for (let i = 0, iend = entities.length; i < iend; i++) {
-            if (callback(entities[i])) {
-                return;
-            }
-        }
+        this.entities.iterate(callback);
     }
 
     iterateEntitiesAt(x: number, y: number, callback: ListCallback<EntityData>) {
-        const entities = this.entities;
-        for (let i = 0, iend = entities.length; i < iend; i++) {
-            let entity = entities[i];
+        this.entities.iterate((entity) => {
             if (entity.x == x && entity.y == y) {
                 if (callback(entity)) {
                     return;
                 }
             }
-        }
+        });
     }
 
     iterateEntitiesAtPos(pos: Position2D| GLM.IArray, callback: ListCallback<EntityData>) {
-        const entities = this.entities;
-        for (let i = 0, iend = entities.length; i < iend; i++) {
-            let entity = entities[i];
+        this.entities.iterate((entity) => {
             if (entity.x == pos[0] && entity.y == pos[1]) {
                 if (callback(entity)) {
                     return;
                 }
             }
-        }
+        });
     }
 
     addEntityAtPosition(x: number, y: number, entity: EntityData) {
-        if (!entity.blueprint) {
-            throw new Error(`Cannot add an entity without a blueprint. ${x},${y}`);
-        }
-        entity.x = x;
-        entity.y = y;
-        this.entities.push(entity);
-    }
-
-    removeEntity(entity: EntityData) {
-        let idx = this.entities.indexOf(entity);
-        if (idx > -1) {
-            this.entities.splice(idx, 1);
-        }
-    }
-
-    static createEmptyMap(width, height, defaultValue = {
-        terrainType: TileType.none
-    }) {
-        let arr = [];
-        for (let x = 0; x < width; x++) {
-            // Create the nested array for the y values
-            arr.push([]);
-            // Add all the tiles
-            for (let y = 0; y < height; y++) {
-
-                //Note: we have to create a copy of the default value for each cell otherwise
-                //changing one cell will update all the other cells
-                let newTile: TileData = {
-                    x: x,
-                    y: y,
-                    terrainType: defaultValue.terrainType
-                };
-
-                for (let p in defaultValue) {
-                    newTile[p] = defaultValue[p];
-                }
-                arr[x].push(newTile);
+        if (this.tiles.inBounds(x, y)) {
+            if (!entity.blueprint) {
+                throw new Error(`Cannot add an entity without a blueprint. ${x},${y}`);
             }
+            entity.x = x;
+            entity.y = y;
+            this.entities.add(entity);
         }
-        return arr;
     }
+
+    removeEntity(entity: EntityData): EntityData {
+        return this.entities.remove(entity);
+    }
+
 }

@@ -30,6 +30,7 @@ class LevelGenerator extends CustomJSComponent {
         this.DEBUG("generating level");
         generator.debug = this.debug;
         const levelData = generator.generate();
+        this.DEBUG("Sending level data to subscribers");
         PubSub.publish(BroadcastEvents.gameLevelLoad, { level: levelData });
     }
 

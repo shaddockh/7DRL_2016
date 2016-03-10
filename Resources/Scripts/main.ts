@@ -8,6 +8,5 @@ import {nodeBuilder} from "atomic-blueprintLib";
 
 // Comment out before trying to play -- it messes with the timers
 //nodeBuilder.generatePrefabs();
-
 GameController.init();
 GameController.showTitleScene();

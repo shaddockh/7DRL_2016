@@ -128,15 +128,67 @@ declare module "SceneManager" {
 }
 declare module "utils" {
     export function randomNumber(min?: number, max?: number): number;
+    /**
+     * Utility class that encompasses a list of values
+     */
+    export class List<T> {
+        elements: T[];
+        /**
+         * Iterates over the list calling the provided callback.  If the
+         * callback returns true, then iteration is cancelled
+         * @param  {ListCallback<T>} callback
+         */
+        iterate(callback: ListCallback<T>): void;
+        add(element: T): number;
+        remove(element: T): T;
+    }
+    export interface GridCell {
+        x: number;
+        y: number;
+    }
+    /**
+     * Utility class that encompasses a grid of values
+     */
+    export class Grid<T extends GridCell> {
+        gridArray: Array<Array<T>>;
+        width: number;
+        height: number;
+        constructor(width: number, height: number, defaultValue: T);
+        /**
+         * Iterates over the rows and columns of the grid calling the provided
+         * callback.  If the callback returns true, then iteration is cancelled
+         * @param  {ListCallback<TileData>} callback
+         */
+        iterate(callback: ListCallback<T>): void;
+        /**
+         * Returns whether the provided location is in-bounds
+         * @param  {number} x
+         * @param  {number} y
+         * @return {boolean}
+         */
+        inBounds(x: number, y: number): boolean;
+        /**
+         * Get the cell at position or null if out of bounds
+         * @param  {number} x
+         * @param  {number} y
+         * @return {TileData}
+         */
+        getCell(x: number, y: number): T;
+    }
 }
 declare module "Generators/LevelData" {
     import { GLM } from "gl-matrix";
+    import * as utils from "utils";
+    export class EntityList extends utils.List<EntityData> {
+    }
+    export class TileDataGrid extends utils.Grid<TileData> {
+    }
     /**
      * Stored Level data for a level
      */
     export default class LevelData {
-        tiles: Array<Array<TileData>>;
-        entities: Array<EntityData>;
+        tiles: utils.Grid<TileData>;
+        entities: EntityList;
         width: number;
         height: number;
         constructor(width: number, height: number);
@@ -166,10 +218,7 @@ declare module "Generators/LevelData" {
         iterateEntitiesAt(x: number, y: number, callback: ListCallback<EntityData>): void;
         iterateEntitiesAtPos(pos: Position2D | GLM.IArray, callback: ListCallback<EntityData>): void;
         addEntityAtPosition(x: number, y: number, entity: EntityData): void;
-        removeEntity(entity: EntityData): void;
-        static createEmptyMap(width: any, height: any, defaultValue?: {
-            terrainType: TileType;
-        }): any[];
+        removeEntity(entity: EntityData): EntityData;
     }
 }
 declare module "GameState" {

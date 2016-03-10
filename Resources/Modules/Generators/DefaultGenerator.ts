@@ -17,11 +17,15 @@ export default class DefaultGenerator {
             const builder = new ROT.Map.Uniform(this.width, this.height, this);
             builder.create((x, y, value) => {
                 const tile = levelData.getTile(x, y);
-                if (value) {
-                    tile.terrainType = TileType.none;
+                if (tile) {
+                    if (value) {
+                        tile.terrainType = TileType.none;
+                    } else {
+                        tile.terrainType = TileType.floor;
+                        tile.blueprint = "tile_floor_generic";
+                    }
                 } else {
-                    tile.terrainType = TileType.floor;
-                    tile.blueprint = "tile_floor_generic";
+                    this.DEBUG(`assiging to tile out of bounds: ${x},${y}`);
                 }
             });
 
@@ -29,8 +33,8 @@ export default class DefaultGenerator {
 
             let player = levelData.getRandomEmptyPosition();
             levelData.addEntityAtPosition(player[0], player[1], {
-                x:0,
-                y:0,
+                x: 0,
+                y: 0,
                 blueprint: "hero"
             });
 
@@ -41,6 +45,7 @@ export default class DefaultGenerator {
     }
 
     generateWalls(levelData: LevelData) {
+        this.DEBUG("Generating walls");
         levelData.iterateTiles((tile: TileData) => {
             if (tile.terrainType == TileType.floor) {
                 levelData.getNeighborTiles(tile.x, tile.y).forEach((tile) => {

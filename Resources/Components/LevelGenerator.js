@@ -30,6 +30,7 @@ var LevelGenerator = (function (_super) {
         this.DEBUG("generating level");
         generator.debug = this.debug;
         var levelData = generator.generate();
+        this.DEBUG("Sending level data to subscribers");
         PubSub.publish(Constants_1.BroadcastEvents.gameLevelLoad, { level: levelData });
     };
     LevelGenerator.prototype.getGenerator = function () {

@@ -23,6 +23,7 @@ var LevelRenderer = (function (_super) {
         this.children = [];
         this.cellUnitSize = this.cellPixelSize * Atomic.PIXEL_SIZE;
         PubSub.subscribe(Constants_1.BroadcastEvents.gameLevelLoad, function (message, data) {
+            _this.DEBUG("Got a load level message");
             _this.loadLevel(data.level);
         });
     }

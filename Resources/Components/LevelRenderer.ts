@@ -26,6 +26,7 @@ class LevelRenderer extends CustomJSComponent {
         super();
         this.cellUnitSize = this.cellPixelSize * Atomic.PIXEL_SIZE;
         PubSub.subscribe(BroadcastEvents.gameLevelLoad, (message: string, data: any) => {
+            this.DEBUG("Got a load level message");
             this.loadLevel(data.level);
         });
     }
