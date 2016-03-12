@@ -35,8 +35,6 @@ class LevelRenderer extends CustomJSComponent {
     }
 
     loadLevel(level: LevelData) {
-        for (var x in GameController) {console.log(x);}
-        GameController.gameState.currentLevelData = level;
         this.levelData = level;
         this.render();
     }

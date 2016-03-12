@@ -28,12 +28,12 @@ var CustomJSComponent = (function (_super) {
      * @param {string} msg Message to write to the console
      */
     CustomJSComponent.prototype.DEBUG = function (msg) {
-        //if (this.debug) {
-        if (!this._componentName) {
-            this._componentName = Atomic.splitPath(this.componentFile.name).fileName;
+        if (this.debug) {
+            if (!this._componentName) {
+                this._componentName = Atomic.splitPath(this.componentFile.name).fileName;
+            }
+            console.log(this.node.name + "." + this._componentName + ": " + msg);
         }
-        console.log(this.node.name + "." + this._componentName + ": " + msg);
-        //}
     };
     Object.defineProperty(CustomJSComponent.prototype, "levelController", {
         get: function () {
@@ -59,9 +59,7 @@ var CustomJSComponent = (function (_super) {
         this.actionMap = actionMap;
     };
     CustomJSComponent.prototype.doAction = function (message, data) {
-        this.DEBUG("getting action handler");
         var handler = this.actionMap[message];
-        this.DEBUG("got action handler");
         if (handler) {
             handler(data);
         }

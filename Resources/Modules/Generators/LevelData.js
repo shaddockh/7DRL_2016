@@ -35,8 +35,8 @@ var LevelData = (function () {
         });
         this.entities = new EntityList();
     }
-    LevelData.prototype.inBoundsPos = function (pos) {
-        return this.tiles.inBounds(pos[0], pos[1]);
+    LevelData.prototype.inBounds = function (x, y) {
+        return this.tiles.inBounds(x, y);
     };
     LevelData.prototype.setTileTerrain = function (x, y, terrainType) {
         if (this.tiles.inBounds(x, y)) {
@@ -45,9 +45,6 @@ var LevelData = (function () {
     };
     LevelData.prototype.getTile = function (x, y) {
         return this.tiles.getCell(x, y);
-    };
-    LevelData.prototype.getTilePos = function (pos) {
-        return this.tiles.getCell(pos[0], pos[1]);
     };
     LevelData.prototype.getNeighborTiles = function (x, y, radius) {
         if (radius === void 0) { radius = 1; }
@@ -112,15 +109,6 @@ var LevelData = (function () {
     LevelData.prototype.iterateEntitiesAt = function (x, y, callback) {
         this.entities.iterate(function (entity) {
             if (entity.x == x && entity.y == y) {
-                if (callback(entity)) {
-                    return;
-                }
-            }
-        });
-    };
-    LevelData.prototype.iterateEntitiesAtPos = function (pos, callback) {
-        this.entities.iterate(function (entity) {
-            if (entity.x == pos[0] && entity.y == pos[1]) {
                 if (callback(entity)) {
                     return;
                 }

@@ -1,4 +1,5 @@
 import {default as LevelData, EntityList} from "Generators/LevelData";
+import {GLM} from "gl-matrix";
 import * as ROT from "rot";
 
 export default class LevelController {
@@ -35,24 +36,25 @@ export default class LevelController {
         // }
     }
 
-    getTileAt(pos: Position2D): TileData {
-        return this.levelData.getTilePos(pos);
+    getTileAt(pos: Position2D | GLM.IArray): TileData {
+        return this.levelData.getTile(pos[0], pos[1]);
     }
 
-    isValidPos(pos: Position2D): boolean {
-        return this.levelData.inBoundsPos(pos);
+    isValidPos(pos: Position2D | GLM.IArray): boolean {
+        return this.levelData.inBounds(pos[0], pos[1]);
     }
 
-    getEntitiesAt(pos: Position2D): EntityList {
+    getEntitiesAt(pos: Position2D | GLM.IArray): EntityList {
         const result = new EntityList();
-        this.levelData.iterateEntitiesAtPos(pos, (entity) => {
+        this.levelData.iterateEntitiesAt(pos[0], pos[1], (entity) => {
             result.add(entity);
         });
         return result;
     }
 
-    getEntitiesInRadius(pos: Position2D, radius: number): EntityList {
-        let [x, y] = [pos[0], pos[1]];
+    getEntitiesInRadius(pos: Position2D | GLM.IArray, radius: number): EntityList {
+        let x = pos[0],
+            y = pos[1];
         let boundsX = [x - radius, x + radius];
         let boundsY = [y - radius, y + radius];
 
@@ -66,8 +68,8 @@ export default class LevelController {
         return result;
     }
 
-    iterateEntitiesAt(pos: Position2D, callback: (element: EntityData) => boolean|void) {
-        this.levelData.iterateEntitiesAtPos(pos, callback);
+    iterateEntitiesAt(pos: Position2D | GLM.IArray, callback: (element: EntityData) => boolean|void) {
+        this.levelData.iterateEntitiesAt(pos[0], pos[1], callback);
     }
 
 }

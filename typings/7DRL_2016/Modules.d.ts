@@ -174,7 +174,6 @@ declare module "utils" {
     }
 }
 declare module "Generators/LevelData" {
-    import { GLM } from "gl-matrix";
     import * as utils from "utils";
     export class EntityList extends utils.List<EntityData> {
     }
@@ -189,10 +188,9 @@ declare module "Generators/LevelData" {
         width: number;
         height: number;
         constructor(width: number, height: number);
-        inBoundsPos(pos: Position2D | GLM.IArray): boolean;
+        inBounds(x: number, y: number): boolean;
         setTileTerrain(x: number, y: number, terrainType: TileType): void;
         getTile(x: number, y: number): TileData;
-        getTilePos(pos: Position2D | GLM.IArray): TileData;
         getNeighborTiles(x: number, y: number, radius?: number): Array<TileData>;
         isEntityAt(x: number, y: number): boolean;
         isEmpty(x: number, y: number): boolean;
@@ -212,7 +210,6 @@ declare module "Generators/LevelData" {
          */
         iterateEntities(callback: ListCallback<EntityData>): void;
         iterateEntitiesAt(x: number, y: number, callback: ListCallback<EntityData>): void;
-        iterateEntitiesAtPos(pos: Position2D | GLM.IArray, callback: ListCallback<EntityData>): void;
         addEntityAtPosition(position: Position2D, entity: EntityData): void;
         addEntityBlueprintAtPosition(position: Position2D, blueprint: string): void;
         removeEntity(entity: EntityData): EntityData;
@@ -220,6 +217,7 @@ declare module "Generators/LevelData" {
 }
 declare module "LevelController" {
     import { default as LevelData, EntityList } from "Generators/LevelData";
+    import { GLM } from "gl-matrix";
     import * as ROT from "rot";
     export default class LevelController {
         private levelData;
@@ -232,18 +230,16 @@ declare module "LevelController" {
         registerActor(ai: ROT.Actionable): void;
         deregisterActor(ai: ROT.Actionable): void;
         updateFov(position: Position2D, radius?: number): void;
-        getTileAt(pos: Position2D): TileData;
-        isValidPos(pos: Position2D): boolean;
-        getEntitiesAt(pos: Position2D): EntityList;
-        getEntitiesInRadius(pos: Position2D, radius: number): EntityList;
-        iterateEntitiesAt(pos: Position2D, callback: (element: EntityData) => boolean | void): void;
+        getTileAt(pos: Position2D | GLM.IArray): TileData;
+        isValidPos(pos: Position2D | GLM.IArray): boolean;
+        getEntitiesAt(pos: Position2D | GLM.IArray): EntityList;
+        getEntitiesInRadius(pos: Position2D | GLM.IArray, radius: number): EntityList;
+        iterateEntitiesAt(pos: Position2D | GLM.IArray, callback: (element: EntityData) => boolean | void): void;
     }
 }
 declare module "GameState" {
-    import LevelData from "Generators/LevelData";
     import LevelController from "LevelController";
     export default class GameState {
-        currentLevelData: LevelData;
         currentLevelController: LevelController;
         turns: number;
         init(): void;

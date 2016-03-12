@@ -24,12 +24,12 @@ export default class CustomJSComponent extends Atomic.JSComponent implements Com
      * @param {string} msg Message to write to the console
      */
     DEBUG(msg) {
-        //if (this.debug) {
+        if (this.debug) {
             if (!this._componentName) {
                 this._componentName = Atomic.splitPath(this.componentFile.name).fileName;
             }
             console.log(`${this.node.name}.${this._componentName}: ${msg}`);
-        //}
+        }
     }
 
     get levelController(): LevelController {
@@ -56,9 +56,7 @@ export default class CustomJSComponent extends Atomic.JSComponent implements Com
     }
 
     doAction(message: string, data: any) {
-        this.DEBUG("getting action handler");
         let handler: Function = this.actionMap[message];
-        this.DEBUG("got action handler");
         if (handler) {
             handler(data);
         } else {

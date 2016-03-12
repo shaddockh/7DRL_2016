@@ -80,8 +80,8 @@ class GridMover extends CustomJSComponent {
             // check to see if we are blocked
 
             // First see if we are blocked by terrain
-            if (!GameController.gameState.currentLevelData.inBoundsPos(newMapPos) ||
-                GameController.gameState.currentLevelData.getTilePos(newMapPos).terrainType !== TileType.floor) {
+            if (!this.levelController.isValidPos(newMapPos) ||
+                this.levelController.getTileAt(newMapPos).terrainType !== TileType.floor) {
                 // Queue up an action to notify the player that the move is blocked
                 this.queuePostMoveAction(() => {
                     this.DEBUG("Blocked by terrain");
@@ -93,7 +93,7 @@ class GridMover extends CustomJSComponent {
                 this.blocked = true;
                 this.moving = false;
             } else {
-                GameController.gameState.currentLevelData.iterateEntitiesAtPos(newMapPos, (entity) => {
+                this.levelController.iterateEntitiesAt(newMapPos, (entity) => {
                     // We are going to bump the top level entity if it's bumpable
                     if (entity.entityComponent) {
                         if (entity.entityComponent.blocksPath) {

@@ -9,7 +9,6 @@ var CustomJSComponent_1 = require("CustomJSComponent");
 var PubSub = require("pubsub-js");
 var Constants_1 = require("Constants");
 var atomic_blueprintLib_1 = require("atomic-blueprintLib");
-var GameController_1 = require("GameController");
 var LevelRenderer = (function (_super) {
     __extends(LevelRenderer, _super);
     function LevelRenderer() {
@@ -30,10 +29,6 @@ var LevelRenderer = (function (_super) {
         });
     };
     LevelRenderer.prototype.loadLevel = function (level) {
-        for (var x in GameController_1.default) {
-            console.log(x);
-        }
-        GameController_1.default.gameState.currentLevelData = level;
         this.levelData = level;
         this.render();
     };

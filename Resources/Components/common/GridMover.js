@@ -6,8 +6,6 @@ var __extends = (this && this.__extends) || function (d, b) {
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
 var CustomJSComponent_1 = require("CustomJSComponent");
-//import gameState from '../../Modules/gameState';
-var GameController_1 = require("GameController");
 var NodeEvents_1 = require("NodeEvents");
 var gl_matrix_1 = require("gl-matrix");
 var Constants_1 = require("Constants");
@@ -75,8 +73,8 @@ var GridMover = (function (_super) {
             this.moving = true;
             // check to see if we are blocked
             // First see if we are blocked by terrain
-            if (!GameController_1.default.gameState.currentLevelData.inBoundsPos(newMapPos_1) ||
-                GameController_1.default.gameState.currentLevelData.getTilePos(newMapPos_1).terrainType !== 1 /* floor */) {
+            if (!this.levelController.isValidPos(newMapPos_1) ||
+                this.levelController.getTileAt(newMapPos_1).terrainType !== 1 /* floor */) {
                 // Queue up an action to notify the player that the move is blocked
                 this.queuePostMoveAction(function () {
                     _this.DEBUG("Blocked by terrain");
@@ -88,7 +86,7 @@ var GridMover = (function (_super) {
                 this.moving = false;
             }
             else {
-                GameController_1.default.gameState.currentLevelData.iterateEntitiesAtPos(newMapPos_1, function (entity) {
+                this.levelController.iterateEntitiesAt(newMapPos_1, function (entity) {
                     // We are going to bump the top level entity if it's bumpable
                     if (entity.entityComponent) {
                         if (entity.entityComponent.blocksPath) {

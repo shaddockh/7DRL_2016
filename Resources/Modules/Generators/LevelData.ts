@@ -1,9 +1,8 @@
-import {GLM} from "gl-matrix";
 import * as utils from "utils";
 
 export class EntityList extends utils.List<EntityData> { }
-
 export class TileDataGrid extends utils.Grid<TileData> { }
+
 /**
  * Stored Level data for a level
  */
@@ -26,8 +25,8 @@ export default class LevelData {
         this.entities = new EntityList();
     }
 
-    inBoundsPos(pos: Position2D|GLM.IArray): boolean {
-        return this.tiles.inBounds(pos[0], pos[1]);
+    inBounds(x: number, y: number): boolean {
+        return this.tiles.inBounds(x, y);
     }
 
     setTileTerrain(x: number, y: number, terrainType: TileType) {
@@ -38,10 +37,6 @@ export default class LevelData {
 
     getTile(x: number, y: number): TileData {
         return this.tiles.getCell(x, y);
-    }
-
-    getTilePos(pos: Position2D|GLM.IArray): TileData {
-        return this.tiles.getCell(pos[0], pos[1]);
     }
 
     getNeighborTiles(x: number, y: number, radius: number = 1): Array<TileData> {
@@ -112,16 +107,6 @@ export default class LevelData {
     iterateEntitiesAt(x: number, y: number, callback: ListCallback<EntityData>) {
         this.entities.iterate((entity) => {
             if (entity.x == x && entity.y == y) {
-                if (callback(entity)) {
-                    return;
-                }
-            }
-        });
-    }
-
-    iterateEntitiesAtPos(pos: Position2D| GLM.IArray, callback: ListCallback<EntityData>) {
-        this.entities.iterate((entity) => {
-            if (entity.x == pos[0] && entity.y == pos[1]) {
                 if (callback(entity)) {
                     return;
                 }

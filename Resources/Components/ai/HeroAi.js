@@ -34,15 +34,8 @@ var HeroAi = (function (_super) {
             _a[Constants_1.ComponentEvents.onHealthChanged] = this.onHealthChanged.bind(this),
             _a
         ));
+        var level = this.levelController;
         this.DEBUG("Registering self with scheduler");
-        var level = GameController_1.default.gameState.currentLevelController;
-        this.DEBUG("Level Turns: " + GameController_1.default.gameState.turns);
-        for (var x in level) {
-            console.log(x);
-        }
-        for (var x in GameController_1.default.gameState) {
-            console.log(x);
-        }
         level.registerActor(this);
         // TODO: we need to unlock the engine here for some reason.  It would be better if there were a less invasive way
         level.engine.unlock();
