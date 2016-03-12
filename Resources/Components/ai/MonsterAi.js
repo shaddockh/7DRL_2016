@@ -68,7 +68,6 @@ var MonsterAi = (function (_super) {
         this.resolveTurn = resolver;
     };
     MonsterAi.prototype.onActionComplete = function () {
-        this.DEBUG("Received onActionComplete.");
         // call the callback, notifying the scheduler that we are done
         if (this.resolveTurn) {
             this.DEBUG("End of turn.");
@@ -77,10 +76,10 @@ var MonsterAi = (function (_super) {
     };
     MonsterAi.prototype.act = function () {
         var _this = this;
-        this.DEBUG("contemplating action.");
         if (!this.chaseEnemy) {
             return;
         }
+        this.DEBUG("contemplating action.");
         var entityComponent = this.getJSComponent("Entity");
         var position = entityComponent.getPosition();
         var nearbyEntities = this.levelController.getEntitiesInRadius(position, this.trackingRadius);
@@ -118,7 +117,6 @@ var MonsterAi = (function (_super) {
             // See: http://ondras.github.io/rot.js/manual/#timing/engine for some more information.
             return {
                 then: function (resolve) {
-                    _this.DEBUG("starting action.");
                     _this.setTurnResolver(resolve);
                 }
             };

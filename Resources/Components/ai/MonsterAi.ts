@@ -77,7 +77,6 @@ class MonsterAi extends CustomJSComponent {
     }
 
     onActionComplete() {
-        this.DEBUG("Received onActionComplete.");
         // call the callback, notifying the scheduler that we are done
         if (this.resolveTurn) {
             this.DEBUG("End of turn.");
@@ -86,11 +85,11 @@ class MonsterAi extends CustomJSComponent {
     }
 
     act() {
-        this.DEBUG("contemplating action.");
         if (!this.chaseEnemy) {
             return;
         }
 
+        this.DEBUG("contemplating action.");
         const entityComponent = this.getJSComponent<Entity>("Entity");
 
         let position = entityComponent.getPosition();
@@ -139,7 +138,6 @@ class MonsterAi extends CustomJSComponent {
             // See: http://ondras.github.io/rot.js/manual/#timing/engine for some more information.
             return {
                 then: (resolve) => {
-                    this.DEBUG("starting action.");
                     this.setTurnResolver(resolve);
                 }
             };

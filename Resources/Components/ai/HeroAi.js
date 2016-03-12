@@ -47,7 +47,6 @@ var HeroAi = (function (_super) {
     //onActionComplete = null;
     HeroAi.prototype.act = function () {
         var _this = this;
-        this.DEBUG("contemplating action.");
         NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onActionBegin, {
             senderComponent: this
         });
@@ -58,13 +57,11 @@ var HeroAi = (function (_super) {
         // See: http://ondras.github.io/rot.js/manual/#timing/engine for some more information.
         return {
             then: function (resolve) {
-                _this.DEBUG("starting action.");
                 _this.setTurnResolver(resolve);
             }
         };
     };
     HeroAi.prototype.onActionComplete = function () {
-        this.DEBUG("Received onActionComplete.");
         // call the callback, notifying the scheduler that we are done
         if (this.resolveTurn) {
             this.DEBUG("End of turn.");
@@ -72,7 +69,6 @@ var HeroAi = (function (_super) {
         }
     };
     HeroAi.prototype.setTurnResolver = function (resolver) {
-        this.DEBUG("Setting turn resolver");
         this.resolveTurn = resolver;
     };
     HeroAi.prototype.onTurnTaken = function () {
@@ -110,7 +106,7 @@ var HeroAi = (function (_super) {
         GameController_1.default.gameOver();
     };
     HeroAi.prototype.onHit = function (data) {
-        this.DEBUG("onHit by  " + data.senderComponent.node.name);
+        this.DEBUG("Hit by " + data.senderComponent.node.name);
         var entityComponent = data.senderComponent.node.getJSComponent("Entity");
         NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onLogAction, { message: "You are attacked by " + entityComponent.screenName });
     };

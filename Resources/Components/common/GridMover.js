@@ -61,15 +61,13 @@ var GridMover = (function (_super) {
             return;
         }
         try {
-            this.DEBUG("Entering Move");
             this.startPos = this.node.position2D;
             this.targetPos = gl_matrix_1.vec2.add(gl_matrix_1.vec2.create(), this.startPos, gl_matrix_1.vec2.scale(gl_matrix_1.vec2.create(), data.offset, this.cellUnitSize));
             this.t = 0;
             // see if we can move into the next space
             var mapPos_1 = this.entity.getPosition();
             var newMapPos_1 = gl_matrix_1.vec2.add(gl_matrix_1.vec2.create(), mapPos_1, data.offset);
-            this.DEBUG("Current position: " + mapPos_1[0] + "," + mapPos_1[1]);
-            this.DEBUG("Moving to: " + newMapPos_1[0] + "," + newMapPos_1[1]);
+            this.DEBUG("Moving from: " + mapPos_1[0] + "," + mapPos_1[1] + " to: " + newMapPos_1[0] + "," + newMapPos_1[1]);
             this.moving = true;
             // check to see if we are blocked
             // First see if we are blocked by terrain
@@ -112,7 +110,7 @@ var GridMover = (function (_super) {
             if (this.moving) {
                 this.movementVector = data.offset;
                 this.startPos = this.node.position2D;
-                this.DEBUG("Moving to " + this.targetPos + " from " + this.startPos + ", vector = " + data.offset);
+                //this.DEBUG(`Moving to ${this.targetPos} from ${this.startPos}, vector = ${data.offset}`);
                 NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onMoveStart, { from: mapPos_1, to: newMapPos_1 });
                 this.entity.setPosition([newMapPos_1[0], newMapPos_1[1]]);
                 this.node.position2D = this.targetPos;

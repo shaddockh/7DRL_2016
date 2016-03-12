@@ -43,7 +43,6 @@ class HeroAi extends CustomJSComponent {
     //onActionComplete = null;
 
     act() {
-        this.DEBUG("contemplating action.");
         NodeEvents.trigger<SenderComponentTriggerAction>(this.node, ComponentEvents.onActionBegin, {
             senderComponent: this
         });
@@ -55,14 +54,12 @@ class HeroAi extends CustomJSComponent {
         // See: http://ondras.github.io/rot.js/manual/#timing/engine for some more information.
         return {
             then: (resolve) => {
-                this.DEBUG("starting action.");
                 this.setTurnResolver(resolve);
             }
         };
     }
 
     onActionComplete() {
-        this.DEBUG("Received onActionComplete.");
         // call the callback, notifying the scheduler that we are done
         if (this.resolveTurn) {
             this.DEBUG("End of turn.");
@@ -71,7 +68,6 @@ class HeroAi extends CustomJSComponent {
     }
 
     setTurnResolver(resolver) {
-        this.DEBUG("Setting turn resolver");
         this.resolveTurn = resolver;
     }
 
@@ -120,7 +116,7 @@ class HeroAi extends CustomJSComponent {
     }
 
     onHit(data: SenderComponentTriggerAction) {
-        this.DEBUG(`onHit by  ${data.senderComponent.node.name}`);
+        this.DEBUG(`Hit by ${data.senderComponent.node.name}`);
         const entityComponent = <Entity>data.senderComponent.node.getJSComponent("Entity");
         NodeEvents.trigger<LogMessageTriggerAction>(this.node, ComponentEvents.onLogAction, { message: `You are attacked by ${entityComponent.screenName}` });
     }
