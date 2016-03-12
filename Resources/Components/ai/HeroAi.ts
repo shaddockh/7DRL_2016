@@ -17,6 +17,7 @@ class HeroAi extends CustomJSComponent {
 
 
     start() {
+        this.debug = true;
         this.setActionMap({
             [ComponentEvents.onActionComplete]: this.onActionComplete.bind(this),
             [ComponentEvents.onTurnTaken]: this.onTurnTaken.bind(this),
@@ -25,7 +26,7 @@ class HeroAi extends CustomJSComponent {
             [ComponentEvents.onDie]: this.onDie.bind(this),
             [ComponentEvents.onHit]: this.onHit.bind(this),
             [ComponentEvents.onAttack]: this.onAttack.bind(this),
-            [ComponentEvents.onHandleBump]: this.onHandleBump.bind(this),
+            [ComponentEvents.onBumpInto]: this.onBumpInto.bind(this),
             [ComponentEvents.onHealthChanged]: this.onHealthChanged.bind(this)
         });
 
@@ -61,9 +62,10 @@ class HeroAi extends CustomJSComponent {
     }
 
     onActionComplete() {
+        this.DEBUG("Received onActionComplete.");
         // call the callback, notifying the scheduler that we are done
         if (this.resolveTurn) {
-            this.DEBUG("resolving action");
+            this.DEBUG("End of turn.");
             this.resolveTurn();
         }
     }
@@ -118,6 +120,7 @@ class HeroAi extends CustomJSComponent {
     }
 
     onHit(data: SenderComponentTriggerAction) {
+        this.DEBUG(`onHit by  ${data.senderComponent.node.name}`);
         const entityComponent = <Entity>data.senderComponent.node.getJSComponent("Entity");
         NodeEvents.trigger<LogMessageTriggerAction>(this.node, ComponentEvents.onLogAction, { message: `You are attacked by ${entityComponent.screenName}` });
     }
@@ -130,14 +133,16 @@ class HeroAi extends CustomJSComponent {
         // move will handle the turn taken
         // TODO: need to clean up the whole turn taking logic somehow, it could get really messy really quickly.
         // triggerEvent.trigger(this.node, 'onTurnTaken', this, this.node);
+        NodeEvents.trigger<SenderComponentTriggerAction>(this.node, ComponentEvents.onActionComplete, { senderComponent: this });
     }
 
-    onHandleBump(data: TargetComponentTriggerAction) {
+    onBumpInto(data: TargetComponentTriggerAction) {
+        this.DEBUG(`bumped into ${data.targetComponent.node.name}`);
         const entityComponent = <Entity>data.targetComponent.node.getJSComponent("Entity");
         if (entityComponent.attackable) {
-            NodeEvents.trigger<TargetComponentTriggerAction>(this.node, ComponentEvents.onAttack, { targetComponent: this });
+            NodeEvents.trigger<TargetComponentTriggerAction>(this.node, ComponentEvents.onAttack, { targetComponent: data.targetComponent });
         } else if (entityComponent.bumpable) {
-            NodeEvents.trigger<SenderComponentTriggerAction>(data.targetComponent.node, ComponentEvents.onBump, { senderComponent: this });
+            NodeEvents.trigger<SenderComponentTriggerAction>(data.targetComponent.node, ComponentEvents.onBumpedBy, { senderComponent: this });
             NodeEvents.trigger<SenderComponentTriggerAction>(this.node, ComponentEvents.onActionComplete, { senderComponent: this });
         }
     }

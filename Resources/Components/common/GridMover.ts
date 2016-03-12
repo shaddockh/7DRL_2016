@@ -107,7 +107,7 @@ class GridMover extends CustomJSComponent {
                         }
                         if (entity.entityComponent.bumpable) {
                             // Let's exit the loop since we only want to deal with the first entity
-                            NodeEvents.trigger<TargetComponentTriggerAction>(this.node, ComponentEvents.onHandleBump, { targetComponent: entity.entityComponent });
+                            NodeEvents.trigger<TargetComponentTriggerAction>(this.node, ComponentEvents.onBumpInto, { targetComponent: entity.entityComponent });
                             return false;
                         } else {
                             return true;

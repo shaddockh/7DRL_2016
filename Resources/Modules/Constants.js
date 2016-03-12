@@ -20,7 +20,7 @@ var ComponentEvents;
     ComponentEvents.onMoveBlocked = "onMoveBlocked";
     ComponentEvents.onMoveStart = "onMoveStart";
     ComponentEvents.onMoveComplete = "onMoveComplete";
-    ComponentEvents.onHandleBump = "onHandleBump";
+    ComponentEvents.onBumpedBy = "onBumpedBy";
     ComponentEvents.onUpdateFov = "onUpdateFov";
     ComponentEvents.onDestroy = "onDestroy";
     ComponentEvents.onActionBegin = "onActionBegin";
@@ -30,7 +30,8 @@ var ComponentEvents;
     ComponentEvents.onHit = "onHit";
     ComponentEvents.onAttack = "onAttack";
     ComponentEvents.onHealthChanged = "onHealthChanged";
-    ComponentEvents.onBump = "onBump";
+    /** called on an actor when it bumps into something.  The something is contained in the target */
+    ComponentEvents.onBumpInto = "onBumpInto";
 })(ComponentEvents = exports.ComponentEvents || (exports.ComponentEvents = {}));
 var Scenes;
 (function (Scenes) {

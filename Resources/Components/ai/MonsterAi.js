@@ -28,11 +28,12 @@ var MonsterAi = (function (_super) {
     };
     ;
     MonsterAi.prototype.start = function () {
+        this.debug = true;
         this.setActionMap((_a = {},
             _a[Constants_1.ComponentEvents.onActionComplete] = this.onActionComplete.bind(this),
             _a[Constants_1.ComponentEvents.onDie] = this.onDie.bind(this),
             _a[Constants_1.ComponentEvents.onAttack] = this.onAttack.bind(this),
-            _a[Constants_1.ComponentEvents.onHandleBump] = this.onHandleBump.bind(this),
+            _a[Constants_1.ComponentEvents.onBumpInto] = this.onBumpInto.bind(this),
             _a[Constants_1.ComponentEvents.onMoveComplete] = this.onMoveComplete.bind(this),
             _a
         ));
@@ -67,8 +68,10 @@ var MonsterAi = (function (_super) {
         this.resolveTurn = resolver;
     };
     MonsterAi.prototype.onActionComplete = function () {
+        this.DEBUG("Received onActionComplete.");
         // call the callback, notifying the scheduler that we are done
         if (this.resolveTurn) {
+            this.DEBUG("End of turn.");
             this.resolveTurn();
         }
     };
@@ -137,13 +140,15 @@ var MonsterAi = (function (_super) {
         this.DEBUG("Attacked " + data.targetComponent.node.name);
         NodeEvents_1.default.trigger(data.targetComponent.node, Constants_1.ComponentEvents.onHit, { senderComponent: this });
         // handled in onMoveComplete -- note that this won't work for actors that attack without moving.
-        //triggerEvent.trigger(this.node, 'onActionComplete', this, this.node);
+        // call onActionComplete since we are done
+        NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onActionComplete, { senderComponent: this });
     };
-    MonsterAi.prototype.onHandleBump = function (data) {
+    MonsterAi.prototype.onBumpInto = function (data) {
         var entityComponent = data.targetComponent.node.getJSComponent("Entity");
+        this.DEBUG("Bumped into " + data.targetComponent.node.name);
         // just attack, don't allow for picking up items or other bump actions
         if (entityComponent.attackable) {
-            NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onAttack, { targetComponent: this });
+            NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onAttack, { targetComponent: data.targetComponent });
         }
     };
     MonsterAi.prototype.onMoveComplete = function () {

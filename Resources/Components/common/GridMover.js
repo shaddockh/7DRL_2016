@@ -100,7 +100,7 @@ var GridMover = (function (_super) {
                         }
                         if (entity.entityComponent.bumpable) {
                             // Let's exit the loop since we only want to deal with the first entity
-                            NodeEvents_1.default.trigger(_this.node, Constants_1.ComponentEvents.onHandleBump, { targetComponent: entity.entityComponent });
+                            NodeEvents_1.default.trigger(_this.node, Constants_1.ComponentEvents.onBumpInto, { targetComponent: entity.entityComponent });
                             return false;
                         }
                         else {

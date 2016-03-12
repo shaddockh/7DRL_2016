@@ -31,6 +31,13 @@ var PlayerInputHandler = (function (_super) {
         );
         var _a;
     }
+    PlayerInputHandler.prototype.start = function () {
+        this.setActionMap((_a = {},
+            _a[Constants_1.ComponentEvents.onActionBegin] = this.onActionBegin.bind(this),
+            _a
+        ));
+        var _a;
+    };
     PlayerInputHandler.prototype.getCurrentAction = function () {
         var input = Atomic.input, keymap = this.keymap;
         for (var action in keymap) {
@@ -53,38 +60,40 @@ var PlayerInputHandler = (function (_super) {
     };
     PlayerInputHandler.prototype.update = function () {
         //if (!gameState.getCurrentLevel().isGameOver && this.idle) {
-        var action = this.getCurrentAction();
-        if (action !== 0 /* None */) {
-            this.idle = false;
-            switch (action) {
-                case 1 /* MoveLeft */:
-                    this.DEBUG("Processing Action: move left");
-                    NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onTryMove, { offset: [-1, 0] });
-                    break;
-                case 2 /* MoveRight */:
-                    this.DEBUG("Processing Action: move right");
-                    NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onTryMove, { offset: [1, 0] });
-                    break;
-                case 3 /* MoveUp */:
-                    this.DEBUG("Processing Action: move up");
-                    NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onTryMove, { offset: [0, 1] });
-                    break;
-                case 4 /* MoveDown */:
-                    this.DEBUG("Processing Action: move down");
-                    NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onTryMove, { offset: [0, -1] });
-                    break;
-                case 5 /* SkipTurn */:
-                    this.DEBUG("Processing Action: skip turn");
-                    NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onSkipTurn);
-                    break;
-                // case PlayerActions.DUMP_METRICS:
-                //     this.DEBUG('Processing Action: dump metrics');
-                //     metrics.dumpMetrics();
-                //     this.idle = true;
-                //     break;
-                default:
-                    this.idle = true;
-                    break;
+        if (this.idle) {
+            var action = this.getCurrentAction();
+            if (action !== 0 /* None */) {
+                this.idle = false;
+                switch (action) {
+                    case 1 /* MoveLeft */:
+                        this.DEBUG("Processing Action: move left");
+                        NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onTryMove, { offset: [-1, 0] });
+                        break;
+                    case 2 /* MoveRight */:
+                        this.DEBUG("Processing Action: move right");
+                        NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onTryMove, { offset: [1, 0] });
+                        break;
+                    case 3 /* MoveUp */:
+                        this.DEBUG("Processing Action: move up");
+                        NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onTryMove, { offset: [0, 1] });
+                        break;
+                    case 4 /* MoveDown */:
+                        this.DEBUG("Processing Action: move down");
+                        NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onTryMove, { offset: [0, -1] });
+                        break;
+                    case 5 /* SkipTurn */:
+                        this.DEBUG("Processing Action: skip turn");
+                        NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onSkipTurn);
+                        break;
+                    // case PlayerActions.DUMP_METRICS:
+                    //     this.DEBUG('Processing Action: dump metrics');
+                    //     metrics.dumpMetrics();
+                    //     this.idle = true;
+                    //     break;
+                    default:
+                        this.idle = true;
+                        break;
+                }
             }
         }
     };

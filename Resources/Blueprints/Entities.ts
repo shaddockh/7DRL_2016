@@ -48,15 +48,17 @@ export const hero = {
 };
 
 export const enemy_base = {
-
     inherits: "actor",
+
     Entity: {
         screenName: "Enemy"
     },
+
     StaticSprite2D: {
         sprite: "Sprites/spritesheet_3.png",
         orderInLayer: 12
     },
+
     GridMover: {
         debug: false,
     },

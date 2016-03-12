@@ -90,7 +90,7 @@ declare module "Constants" {
         const onMoveBlocked: string;
         const onMoveStart: string;
         const onMoveComplete: string;
-        const onHandleBump: string;
+        const onBumpedBy: string;
         const onUpdateFov: string;
         const onDestroy: string;
         const onActionBegin: string;
@@ -100,7 +100,7 @@ declare module "Constants" {
         const onHit: string;
         const onAttack: string;
         const onHealthChanged: string;
-        const onBump: string;
+        const onBumpInto: string;
     }
     export module Scenes {
         const title: string;
@@ -334,7 +334,18 @@ declare module "NodeEvents" {
          * @param {Any} args arguments to pass on through to the event handler
          * @return {Array} an array of all the results, if there are any, otherwise an empty array
          */
-        function trigger<T extends TriggerAction>(node: Atomic.Node, eventName: string, data?: T): any[];
+        function trigger<T extends TriggerAction>(node: Atomic.Node, eventName: string, data?: T): void;
+        /**
+         * Calling this will walk the components in the provided node and if the component has the eventName as function
+         * on it, will call it.  Ideally, this will be replaced by the native Atomic sendEvent/subscribeToEvent, but this works for now.
+         * Additionally, if a component has a function called "onAny", that will be called with the event name
+         * @method
+         * @param {Node} node the node to trigger the event on
+         * @param {string} eventName the name of the event to call
+         * @param {Any} args arguments to pass on through to the event handler
+         * @return {Array} an array of all the results, if there are any, otherwise an empty array
+         */
+        function triggerSync<T extends TriggerAction>(node: Atomic.Node, eventName: string, data?: T): any[];
     }
     export default NodeEvents;
 }
