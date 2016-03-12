@@ -23,7 +23,7 @@ var NodeEvents;
             var component = components[c];
             // Look for the the doAction method and call it if it exists
             if (component && typeof component["doAction"] === "function") {
-                var r = component["doAction"](eventName, data);
+                var r = component["doAction"].apply(component, [eventName, data]);
                 // Capture the results
                 if (typeof (r) !== "undefined") {
                     results.push(r);

@@ -26,7 +26,7 @@ module NodeEvents {
 
             // Look for the the doAction method and call it if it exists
             if (component && typeof component["doAction"] === "function") {
-                let r = component["doAction"](eventName, data);
+                let r = component["doAction"].apply(component, [eventName, data]);
 
                 // Capture the results
                 if (typeof (r) !== "undefined") {

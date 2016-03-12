@@ -30,6 +30,21 @@ var List = (function () {
             }
         }
     };
+    /**
+     * Seeks a single element in the list and returns it if the callback returns true
+     * @param  {ListCallback<T>} callback
+     * @return {T}
+     */
+    List.prototype.find = function (callback) {
+        var result;
+        this.iterate(function (entity) {
+            if (callback(entity)) {
+                result = entity;
+                return true;
+            }
+        });
+        return result;
+    };
     List.prototype.add = function (element) {
         return this.elements.push(element);
     };

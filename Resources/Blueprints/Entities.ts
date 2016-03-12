@@ -39,9 +39,9 @@ export const hero = {
     //         onAttack: "Sounds/knifeSlice.ogg"
     //     }
     // },
-    // HeroAi: {
-    //     debug: false
-    // },
+    HeroAi: {
+        debug: false
+    },
     // Health: {
     //     life: 10
     // }
@@ -68,9 +68,9 @@ export const enemy_base = {
     //         onAttack: "Sounds/knifeSlice.ogg"
     //     }
     // },
-    // EnemyAi: {
-    //     debug: false
-    // },
+     MonsterAi: {
+         debug: false
+     },
     // Health: {
     //     life: 10
     // }
@@ -81,6 +81,7 @@ export const lost_soul = {
     Entity: {
         screenName: "Lost Soul"
     },
+
     StaticSprite2D: {
         color: [1, 0, 1, 1]
     }

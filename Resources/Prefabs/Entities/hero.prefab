@@ -32,4 +32,10 @@
 			<variant hash="339510355" type="Bool" value="false" />
 		</attribute>
 	</component>
+	<component type="JSComponent" id="16777224">
+		<attribute name="ComponentFile" value="JSComponentFile;Components/ai/HeroAi.js" />
+		<attribute name="FieldValues">
+			<variant hash="339510355" type="Bool" value="false" />
+		</attribute>
+	</component>
 </node>

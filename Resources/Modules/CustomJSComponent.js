@@ -4,6 +4,7 @@ var __extends = (this && this.__extends) || function (d, b) {
     function __() { this.constructor = d; }
     d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 };
+var GameController_1 = require("GameController");
 /**
  * This is a custom version of the JSComponent that adds some helper functions.
  * It could also be handled via extending the JSComponent.prototype, but that seems messy
@@ -18,21 +19,29 @@ var CustomJSComponent = (function (_super) {
         /**
          * Turn on or off debug for this component
          */
-        this.debug = false;
+        this.debug = true;
         this._componentName = null;
+        this.actionMap = {};
     }
     /**
      * Write a debug message to the console prefixed by the component name
      * @param {string} msg Message to write to the console
      */
     CustomJSComponent.prototype.DEBUG = function (msg) {
-        if (this.debug) {
-            if (!this._componentName) {
-                this._componentName = Atomic.splitPath(this.componentFile.name).fileName;
-            }
-            console.log(this.node.name + "." + this._componentName + ": " + msg);
+        //if (this.debug) {
+        if (!this._componentName) {
+            this._componentName = Atomic.splitPath(this.componentFile.name).fileName;
         }
+        console.log(this.node.name + "." + this._componentName + ": " + msg);
+        //}
     };
+    Object.defineProperty(CustomJSComponent.prototype, "levelController", {
+        get: function () {
+            return GameController_1.default.gameState.currentLevelController;
+        },
+        enumerable: true,
+        configurable: true
+    });
     /**
      * Returns a component on this node cast to the appropriate type
      */
@@ -44,6 +53,21 @@ var CustomJSComponent = (function (_super) {
      */
     CustomJSComponent.prototype.getJSComponent = function (componentName) {
         return this.node.getJSComponent(componentName);
+    };
+    CustomJSComponent.prototype.setActionMap = function (actionMap) {
+        this.DEBUG("Setting action map");
+        this.actionMap = actionMap;
+    };
+    CustomJSComponent.prototype.doAction = function (message, data) {
+        this.DEBUG("getting action handler");
+        var handler = this.actionMap[message];
+        this.DEBUG("got action handler");
+        if (handler) {
+            handler(data);
+        }
+        else {
+            this.DEBUG("No handler defined for action: " + message);
+        }
     };
     return CustomJSComponent;
 }(Atomic.JSComponent));

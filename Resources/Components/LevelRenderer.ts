@@ -25,6 +25,9 @@ class LevelRenderer extends CustomJSComponent {
     constructor() {
         super();
         this.cellUnitSize = this.cellPixelSize * Atomic.PIXEL_SIZE;
+    }
+
+    start() {
         PubSub.subscribe(BroadcastEvents.gameLevelLoad, (message: string, data: any) => {
             this.DEBUG("Got a load level message");
             this.loadLevel(data.level);
@@ -32,6 +35,7 @@ class LevelRenderer extends CustomJSComponent {
     }
 
     loadLevel(level: LevelData) {
+        for (var x in GameController) {console.log(x);}
         GameController.gameState.currentLevelData = level;
         this.levelData = level;
         this.render();

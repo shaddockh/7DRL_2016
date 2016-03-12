@@ -3,9 +3,7 @@ import LevelData from "./LevelData";
 
 export default class DefaultGenerator {
 
-    debug = false;
-
-    constructor(private width: number, private height: number) {
+    constructor(private width: number, private height: number, private debug) {
         // constructs
     }
 

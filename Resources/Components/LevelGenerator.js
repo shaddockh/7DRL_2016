@@ -21,20 +21,21 @@ var LevelGenerator = (function (_super) {
         this.width = 80;
         this.height = 25;
         this.debug = false;
-        PubSub.subscribe(Constants_1.BroadcastEvents.gameLevelGenerate, this.generateLevel.bind(this));
     }
+    LevelGenerator.prototype.start = function () {
+        PubSub.subscribe(Constants_1.BroadcastEvents.gameLevelGenerate, this.generateLevel.bind(this));
+    };
     LevelGenerator.prototype.generateLevel = function () {
         // generate the level
         this.DEBUG("Getting generator");
         var generator = this.getGenerator();
         this.DEBUG("generating level");
-        generator.debug = this.debug;
         var levelData = generator.generate();
         this.DEBUG("Sending level data to subscribers");
         PubSub.publish(Constants_1.BroadcastEvents.gameLevelLoad, { level: levelData });
     };
     LevelGenerator.prototype.getGenerator = function () {
-        return new DefaultGenerator_1.default(this.width, this.height);
+        return new DefaultGenerator_1.default(this.width, this.height, this.debug);
     };
     return LevelGenerator;
 }(CustomJSComponent_1.default));

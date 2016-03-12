@@ -1,72 +1,3 @@
-declare module "CustomJSComponent" {
-    /**
-     * This is a custom version of the JSComponent that adds some helper functions.
-     * It could also be handled via extending the JSComponent.prototype, but that seems messy
-     */
-    export default class CustomJSComponent extends Atomic.JSComponent {
-        inspectorFields: {
-            debug: boolean;
-        };
-        /**
-         * Turn on or off debug for this component
-         */
-        debug: boolean;
-        private _componentName;
-        /**
-         * Write a debug message to the console prefixed by the component name
-         * @param {string} msg Message to write to the console
-         */
-        DEBUG(msg: any): void;
-        /**
-         * Returns a component on this node cast to the appropriate type
-         */
-        getComponent<T extends Atomic.Component>(componentName: string): T;
-        /**
-         * Returns a JSComponent on this node cast to the appropriate type
-         */
-        getJSComponent<T extends Atomic.JSComponent>(componentName: string): T;
-    }
-}
-declare module "Constants" {
-    export module BroadcastEvents {
-        const gameSceneUnloaded: string;
-        const gameSceneLoaded: string;
-        const gameSceneSwitch: string;
-        const gameSceneAction: string;
-        const gameLevelLoad: string;
-        const gameLevelGenerate: string;
-        const uiAttributeSelectionHide: string;
-        const uiAttributeSelectionShow: string;
-        const uiTitleScreenShow: string;
-        const uiTitleScreenHide: string;
-    }
-    export module ComponentEvents {
-        const onTryMove: string;
-        const onSkipTurn: string;
-        const onLogAction: string;
-        const onMoveBlocked: string;
-        const onMoveStart: string;
-        const onMoveComplete: string;
-        const onHandleBump: string;
-        const onUpdateFov: string;
-        const onDestroy: string;
-    }
-}
-declare module "BaseSceneController" {
-    import CustomJSComponent from "CustomJSComponent";
-    export default class BaseSceneController extends CustomJSComponent {
-        inspectorFields: {
-            debug: boolean;
-        };
-        private subscriptionTokens;
-        constructor();
-        addSubscription(key: string, handler: any): void;
-        sceneLoaded(message: string, data: SceneActionMessage): void;
-        sceneUnloaded(message: string, data: SceneActionMessage): void;
-        doSceneAction(message: string, data: SceneActionMessage): void;
-        switchScene(sceneKey: string): void;
-    }
-}
 declare module "Ui/CustomUIWindow" {
     /**
      * wrapper to be used for ui windows.  Will handle loading up the layout and
@@ -106,21 +37,81 @@ declare module "Ui/AttributeSelection.ui" {
         openWindow(parms?: any): void;
     }
 }
-declare module "Ui/ui" {
-    export function init(): void;
+declare module "GlobalCache" {
+    module GlobalCache {
+        let debug: boolean;
+        /**
+         * Register an object in the global state cache so it's not GC'd
+         * @param  {string} name
+         * @param {Object} object
+         * @returns {T} cached object
+         */
+        function cacheObject<T>(name: string, object: T): T;
+        /**
+         * Remove an object from the global state cache
+         * @param  {string} name
+         */
+        function purgeCachedObject<T>(name: string): T;
+        /**
+         * Get's a named cached object
+         * @param  {string} name
+         * @return {T}
+         */
+        function getCachedObject<T>(name: string): T;
+    }
+    export default GlobalCache;
+}
+declare module "Ui/UiController" {
+    export class UiControllerType {
+        private initialized;
+        private baseUi;
+        init(): void;
+    }
+    let uiController: UiControllerType;
+    export default uiController;
+}
+declare module "Constants" {
+    export module BroadcastEvents {
+        const gameSceneUnloaded: string;
+        const gameSceneLoaded: string;
+        const gameSceneSwitch: string;
+        const gameSceneAction: string;
+        const gameLevelLoad: string;
+        const gameLevelGenerate: string;
+        const uiAttributeSelectionHide: string;
+        const uiAttributeSelectionShow: string;
+        const uiTitleScreenShow: string;
+        const uiTitleScreenHide: string;
+    }
+    export module ComponentEvents {
+        const onTryMove: string;
+        const onSkipTurn: string;
+        const onLogAction: string;
+        const onMoveBlocked: string;
+        const onMoveStart: string;
+        const onMoveComplete: string;
+        const onHandleBump: string;
+        const onUpdateFov: string;
+        const onDestroy: string;
+        const onActionBegin: string;
+        const onActionComplete: string;
+        const onTurnTaken: string;
+        const onDie: string;
+        const onHit: string;
+        const onAttack: string;
+        const onHealthChanged: string;
+        const onBump: string;
+    }
+    export module Scenes {
+        const title: string;
+        const attributeSel: string;
+        const intro: string;
+    }
 }
 declare module "SceneManager" {
-    export const Scenes: {
-        title: string;
-        attributeSel: string;
-        intro: string;
-    };
+    import { Scenes } from "Constants";
     export default class SceneManager {
-        static scenes: {
-            title: string;
-            attributeSel: string;
-            intro: string;
-        };
+        static scenes: typeof Scenes;
         currentScene: Atomic.Scene;
         currentSceneName: string;
         switchToScene(sceneName: string): void;
@@ -139,6 +130,12 @@ declare module "utils" {
          * @param  {ListCallback<T>} callback
          */
         iterate(callback: ListCallback<T>): void;
+        /**
+         * Seeks a single element in the list and returns it if the callback returns true
+         * @param  {ListCallback<T>} callback
+         * @return {T}
+         */
+        find(callback: ListCallback<T>): T;
         add(element: T): number;
         remove(element: T): T;
     }
@@ -187,12 +184,11 @@ declare module "Generators/LevelData" {
      * Stored Level data for a level
      */
     export default class LevelData {
-        tiles: utils.Grid<TileData>;
+        tiles: TileDataGrid;
         entities: EntityList;
         width: number;
         height: number;
         constructor(width: number, height: number);
-        inBounds(x: number, y: number): boolean;
         inBoundsPos(pos: Position2D | GLM.IArray): boolean;
         setTileTerrain(x: number, y: number, terrainType: TileType): void;
         getTile(x: number, y: number): TileData;
@@ -217,15 +213,42 @@ declare module "Generators/LevelData" {
         iterateEntities(callback: ListCallback<EntityData>): void;
         iterateEntitiesAt(x: number, y: number, callback: ListCallback<EntityData>): void;
         iterateEntitiesAtPos(pos: Position2D | GLM.IArray, callback: ListCallback<EntityData>): void;
-        addEntityAtPosition(x: number, y: number, entity: EntityData): void;
+        addEntityAtPosition(position: Position2D, entity: EntityData): void;
+        addEntityBlueprintAtPosition(position: Position2D, blueprint: string): void;
         removeEntity(entity: EntityData): EntityData;
+    }
+}
+declare module "LevelController" {
+    import { default as LevelData, EntityList } from "Generators/LevelData";
+    import * as ROT from "rot";
+    export default class LevelController {
+        private levelData;
+        /** ROT scheduler */
+        private scheduler;
+        /** ROT engine */
+        engine: ROT.Engine;
+        constructor(levelData: LevelData);
+        start(): void;
+        registerActor(ai: ROT.Actionable): void;
+        deregisterActor(ai: ROT.Actionable): void;
+        updateFov(position: Position2D, radius?: number): void;
+        getTileAt(pos: Position2D): TileData;
+        isValidPos(pos: Position2D): boolean;
+        getEntitiesAt(pos: Position2D): EntityList;
+        getEntitiesInRadius(pos: Position2D, radius: number): EntityList;
+        iterateEntitiesAt(pos: Position2D, callback: (element: EntityData) => boolean | void): void;
     }
 }
 declare module "GameState" {
     import LevelData from "Generators/LevelData";
+    import LevelController from "LevelController";
     export default class GameState {
         currentLevelData: LevelData;
+        currentLevelController: LevelController;
+        turns: number;
         init(): void;
+        incTurn(): void;
+        updateUi(): void;
     }
 }
 declare module "GameController" {
@@ -234,11 +257,65 @@ declare module "GameController" {
     /**
      * singleton class for game controller
      */
-    export default class GameController {
-        static sceneManager: SceneManager;
-        static gameState: GameState;
-        static init(): void;
-        static showTitleScene(): void;
+    export class GameControllerType {
+        private initialized;
+        sceneManager: SceneManager;
+        gameState: GameState;
+        init(): void;
+        showTitleScene(): void;
+        gameOver(): void;
+    }
+    let controller: GameControllerType;
+    export default controller;
+}
+declare module "CustomJSComponent" {
+    import LevelController from "LevelController";
+    /**
+     * This is a custom version of the JSComponent that adds some helper functions.
+     * It could also be handled via extending the JSComponent.prototype, but that seems messy
+     */
+    export default class CustomJSComponent extends Atomic.JSComponent implements ComponentActionListener {
+        inspectorFields: {
+            debug: boolean;
+        };
+        /**
+         * Turn on or off debug for this component
+         */
+        debug: boolean;
+        private _componentName;
+        actionMap: {};
+        /**
+         * Write a debug message to the console prefixed by the component name
+         * @param {string} msg Message to write to the console
+         */
+        DEBUG(msg: any): void;
+        levelController: LevelController;
+        /**
+         * Returns a component on this node cast to the appropriate type
+         */
+        getComponent<T extends Atomic.Component>(componentName: string): T;
+        /**
+         * Returns a JSComponent on this node cast to the appropriate type
+         */
+        getJSComponent<T extends Atomic.JSComponent>(componentName: string): T;
+        setActionMap(actionMap: any): void;
+        doAction(message: string, data: any): void;
+    }
+}
+declare module "BaseSceneController" {
+    import CustomJSComponent from "CustomJSComponent";
+    export default class BaseSceneController extends CustomJSComponent {
+        inspectorFields: {
+            debug: boolean;
+        };
+        private subscriptionTokens;
+        constructor();
+        start(): void;
+        addSubscription(key: string, handler: any): void;
+        sceneLoaded(message: string, data: SceneActionMessage): void;
+        sceneUnloaded(message: string, data: SceneActionMessage): void;
+        doSceneAction(message: string, data: SceneActionMessage): void;
+        switchScene(sceneKey: string): void;
     }
 }
 declare module "MetricsGatherer" {
@@ -270,10 +347,11 @@ declare module "Generators/DefaultGenerator" {
     export default class DefaultGenerator {
         private width;
         private height;
-        debug: boolean;
-        constructor(width: number, height: number);
+        private debug;
+        constructor(width: number, height: number, debug: any);
         generate(): LevelData;
         generateWalls(levelData: LevelData): void;
+        generateCreatures(levelData: LevelData): void;
         DEBUG(message: string): void;
     }
 }

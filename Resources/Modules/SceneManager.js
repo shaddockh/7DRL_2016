@@ -1,15 +1,11 @@
 "use strict";
 var PubSub = require("pubsub-js");
 var Constants_1 = require("Constants");
-exports.Scenes = {
-    title: "Scenes/title.scene",
-    attributeSel: "Scenes/attribute_sel.scene",
-    intro: "Scenes/intro.scene"
-};
 var SceneManager = (function () {
     function SceneManager() {
     }
     SceneManager.prototype.switchToScene = function (sceneName) {
+        var _this = this;
         var firstScene = this.currentScene == null;
         if (!firstScene) {
             PubSub.publishSync(Constants_1.BroadcastEvents.gameSceneUnloaded, {
@@ -24,11 +20,15 @@ var SceneManager = (function () {
         }
         this.currentScene = scene;
         this.currentSceneName = sceneName;
-        PubSub.publish(Constants_1.BroadcastEvents.gameSceneLoaded, {
-            scene: this.currentSceneName
+        // Wait for the scene to load in by deferring to the end of the current frame
+        setImmediate(function () {
+            console.log("Loaded scene: " + sceneName + ", broadcasting loaded.");
+            PubSub.publish(Constants_1.BroadcastEvents.gameSceneLoaded, {
+                scene: _this.currentSceneName
+            });
         });
     };
-    SceneManager.scenes = exports.Scenes;
+    SceneManager.scenes = Constants_1.Scenes;
     return SceneManager;
 }());
 Object.defineProperty(exports, "__esModule", { value: true });

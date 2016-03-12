@@ -20,6 +20,7 @@ var TitleScreenController = (function (_super) {
     TitleScreenController.prototype.sceneLoaded = function (message, data) {
         _super.prototype.sceneLoaded.call(this, message, data);
         PubSub.publish(Constants_1.BroadcastEvents.uiTitleScreenShow, {});
+        this.DEBUG("after title screen loaded");
     };
     TitleScreenController.prototype.sceneUnloaded = function (message, data) {
         PubSub.publish(Constants_1.BroadcastEvents.uiTitleScreenHide, {});

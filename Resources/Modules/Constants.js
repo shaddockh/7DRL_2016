@@ -23,4 +23,18 @@ var ComponentEvents;
     ComponentEvents.onHandleBump = "onHandleBump";
     ComponentEvents.onUpdateFov = "onUpdateFov";
     ComponentEvents.onDestroy = "onDestroy";
+    ComponentEvents.onActionBegin = "onActionBegin";
+    ComponentEvents.onActionComplete = "onActionComplete";
+    ComponentEvents.onTurnTaken = "onTurnTaken";
+    ComponentEvents.onDie = "onDie";
+    ComponentEvents.onHit = "onHit";
+    ComponentEvents.onAttack = "onAttack";
+    ComponentEvents.onHealthChanged = "onHealthChanged";
+    ComponentEvents.onBump = "onBump";
 })(ComponentEvents = exports.ComponentEvents || (exports.ComponentEvents = {}));
+var Scenes;
+(function (Scenes) {
+    Scenes.title = "Scenes/title.scene";
+    Scenes.attributeSel = "Scenes/attribute_sel.scene";
+    Scenes.intro = "Scenes/intro.scene";
+})(Scenes = exports.Scenes || (exports.Scenes = {}));

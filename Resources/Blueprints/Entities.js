@@ -29,6 +29,17 @@ exports.hero = {
     GridMover: {
         debug: false,
     },
+    // Make sure our actions are reported to the log
+    //ActionLogger: {},
+    // EventSound: {
+    //     eventMap: {
+    //         onMoveStart: "Sounds/footstep02.ogg",
+    //         onAttack: "Sounds/knifeSlice.ogg"
+    //     }
+    // },
+    HeroAi: {
+        debug: false
+    },
 };
 exports.enemy_base = {
     inherits: "actor",
@@ -41,6 +52,17 @@ exports.enemy_base = {
     },
     GridMover: {
         debug: false,
+    },
+    // Make sure our actions are reported to the log
+    //ActionLogger: {},
+    // EventSound: {
+    //     eventMap: {
+    //         onMoveStart: "Sounds/footstep02.ogg",
+    //         onAttack: "Sounds/knifeSlice.ogg"
+    //     }
+    // },
+    MonsterAi: {
+        debug: false
     },
 };
 exports.lost_soul = {

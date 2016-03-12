@@ -1,12 +1,6 @@
 import * as PubSub from "pubsub-js";
-import {BroadcastEvents} from "Constants";
+import {BroadcastEvents, Scenes} from "Constants";
 import BaseSceneController from "BaseSceneController";
-
-export const Scenes = {
-    title: "Scenes/title.scene",
-    attributeSel: "Scenes/attribute_sel.scene",
-    intro: "Scenes/intro.scene"
-};
 
 export default class SceneManager {
 
@@ -22,7 +16,6 @@ export default class SceneManager {
                 scene: this.currentSceneName
             });
         }
-
         const scene = Atomic.player.loadScene(sceneName);
         if (!firstScene) {
             const viewPort = Atomic.renderer.getViewport(0);
@@ -31,8 +24,12 @@ export default class SceneManager {
         }
         this.currentScene = scene;
         this.currentSceneName = sceneName;
-        PubSub.publish(BroadcastEvents.gameSceneLoaded, {
-            scene: this.currentSceneName
+        // Wait for the scene to load in by deferring to the end of the current frame
+        setImmediate(() => {
+            console.log("Loaded scene: " + sceneName + ", broadcasting loaded.");
+            PubSub.publish(BroadcastEvents.gameSceneLoaded, {
+                scene: this.currentSceneName
+            });
         });
     }
 }

@@ -2,10 +2,10 @@
 var ROT = require("rot");
 var LevelData_1 = require("./LevelData");
 var DefaultGenerator = (function () {
-    function DefaultGenerator(width, height) {
+    function DefaultGenerator(width, height, debug) {
         this.width = width;
         this.height = height;
-        this.debug = false;
+        this.debug = debug;
         // constructs
     }
     DefaultGenerator.prototype.generate = function () {

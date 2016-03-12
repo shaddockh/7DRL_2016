@@ -15,13 +15,13 @@ class Entity extends CustomJSComponent implements ComponentActionListener {
     };
 
 
-    blocksPath: boolean = false;
-    blocksLight: boolean = false;
-    bumpable: boolean = false;
-    attackable: boolean = false;
+    blocksPath = false;
+    blocksLight = false;
+    bumpable = false;
+    attackable = false;
 
     /** The displayable name of this entity */
-    screenName: string = "entity";
+    screenName = "entity";
 
     /** once seen, don't hide when leaving field of view */
     fovRemember = false;
@@ -31,16 +31,16 @@ class Entity extends CustomJSComponent implements ComponentActionListener {
     /** has this entity been seen by the player yet? */
     private seen = false;
 
-    getPosition() {
+    getPosition(): Position2D {
         return [this.mapEntity.x, this.mapEntity.y];
     }
 
-    setPosition(pos) {
+    setPosition(pos: Position2D) {
         this.mapEntity.x = pos[0];
         this.mapEntity.y = pos[1];
     }
 
-    setMapReference(mapEntity) {
+    setMapReference(mapEntity: EntityData) {
         mapEntity.node = this.node;
         mapEntity.entityComponent = this;
         this.mapEntity = mapEntity;

@@ -15,10 +15,14 @@ var BaseSceneController = (function (_super) {
             debug: false
         };
         this.subscriptionTokens = [];
+    }
+    BaseSceneController.prototype.start = function () {
+        this.DEBUG("Binding broadcast listeners");
+        console.log(this.scene.asyncProgress);
         this.addSubscription(Constants_1.BroadcastEvents.gameSceneLoaded, this.sceneLoaded.bind(this));
         this.addSubscription(Constants_1.BroadcastEvents.gameSceneUnloaded, this.sceneUnloaded.bind(this));
         this.addSubscription(Constants_1.BroadcastEvents.gameSceneAction, this.doSceneAction.bind(this));
-    }
+    };
     BaseSceneController.prototype.addSubscription = function (key, handler) {
         this.subscriptionTokens.push(PubSub.subscribe(key, handler));
     };

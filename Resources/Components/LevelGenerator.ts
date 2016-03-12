@@ -19,6 +19,9 @@ class LevelGenerator extends CustomJSComponent {
 
     constructor() {
         super();
+    }
+
+    start() {
         PubSub.subscribe(BroadcastEvents.gameLevelGenerate, this.generateLevel.bind(this));
     }
 
@@ -28,14 +31,13 @@ class LevelGenerator extends CustomJSComponent {
         this.DEBUG("Getting generator");
         const generator = this.getGenerator();
         this.DEBUG("generating level");
-        generator.debug = this.debug;
         const levelData = generator.generate();
         this.DEBUG("Sending level data to subscribers");
         PubSub.publish(BroadcastEvents.gameLevelLoad, { level: levelData });
     }
 
     getGenerator(): DefaultGenerator {
-        return new DefaultGenerator(this.width, this.height);
+        return new DefaultGenerator(this.width, this.height, this.debug);
     }
 }
 

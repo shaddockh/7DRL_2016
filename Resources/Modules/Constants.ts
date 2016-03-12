@@ -25,5 +25,18 @@ export module ComponentEvents {
     export const onHandleBump = "onHandleBump";
     export const onUpdateFov = "onUpdateFov";
     export const onDestroy = "onDestroy";
+    export const onActionBegin = "onActionBegin";
+    export const onActionComplete = "onActionComplete";
+    export const onTurnTaken = "onTurnTaken";
+    export const onDie = "onDie";
+    export const onHit = "onHit";
+    export const onAttack = "onAttack";
+    export const onHealthChanged = "onHealthChanged";
+    export const onBump = "onBump";
+}
 
+export module Scenes {
+    export const title = "Scenes/title.scene";
+    export const attributeSel = "Scenes/attribute_sel.scene";
+    export const intro = "Scenes/intro.scene";
 }

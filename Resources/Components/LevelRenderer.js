@@ -13,7 +13,6 @@ var GameController_1 = require("GameController");
 var LevelRenderer = (function (_super) {
     __extends(LevelRenderer, _super);
     function LevelRenderer() {
-        var _this = this;
         _super.call(this);
         this.inspectorFields = {
             debug: false,
@@ -22,12 +21,18 @@ var LevelRenderer = (function (_super) {
         this.levelData = null;
         this.children = [];
         this.cellUnitSize = this.cellPixelSize * Atomic.PIXEL_SIZE;
+    }
+    LevelRenderer.prototype.start = function () {
+        var _this = this;
         PubSub.subscribe(Constants_1.BroadcastEvents.gameLevelLoad, function (message, data) {
             _this.DEBUG("Got a load level message");
             _this.loadLevel(data.level);
         });
-    }
+    };
     LevelRenderer.prototype.loadLevel = function (level) {
+        for (var x in GameController_1.default) {
+            console.log(x);
+        }
         GameController_1.default.gameState.currentLevelData = level;
         this.levelData = level;
         this.render();

@@ -11,6 +11,11 @@ export default class BaseSceneController extends CustomJSComponent {
     private subscriptionTokens = [];
     constructor() {
         super();
+    }
+
+    start() {
+        this.DEBUG("Binding broadcast listeners");
+        console.log(this.scene.asyncProgress);
         this.addSubscription(BroadcastEvents.gameSceneLoaded, this.sceneLoaded.bind(this));
         this.addSubscription(BroadcastEvents.gameSceneUnloaded, this.sceneUnloaded.bind(this));
         this.addSubscription(BroadcastEvents.gameSceneAction, this.doSceneAction.bind(this));

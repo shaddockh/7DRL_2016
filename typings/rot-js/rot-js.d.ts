@@ -10,13 +10,23 @@ declare module "rot" {
             }
         }
 
+        interface Actionable {
+            act();
+        }
+
+        interface Scheduler {
+            add(item: Actionable, repeat: boolean);
+            remove(item: Actionable);
+        }
+
         module Scheduler {
-            interface IScheduler { }
 
-            class Simple implements IScheduler {
-
+            class Simple implements Scheduler {
+                add(item: Actionable, repeat: boolean);
+                remove(item: Actionable);
             }
         }
+
         module FOV {
             class RecursiveShadowcasting {
                 constructor(callback: (x: number, y: number) => boolean);
@@ -24,43 +34,43 @@ declare module "rot" {
         }
 
         module Map {
-            interface IMap {
+            interface Map {
                 create(callback: (x: number, y: number, value: number) => void);
             }
 
-            class Cellular implements IMap {
+            class Cellular implements Map {
                 constructor(width: number, height: number, options: any);
                 randomize(randomizationSeed: number);
                 create(callback: (x: number, y: number, value: number) => void);
             }
 
-            class Digger implements IMap {
+            class Digger implements Map {
                 constructor(width: number, height: number, options: any);
                 create(callback: (x: number, y: number, value: number) => void);
                 getRooms(): Array<Array<number>>;
             }
 
-            class DividedMaze implements IMap {
+            class DividedMaze implements Map {
                 constructor(width: number, height: number, options: any);
                 create(callback: (x: number, y: number, value: number) => void);
             }
 
-            class EllerMaze implements IMap {
+            class EllerMaze implements Map {
                 constructor(width: number, height: number, options: any);
                 create(callback: (x: number, y: number, value: number) => void);
             }
 
-            class IceyMaze implements IMap {
+            class IceyMaze implements Map {
                 constructor(width: number, height: number, options: any);
                 create(callback: (x: number, y: number, value: number) => void);
             }
 
-            class Rogue implements IMap {
+            class Rogue implements Map {
                 constructor(width: number, height: number, options: any);
                 create(callback: (x: number, y: number, value: number) => void);
             }
 
-            class Uniform implements IMap {
+            class Uniform implements Map {
                 constructor(width: number, height: number, options: any);
                 create(callback: (x: number, y: number, value: number) => void);
                 getRooms(): Array<Array<number>>;
@@ -69,7 +79,22 @@ declare module "rot" {
         }
 
         class Engine {
-            constructor(scheduler: Scheduler.IScheduler);
+            constructor(scheduler: Scheduler);
+
+            /**
+             * Start the main loop.
+             */
+            start();
+
+            /**
+             * Interrupt the engine by an asynchronous action
+             */
+            lock();
+
+            /**
+             * Resume execution (paused by a previous lock)
+             */
+            unlock();
         }
     }
 

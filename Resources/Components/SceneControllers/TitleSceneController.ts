@@ -15,6 +15,7 @@ class TitleScreenController extends BaseSceneController {
     sceneLoaded(message: string, data: SceneActionMessage) {
         super.sceneLoaded(message, data);
         PubSub.publish(BroadcastEvents.uiTitleScreenShow, {});
+        this.DEBUG("after title screen loaded");
     }
 
     sceneUnloaded(message: string, data: SceneActionMessage) {

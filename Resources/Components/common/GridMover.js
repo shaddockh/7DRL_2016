@@ -14,7 +14,7 @@ var Constants_1 = require("Constants");
 var GridMover = (function (_super) {
     __extends(GridMover, _super);
     function GridMover() {
-        _super.apply(this, arguments);
+        _super.call(this);
         this.inspectorFields = {
             debug: false,
             cellPixelSize: 16
@@ -46,18 +46,16 @@ var GridMover = (function (_super) {
         configurable: true
     });
     GridMover.prototype.start = function () {
+        this.setActionMap((_a = {},
+            _a[Constants_1.ComponentEvents.onTryMove] = this.onTryMove.bind(this),
+            _a
+        ));
         this.targetPos = this.node.position2D;
         this.startPos = this.node.position2D;
         this.moving = false;
         this.debug = true;
         this.cellUnitSize = this.cellPixelSize * Atomic.PIXEL_SIZE;
-    };
-    GridMover.prototype.doAction = function (message, data) {
-        switch (message) {
-            case Constants_1.ComponentEvents.onTryMove:
-                this.onTryMove(data);
-                break;
-        }
+        var _a;
     };
     GridMover.prototype.onTryMove = function (data) {
         var _this = this;
@@ -104,7 +102,7 @@ var GridMover = (function (_super) {
                         }
                         if (entity.entityComponent.bumpable) {
                             // Let's exit the loop since we only want to deal with the first entity
-                            NodeEvents_1.default.trigger(_this.node, Constants_1.ComponentEvents.onHandleBump, { target: entity.node });
+                            NodeEvents_1.default.trigger(_this.node, Constants_1.ComponentEvents.onHandleBump, { targetComponent: entity.entityComponent });
                             return false;
                         }
                         else {
@@ -118,7 +116,7 @@ var GridMover = (function (_super) {
                 this.startPos = this.node.position2D;
                 this.DEBUG("Moving to " + this.targetPos + " from " + this.startPos + ", vector = " + data.offset);
                 NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onMoveStart, { from: mapPos_1, to: newMapPos_1 });
-                this.entity.setPosition(newMapPos_1);
+                this.entity.setPosition([newMapPos_1[0], newMapPos_1[1]]);
                 this.node.position2D = this.targetPos;
                 NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onMoveComplete);
             }

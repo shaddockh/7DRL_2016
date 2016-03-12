@@ -1,5 +1,4 @@
-
-declare type Position2D = [number, number]; //| GLM.IArray;
+declare type Position2D = [number, number];
 
 declare type ListCallback<T> = (element: T) => boolean | void;
 
@@ -63,4 +62,12 @@ declare interface BumpTriggerAction extends TriggerAction {
 }
 declare interface UpdateFovTriggerAction extends TriggerAction {
     visibility: number;
+}
+
+declare interface SenderComponentTriggerAction extends TriggerAction {
+    senderComponent: Atomic.JSComponent;
+}
+
+declare interface TargetComponentTriggerAction extends TriggerAction {
+    targetComponent: Atomic.JSComponent;
 }

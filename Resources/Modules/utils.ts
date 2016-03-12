@@ -30,6 +30,22 @@ export class List<T> {
         }
     }
 
+    /**
+     * Seeks a single element in the list and returns it if the callback returns true
+     * @param  {ListCallback<T>} callback
+     * @return {T}
+     */
+    find(callback: ListCallback<T>): T {
+        let result: T;
+        this.iterate((entity) => {
+            if (callback(entity)) {
+                result = entity;
+                return true;
+            }
+        });
+        return result;
+    }
+
     add(element: T): number {
         return this.elements.push(element);
     }

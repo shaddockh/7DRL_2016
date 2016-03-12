@@ -5,13 +5,16 @@ import GameController from "../Modules/GameController";
 import * as PubSub from "pubsub-js";
 
 import {nodeBuilder} from "atomic-blueprintLib";
+import {Scenes} from "Constants";
 
-let buildEntities = false;
-
-
-if (buildEntities) {
-    nodeBuilder.generatePrefabs();
-} else {
-    GameController.init();
-    GameController.showTitleScene();
+function main(buildEntities: boolean) {
+    if (buildEntities) {
+        nodeBuilder.generatePrefabs();
+    } else {
+        GameController.init();
+        GameController.sceneManager.switchToScene(Scenes.title);
+        //GameController.showTitleScene();
+    }
 }
+
+main(false);

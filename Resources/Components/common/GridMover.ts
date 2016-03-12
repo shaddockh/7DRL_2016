@@ -7,7 +7,7 @@ import NodeEvents  from "NodeEvents";
 import {vec2} from "gl-matrix";
 import {ComponentEvents} from "Constants";
 
-class GridMover extends CustomJSComponent implements ComponentActionListener {
+class GridMover extends CustomJSComponent {
     inspectorFields = {
         debug: false,
         cellPixelSize: 16
@@ -28,6 +28,9 @@ class GridMover extends CustomJSComponent implements ComponentActionListener {
     private t: number;
     private movementVector;
 
+    constructor() {
+        super();
+    }
 
     queuePostMoveAction(action) {
         this.postMoveActions.push(action);
@@ -46,19 +49,14 @@ class GridMover extends CustomJSComponent implements ComponentActionListener {
     }
 
     start() {
+        this.setActionMap({
+            [ComponentEvents.onTryMove]: this.onTryMove.bind(this)
+        });
         this.targetPos = this.node.position2D;
         this.startPos = this.node.position2D;
         this.moving = false;
         this.debug = true;
         this.cellUnitSize = this.cellPixelSize * Atomic.PIXEL_SIZE;
-    }
-
-    doAction(message: string, data: any): any {
-        switch (message) {
-            case ComponentEvents.onTryMove:
-                this.onTryMove(data);
-                break;
-        }
     }
 
     onTryMove(data: MoveOffsetTriggerAction) {
@@ -109,7 +107,7 @@ class GridMover extends CustomJSComponent implements ComponentActionListener {
                         }
                         if (entity.entityComponent.bumpable) {
                             // Let's exit the loop since we only want to deal with the first entity
-                            NodeEvents.trigger<BumpTriggerAction>(this.node, ComponentEvents.onHandleBump, { target: entity.node });
+                            NodeEvents.trigger<TargetComponentTriggerAction>(this.node, ComponentEvents.onHandleBump, { targetComponent: entity.entityComponent });
                             return false;
                         } else {
                             return true;
@@ -125,7 +123,7 @@ class GridMover extends CustomJSComponent implements ComponentActionListener {
 
                 NodeEvents.trigger(this.node, ComponentEvents.onMoveStart, { from: mapPos, to: newMapPos });
 
-                this.entity.setPosition(newMapPos);
+                this.entity.setPosition([newMapPos[0], newMapPos[1]]);
                 this.node.position2D = this.targetPos;
                 NodeEvents.trigger(this.node, ComponentEvents.onMoveComplete);
                 // Queue up an action to notify that we are done moving.

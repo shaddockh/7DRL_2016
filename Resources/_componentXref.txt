@@ -1,3 +1,5 @@
+HeroAi=Components/ai/HeroAi.js
+MonsterAi=Components/ai/MonsterAi.js
 Entity=Components/common/Entity.js
 GridMover=Components/common/GridMover.js
 PlayerInputHandler=Components/common/PlayerInputHandler.js
