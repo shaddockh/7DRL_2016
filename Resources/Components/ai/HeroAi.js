@@ -22,6 +22,7 @@ var HeroAi = (function (_super) {
         this.deferredActions = [];
     }
     HeroAi.prototype.start = function () {
+        this.debug = true;
         this.setActionMap((_a = {},
             _a[Constants_1.ComponentEvents.onActionComplete] = this.onActionComplete.bind(this),
             _a[Constants_1.ComponentEvents.onTurnTaken] = this.onTurnTaken.bind(this),
@@ -30,7 +31,7 @@ var HeroAi = (function (_super) {
             _a[Constants_1.ComponentEvents.onDie] = this.onDie.bind(this),
             _a[Constants_1.ComponentEvents.onHit] = this.onHit.bind(this),
             _a[Constants_1.ComponentEvents.onAttack] = this.onAttack.bind(this),
-            _a[Constants_1.ComponentEvents.onHandleBump] = this.onHandleBump.bind(this),
+            _a[Constants_1.ComponentEvents.onBumpInto] = this.onBumpInto.bind(this),
             _a[Constants_1.ComponentEvents.onHealthChanged] = this.onHealthChanged.bind(this),
             _a
         ));
@@ -46,7 +47,6 @@ var HeroAi = (function (_super) {
     //onActionComplete = null;
     HeroAi.prototype.act = function () {
         var _this = this;
-        this.DEBUG("contemplating action.");
         NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onActionBegin, {
             senderComponent: this
         });
@@ -57,7 +57,6 @@ var HeroAi = (function (_super) {
         // See: http://ondras.github.io/rot.js/manual/#timing/engine for some more information.
         return {
             then: function (resolve) {
-                _this.DEBUG("starting action.");
                 _this.setTurnResolver(resolve);
             }
         };
@@ -65,12 +64,11 @@ var HeroAi = (function (_super) {
     HeroAi.prototype.onActionComplete = function () {
         // call the callback, notifying the scheduler that we are done
         if (this.resolveTurn) {
-            this.DEBUG("resolving action");
+            this.DEBUG("End of turn.");
             this.resolveTurn();
         }
     };
     HeroAi.prototype.setTurnResolver = function (resolver) {
-        this.DEBUG("Setting turn resolver");
         this.resolveTurn = resolver;
     };
     HeroAi.prototype.onTurnTaken = function () {
@@ -108,6 +106,7 @@ var HeroAi = (function (_super) {
         GameController_1.default.gameOver();
     };
     HeroAi.prototype.onHit = function (data) {
+        this.DEBUG("Hit by " + data.senderComponent.node.name);
         var entityComponent = data.senderComponent.node.getJSComponent("Entity");
         NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onLogAction, { message: "You are attacked by " + entityComponent.screenName });
     };
@@ -119,14 +118,16 @@ var HeroAi = (function (_super) {
         // move will handle the turn taken
         // TODO: need to clean up the whole turn taking logic somehow, it could get really messy really quickly.
         // triggerEvent.trigger(this.node, 'onTurnTaken', this, this.node);
+        NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onActionComplete, { senderComponent: this });
     };
-    HeroAi.prototype.onHandleBump = function (data) {
+    HeroAi.prototype.onBumpInto = function (data) {
+        this.DEBUG("bumped into " + data.targetComponent.node.name);
         var entityComponent = data.targetComponent.node.getJSComponent("Entity");
         if (entityComponent.attackable) {
-            NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onAttack, { targetComponent: this });
+            NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onAttack, { targetComponent: data.targetComponent });
         }
         else if (entityComponent.bumpable) {
-            NodeEvents_1.default.trigger(data.targetComponent.node, Constants_1.ComponentEvents.onBump, { senderComponent: this });
+            NodeEvents_1.default.trigger(data.targetComponent.node, Constants_1.ComponentEvents.onBumpedBy, { senderComponent: this });
             NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onActionComplete, { senderComponent: this });
         }
     };

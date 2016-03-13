@@ -38,4 +38,10 @@
 			<variant hash="339510355" type="Bool" value="false" />
 		</attribute>
 	</component>
+	<component type="JSComponent" id="16777225">
+		<attribute name="ComponentFile" value="JSComponentFile;Components/common/Health.js" />
+		<attribute name="FieldValues">
+			<variant hash="3573188092" type="Float" value="10" />
+		</attribute>
+	</component>
 </node>

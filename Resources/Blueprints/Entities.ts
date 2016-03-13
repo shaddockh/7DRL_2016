@@ -42,21 +42,23 @@ export const hero = {
     HeroAi: {
         debug: false
     },
-    // Health: {
-    //     life: 10
-    // }
+    Health: {
+        life: 10
+    }
 };
 
 export const enemy_base = {
-
     inherits: "actor",
+
     Entity: {
         screenName: "Enemy"
     },
+
     StaticSprite2D: {
         sprite: "Sprites/spritesheet_3.png",
         orderInLayer: 12
     },
+
     GridMover: {
         debug: false,
     },
@@ -68,12 +70,12 @@ export const enemy_base = {
     //         onAttack: "Sounds/knifeSlice.ogg"
     //     }
     // },
-     MonsterAi: {
-         debug: false
-     },
-    // Health: {
-    //     life: 10
-    // }
+    MonsterAi: {
+        debug: false
+    },
+    Health: {
+        life: 10
+    }
 };
 
 export const lost_soul = {
@@ -84,5 +86,9 @@ export const lost_soul = {
 
     StaticSprite2D: {
         color: [1, 0, 1, 1]
+    },
+    
+    Health: {
+        life: 2
     }
 };

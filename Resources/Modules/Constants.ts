@@ -22,7 +22,8 @@ export module ComponentEvents {
     export const onMoveBlocked = "onMoveBlocked";
     export const onMoveStart = "onMoveStart";
     export const onMoveComplete = "onMoveComplete";
-    export const onHandleBump = "onHandleBump";
+
+    export const onBumpedBy = "onBumpedBy";
     export const onUpdateFov = "onUpdateFov";
     export const onDestroy = "onDestroy";
     export const onActionBegin = "onActionBegin";
@@ -32,7 +33,10 @@ export module ComponentEvents {
     export const onHit = "onHit";
     export const onAttack = "onAttack";
     export const onHealthChanged = "onHealthChanged";
-    export const onBump = "onBump";
+    export const onAdjustHealth = "onAdjustHealth";
+
+    /** called on an actor when it bumps into something.  The something is contained in the target */
+    export const onBumpInto = "onBumpInto";
 }
 
 export module Scenes {

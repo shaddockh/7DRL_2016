@@ -32,6 +32,17 @@ class GridMover extends CustomJSComponent {
         super();
     }
 
+    start() {
+        this.setActionMap({
+            [ComponentEvents.onTryMove]: this.onTryMove.bind(this)
+        });
+        this.targetPos = this.node.position2D;
+        this.startPos = this.node.position2D;
+        this.moving = false;
+        this.debug = true;
+        this.cellUnitSize = this.cellPixelSize * Atomic.PIXEL_SIZE;
+    }
+
     queuePostMoveAction(action) {
         this.postMoveActions.push(action);
     }
@@ -48,16 +59,6 @@ class GridMover extends CustomJSComponent {
         return this.getJSComponent<Entity>("Entity");
     }
 
-    start() {
-        this.setActionMap({
-            [ComponentEvents.onTryMove]: this.onTryMove.bind(this)
-        });
-        this.targetPos = this.node.position2D;
-        this.startPos = this.node.position2D;
-        this.moving = false;
-        this.debug = true;
-        this.cellUnitSize = this.cellPixelSize * Atomic.PIXEL_SIZE;
-    }
 
     onTryMove(data: MoveOffsetTriggerAction) {
         if (this.moving || this.bumping || this.blocked) {
@@ -65,7 +66,6 @@ class GridMover extends CustomJSComponent {
         }
         try {
 
-            this.DEBUG("Entering Move");
             this.startPos = this.node.position2D;
             this.targetPos = vec2.add(vec2.create(), this.startPos, vec2.scale(vec2.create(), data.offset, this.cellUnitSize));
             this.t = 0;
@@ -73,8 +73,7 @@ class GridMover extends CustomJSComponent {
             // see if we can move into the next space
             let mapPos = this.entity.getPosition();
             let newMapPos = vec2.add(vec2.create(), mapPos, data.offset);
-            this.DEBUG(`Current position: ${mapPos[0]},${mapPos[1]}`);
-            this.DEBUG(`Moving to: ${newMapPos[0]},${newMapPos[1]}`);
+            this.DEBUG(`Moving from: ${mapPos[0]},${mapPos[1]} to: ${newMapPos[0]},${newMapPos[1]}`);
 
             this.moving = true;
             // check to see if we are blocked
@@ -107,7 +106,7 @@ class GridMover extends CustomJSComponent {
                         }
                         if (entity.entityComponent.bumpable) {
                             // Let's exit the loop since we only want to deal with the first entity
-                            NodeEvents.trigger<TargetComponentTriggerAction>(this.node, ComponentEvents.onHandleBump, { targetComponent: entity.entityComponent });
+                            NodeEvents.trigger<TargetComponentTriggerAction>(this.node, ComponentEvents.onBumpInto, { targetComponent: entity.entityComponent });
                             return false;
                         } else {
                             return true;
@@ -119,7 +118,7 @@ class GridMover extends CustomJSComponent {
             if (this.moving) {
                 this.movementVector = data.offset;
                 this.startPos = this.node.position2D;
-                this.DEBUG(`Moving to ${this.targetPos} from ${this.startPos}, vector = ${data.offset}`);
+                //this.DEBUG(`Moving to ${this.targetPos} from ${this.startPos}, vector = ${data.offset}`);
 
                 NodeEvents.trigger(this.node, ComponentEvents.onMoveStart, { from: mapPos, to: newMapPos });
 

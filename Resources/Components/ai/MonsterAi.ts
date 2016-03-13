@@ -31,11 +31,12 @@ class MonsterAi extends CustomJSComponent {
 
 
     start() {
+        this.debug = true;
         this.setActionMap({
             [ComponentEvents.onActionComplete]: this.onActionComplete.bind(this),
             [ComponentEvents.onDie]: this.onDie.bind(this),
             [ComponentEvents.onAttack]: this.onAttack.bind(this),
-            [ComponentEvents.onHandleBump]: this.onHandleBump.bind(this),
+            [ComponentEvents.onBumpInto]: this.onBumpInto.bind(this),
             [ComponentEvents.onMoveComplete]: this.onMoveComplete.bind(this)
         });
 
@@ -78,16 +79,17 @@ class MonsterAi extends CustomJSComponent {
     onActionComplete() {
         // call the callback, notifying the scheduler that we are done
         if (this.resolveTurn) {
+            this.DEBUG("End of turn.");
             this.resolveTurn();
         }
     }
 
     act() {
-        this.DEBUG("contemplating action.");
         if (!this.chaseEnemy) {
             return;
         }
 
+        this.DEBUG("contemplating action.");
         const entityComponent = this.getJSComponent<Entity>("Entity");
 
         let position = entityComponent.getPosition();
@@ -136,7 +138,6 @@ class MonsterAi extends CustomJSComponent {
             // See: http://ondras.github.io/rot.js/manual/#timing/engine for some more information.
             return {
                 then: (resolve) => {
-                    this.DEBUG("starting action.");
                     this.setTurnResolver(resolve);
                 }
             };
@@ -174,14 +175,17 @@ class MonsterAi extends CustomJSComponent {
         this.DEBUG(`Attacked ${data.targetComponent.node.name}`);
         NodeEvents.trigger<SenderComponentTriggerAction>(data.targetComponent.node, ComponentEvents.onHit, { senderComponent: this });
         // handled in onMoveComplete -- note that this won't work for actors that attack without moving.
-        //triggerEvent.trigger(this.node, 'onActionComplete', this, this.node);
+        // call onActionComplete since we are done
+        NodeEvents.trigger<SenderComponentTriggerAction>(this.node, ComponentEvents.onActionComplete, { senderComponent: this });
     }
 
-    onHandleBump(data: TargetComponentTriggerAction) {
+    onBumpInto(data: TargetComponentTriggerAction) {
         const entityComponent = <Entity>data.targetComponent.node.getJSComponent("Entity");
+
+        this.DEBUG(`Bumped into ${data.targetComponent.node.name}`);
         // just attack, don't allow for picking up items or other bump actions
         if (entityComponent.attackable) {
-            NodeEvents.trigger<TargetComponentTriggerAction>(this.node, ComponentEvents.onAttack, { targetComponent: this });
+            NodeEvents.trigger<TargetComponentTriggerAction>(this.node, ComponentEvents.onAttack, { targetComponent: data.targetComponent  });
         }
     }
 

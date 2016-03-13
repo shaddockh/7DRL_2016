@@ -55,16 +55,12 @@ var CustomJSComponent = (function (_super) {
         return this.node.getJSComponent(componentName);
     };
     CustomJSComponent.prototype.setActionMap = function (actionMap) {
-        this.DEBUG("Setting action map");
         this.actionMap = actionMap;
     };
     CustomJSComponent.prototype.doAction = function (message, data) {
         var handler = this.actionMap[message];
         if (handler) {
             handler(data);
-        }
-        else {
-            this.DEBUG("No handler defined for action: " + message);
         }
     };
     return CustomJSComponent;

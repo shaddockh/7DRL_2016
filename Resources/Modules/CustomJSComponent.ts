@@ -50,8 +50,7 @@ export default class CustomJSComponent extends Atomic.JSComponent implements Com
         return <T>this.node.getJSComponent(componentName);
     }
 
-    setActionMap(actionMap : any) {
-        this.DEBUG("Setting action map");
+    setActionMap(actionMap: any) {
         this.actionMap = actionMap;
     }
 
@@ -59,8 +58,6 @@ export default class CustomJSComponent extends Atomic.JSComponent implements Com
         let handler: Function = this.actionMap[message];
         if (handler) {
             handler(data);
-        } else {
-            this.DEBUG("No handler defined for action: " + message);
         }
     }
 
