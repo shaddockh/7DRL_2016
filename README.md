@@ -7,7 +7,7 @@ Many pieces of this were ported over from a roguelike experiment that I did in t
 
 ## Requirements / Dependencies
 * Atomic Game Engine (http://www.atomicgameengine.com)
-* ROT.js ( http://www.rotjs.com) The version in this repo was customized to work with the Atomic Game Engine
+* ROT.js ( http://ondras.github.io/rot.js/hp/ ) The version in this repo was customized to work with the Atomic Game Engine
 * TypeScript compiler ( npm install typescript )
 
 ## Features
