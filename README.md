@@ -1,7 +1,7 @@
 # 7DRL_2016
 Enhancements on my entry for the 2016 7 Day Roguelike
 
-The original code for the roguelike is under the 7DRL-END branch of this repository and is sadly non-functional.  I have continued work on this ?DRL to get it to a playable state.
+The original code for the roguelike is under the 7DRL-END branch of this repository (https://github.com/shaddockh/7DRL_2016/tree/7DRL-END) and is sadly non-functional.  I have continued work on this ?DRL to get it to a playable state.
 
 Many pieces of this were ported over from a roguelike experiment that I did in the Atomic-Playground repo.  The original was written in ES6 and simplisticly ported over to TypeScript with a lot of flaws in the implementation.  This version massively reworks many of those systems to be more TypeScript-ey and cleaner, many of the foundational pieces were brought over and rewritten accordingly.
 
