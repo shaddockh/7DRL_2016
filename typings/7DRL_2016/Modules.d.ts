@@ -100,6 +100,8 @@ declare module "Constants" {
         const onHit: string;
         const onAttack: string;
         const onHealthChanged: string;
+        const onAdjustHealth: string;
+        /** called on an actor when it bumps into something.  The something is contained in the target */
         const onBumpInto: string;
     }
     export module Scenes {

@@ -26,6 +26,18 @@ var GridMover = (function (_super) {
         this.blocked = false;
         this.bumping = false;
     }
+    GridMover.prototype.start = function () {
+        this.setActionMap((_a = {},
+            _a[Constants_1.ComponentEvents.onTryMove] = this.onTryMove.bind(this),
+            _a
+        ));
+        this.targetPos = this.node.position2D;
+        this.startPos = this.node.position2D;
+        this.moving = false;
+        this.debug = true;
+        this.cellUnitSize = this.cellPixelSize * Atomic.PIXEL_SIZE;
+        var _a;
+    };
     GridMover.prototype.queuePostMoveAction = function (action) {
         this.postMoveActions.push(action);
     };
@@ -43,18 +55,6 @@ var GridMover = (function (_super) {
         enumerable: true,
         configurable: true
     });
-    GridMover.prototype.start = function () {
-        this.setActionMap((_a = {},
-            _a[Constants_1.ComponentEvents.onTryMove] = this.onTryMove.bind(this),
-            _a
-        ));
-        this.targetPos = this.node.position2D;
-        this.startPos = this.node.position2D;
-        this.moving = false;
-        this.debug = true;
-        this.cellUnitSize = this.cellPixelSize * Atomic.PIXEL_SIZE;
-        var _a;
-    };
     GridMover.prototype.onTryMove = function (data) {
         var _this = this;
         if (this.moving || this.bumping || this.blocked) {

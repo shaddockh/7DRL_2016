@@ -10,10 +10,13 @@ import {Scenes} from "Constants";
 function main(buildEntities: boolean) {
     if (buildEntities) {
         nodeBuilder.generatePrefabs();
+        console.log("----------------------------");
+        console.log("Prefabs have been generated.");
+        console.log("----------------------------");
+        Atomic.ui.requestExit();
     } else {
         GameController.init();
         GameController.sceneManager.switchToScene(Scenes.title);
-        //GameController.showTitleScene();
     }
 }
 

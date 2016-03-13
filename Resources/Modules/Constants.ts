@@ -33,6 +33,7 @@ export module ComponentEvents {
     export const onHit = "onHit";
     export const onAttack = "onAttack";
     export const onHealthChanged = "onHealthChanged";
+    export const onAdjustHealth = "onAdjustHealth";
 
     /** called on an actor when it bumps into something.  The something is contained in the target */
     export const onBumpInto = "onBumpInto";

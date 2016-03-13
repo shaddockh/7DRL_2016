@@ -40,6 +40,9 @@ exports.hero = {
     HeroAi: {
         debug: false
     },
+    Health: {
+        life: 10
+    }
 };
 exports.enemy_base = {
     inherits: "actor",
@@ -64,6 +67,9 @@ exports.enemy_base = {
     MonsterAi: {
         debug: false
     },
+    Health: {
+        life: 10
+    }
 };
 exports.lost_soul = {
     inherits: "enemy_base",
@@ -72,5 +78,8 @@ exports.lost_soul = {
     },
     StaticSprite2D: {
         color: [1, 0, 1, 1]
+    },
+    Health: {
+        life: 2
     }
 };

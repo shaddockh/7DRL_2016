@@ -30,6 +30,7 @@ var ComponentEvents;
     ComponentEvents.onHit = "onHit";
     ComponentEvents.onAttack = "onAttack";
     ComponentEvents.onHealthChanged = "onHealthChanged";
+    ComponentEvents.onAdjustHealth = "onAdjustHealth";
     /** called on an actor when it bumps into something.  The something is contained in the target */
     ComponentEvents.onBumpInto = "onBumpInto";
 })(ComponentEvents = exports.ComponentEvents || (exports.ComponentEvents = {}));

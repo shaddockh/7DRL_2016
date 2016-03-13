@@ -32,6 +32,17 @@ class GridMover extends CustomJSComponent {
         super();
     }
 
+    start() {
+        this.setActionMap({
+            [ComponentEvents.onTryMove]: this.onTryMove.bind(this)
+        });
+        this.targetPos = this.node.position2D;
+        this.startPos = this.node.position2D;
+        this.moving = false;
+        this.debug = true;
+        this.cellUnitSize = this.cellPixelSize * Atomic.PIXEL_SIZE;
+    }
+
     queuePostMoveAction(action) {
         this.postMoveActions.push(action);
     }
@@ -48,16 +59,6 @@ class GridMover extends CustomJSComponent {
         return this.getJSComponent<Entity>("Entity");
     }
 
-    start() {
-        this.setActionMap({
-            [ComponentEvents.onTryMove]: this.onTryMove.bind(this)
-        });
-        this.targetPos = this.node.position2D;
-        this.startPos = this.node.position2D;
-        this.moving = false;
-        this.debug = true;
-        this.cellUnitSize = this.cellPixelSize * Atomic.PIXEL_SIZE;
-    }
 
     onTryMove(data: MoveOffsetTriggerAction) {
         if (this.moving || this.bumping || this.blocked) {

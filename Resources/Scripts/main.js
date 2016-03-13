@@ -8,6 +8,10 @@ var Constants_1 = require("Constants");
 function main(buildEntities) {
     if (buildEntities) {
         atomic_blueprintLib_1.nodeBuilder.generatePrefabs();
+        console.log("----------------------------");
+        console.log("Prefabs have been generated.");
+        console.log("----------------------------");
+        Atomic.ui.requestExit();
     }
     else {
         GameController_1.default.init();
