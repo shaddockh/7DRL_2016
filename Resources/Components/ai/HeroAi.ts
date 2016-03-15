@@ -60,10 +60,13 @@ class HeroAi extends CustomJSComponent {
     }
 
     onActionComplete() {
-        // call the callback, notifying the scheduler that we are done
+        // call the callback, notifying the scheduler that we are done, but
+        // wait until all pending activities have finished
         if (this.resolveTurn) {
-            this.DEBUG("End of turn.");
-            this.resolveTurn();
+            setImmediate(() => {
+                this.DEBUG("End of turn.");
+                this.resolveTurn();
+            });
         }
     }
 
@@ -107,6 +110,7 @@ class HeroAi extends CustomJSComponent {
     onSkipTurn() {
         NodeEvents.trigger<LogMessageTriggerAction>(this.node, ComponentEvents.onLogAction, { message: "Waiting..." });
         NodeEvents.trigger<SenderComponentTriggerAction>(this.node, ComponentEvents.onLogAction, { senderComponent: this });
+        NodeEvents.trigger<SenderComponentTriggerAction>(this.node, ComponentEvents.onActionComplete, { senderComponent: this });
     }
 
     onDie(data: SenderComponentTriggerAction) {
@@ -126,6 +130,7 @@ class HeroAi extends CustomJSComponent {
         this.DEBUG(`Attacked ${data.targetComponent.node.name}`);
         NodeEvents.trigger<LogMessageTriggerAction>(this.node, ComponentEvents.onLogAction, { message: `You attack ${entityComponent.screenName}` });
         NodeEvents.trigger<SenderComponentTriggerAction>(this.node, ComponentEvents.onLogAction, { senderComponent: this });
+        NodeEvents.trigger<SenderComponentTriggerAction>(data.targetComponent.node, ComponentEvents.onHit, { senderComponent: this });
         // move will handle the turn taken
         // TODO: need to clean up the whole turn taking logic somehow, it could get really messy really quickly.
         // triggerEvent.trigger(this.node, 'onTurnTaken', this, this.node);

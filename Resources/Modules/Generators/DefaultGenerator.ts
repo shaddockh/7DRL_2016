@@ -3,7 +3,7 @@ import LevelData from "./LevelData";
 
 export default class DefaultGenerator {
 
-    constructor(private width: number, private height: number, private debug) {
+    constructor(private width: number, private height: number, private debug, private creatureCount) {
         // constructs
     }
 
@@ -56,7 +56,7 @@ export default class DefaultGenerator {
 
     generateCreatures(levelData: LevelData) {
         this.DEBUG("Generating creatures");
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < this.creatureCount; i++) {
             let spawnPos = levelData.getRandomEmptyPosition();
             levelData.addEntityBlueprintAtPosition(spawnPos, "lost_soul");
         }

@@ -357,7 +357,8 @@ declare module "Generators/DefaultGenerator" {
         private width;
         private height;
         private debug;
-        constructor(width: number, height: number, debug: any);
+        private creatureCount;
+        constructor(width: number, height: number, debug: any, creatureCount: any);
         generate(): LevelData;
         generateWalls(levelData: LevelData): void;
         generateCreatures(levelData: LevelData): void;

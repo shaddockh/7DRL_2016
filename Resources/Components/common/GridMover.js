@@ -74,12 +74,12 @@ var GridMover = (function (_super) {
             if (!this.levelController.isValidPos(newMapPos_1) ||
                 this.levelController.getTileAt(newMapPos_1).terrainType !== 1 /* floor */) {
                 // Queue up an action to notify the player that the move is blocked
-                this.queuePostMoveAction(function () {
-                    _this.DEBUG("Blocked by terrain");
-                    NodeEvents_1.default.trigger(_this.node, Constants_1.ComponentEvents.onLogAction, { message: "Blocked." });
-                    NodeEvents_1.default.trigger(_this.node, Constants_1.ComponentEvents.onMoveBlocked, { from: mapPos_1, to: newMapPos_1 });
-                    NodeEvents_1.default.trigger(_this.node, Constants_1.ComponentEvents.onMoveComplete);
-                });
+                //this.queuePostMoveAction(() => {
+                this.DEBUG("Blocked by terrain");
+                NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onLogAction, { message: "Blocked." });
+                NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onMoveBlocked, { from: mapPos_1, to: newMapPos_1 });
+                NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onMoveComplete);
+                //});
                 this.blocked = true;
                 this.moving = false;
             }

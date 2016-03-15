@@ -27,7 +27,12 @@ module NodeEvents {
             // Look for the the doAction method and call it if it exists
             if (component && typeof component["doAction"] === "function") {
                 setImmediate(() => {
-                    component["doAction"].apply(component, [eventName, data]);
+                    // verify that the node still exists.  It could have been GC'd
+                    if (node && node.name) {
+                        component["doAction"].apply(component, [eventName, data]);
+                    } else {
+                        console.log("Could not do action: " + eventName + ", node deleted.");
+                    }
                 });
             }
         }

@@ -2,10 +2,11 @@
 var ROT = require("rot");
 var LevelData_1 = require("./LevelData");
 var DefaultGenerator = (function () {
-    function DefaultGenerator(width, height, debug) {
+    function DefaultGenerator(width, height, debug, creatureCount) {
         this.width = width;
         this.height = height;
         this.debug = debug;
+        this.creatureCount = creatureCount;
         // constructs
     }
     DefaultGenerator.prototype.generate = function () {
@@ -55,7 +56,7 @@ var DefaultGenerator = (function () {
     };
     DefaultGenerator.prototype.generateCreatures = function (levelData) {
         this.DEBUG("Generating creatures");
-        for (var i = 0; i < 10; i++) {
+        for (var i = 0; i < this.creatureCount; i++) {
             var spawnPos = levelData.getRandomEmptyPosition();
             levelData.addEntityBlueprintAtPosition(spawnPos, "lost_soul");
         }

@@ -55,7 +55,9 @@ var CustomJSComponent = (function (_super) {
         return this.node.getJSComponent(componentName);
     };
     CustomJSComponent.prototype.setActionMap = function (actionMap) {
-        this.actionMap = actionMap;
+        for (var event_1 in actionMap) {
+            this.actionMap[event_1] = actionMap[event_1];
+        }
     };
     CustomJSComponent.prototype.doAction = function (message, data) {
         var handler = this.actionMap[message];

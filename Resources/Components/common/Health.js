@@ -19,6 +19,7 @@ var Health = (function (_super) {
         this.life = 1;
     }
     Health.prototype.start = function () {
+        this.debug = true;
         this.setActionMap((_a = {},
             _a[Constants_1.ComponentEvents.onHit] = this.onHit.bind(this),
             _a[Constants_1.ComponentEvents.onAdjustHealth] = this.onAdjustHealth.bind(this),
@@ -30,8 +31,7 @@ var Health = (function (_super) {
         this.life--;
         // send a notification that health has changed
         NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onHealthChanged);
-        this.DEBUG("Bumped by: " + data.senderComponent.node.name + " ");
-        this.DEBUG("Life reduced.  Current Life: " + this.life + " ");
+        this.DEBUG("Life reduced by " + data.senderComponent.node.name + ".  Current Life: " + this.life + " ");
         if (this.life <= 0) {
             // send an onDie message as if it came from the bumper
             NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onDie, { senderComponent: data.senderComponent });

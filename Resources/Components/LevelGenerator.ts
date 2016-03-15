@@ -10,12 +10,14 @@ class LevelGenerator extends CustomJSComponent {
     inspectorFields = {
         width: 80,
         height: 25,
-        debug: false
+        debug: false,
+        creatureCount: 10
     };
 
     width = 80;
     height = 25;
     debug = false;
+    creatureCount = 10;
 
     constructor() {
         super();
@@ -37,7 +39,7 @@ class LevelGenerator extends CustomJSComponent {
     }
 
     getGenerator(): DefaultGenerator {
-        return new DefaultGenerator(this.width, this.height, this.debug);
+        return new DefaultGenerator(this.width, this.height, this.debug, this.creatureCount);
     }
 }
 

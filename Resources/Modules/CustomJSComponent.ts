@@ -51,7 +51,9 @@ export default class CustomJSComponent extends Atomic.JSComponent implements Com
     }
 
     setActionMap(actionMap: any) {
-        this.actionMap = actionMap;
+        for (let event in actionMap) {
+            this.actionMap[event] = actionMap[event];
+        }
     }
 
     doAction(message: string, data: any) {

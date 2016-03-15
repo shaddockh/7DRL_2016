@@ -11,6 +11,7 @@ class Health extends CustomJSComponent {
     life: number = 1;
 
     start() {
+        this.debug = true;
         this.setActionMap({
             [ComponentEvents.onHit]: this.onHit.bind(this),
             [ComponentEvents.onAdjustHealth]: this.onAdjustHealth.bind(this),
@@ -22,8 +23,7 @@ class Health extends CustomJSComponent {
         this.life--;
         // send a notification that health has changed
         NodeEvents.trigger(this.node, ComponentEvents.onHealthChanged);
-        this.DEBUG(`Bumped by: ${data.senderComponent.node.name} `);
-        this.DEBUG(`Life reduced.  Current Life: ${this.life} `);
+        this.DEBUG(`Life reduced by ${data.senderComponent.node.name}.  Current Life: ${this.life} `);
         if (this.life <= 0) {
             // send an onDie message as if it came from the bumper
             NodeEvents.trigger<SenderComponentTriggerAction>(this.node, ComponentEvents.onDie, { senderComponent: data.senderComponent });

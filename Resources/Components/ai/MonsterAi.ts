@@ -25,6 +25,8 @@ class MonsterAi extends CustomJSComponent {
     sightRadius: number;
     deathEffect: string;
 
+    alive = true;
+
     resolveTurn() {
         // nothing to do
     };
@@ -37,7 +39,8 @@ class MonsterAi extends CustomJSComponent {
             [ComponentEvents.onDie]: this.onDie.bind(this),
             [ComponentEvents.onAttack]: this.onAttack.bind(this),
             [ComponentEvents.onBumpInto]: this.onBumpInto.bind(this),
-            [ComponentEvents.onMoveComplete]: this.onMoveComplete.bind(this)
+            [ComponentEvents.onMoveComplete]: this.onMoveComplete.bind(this),
+            [ComponentEvents.onDestroy]: this.onDestroy.bind(this)
         });
 
         if (this.levelController) {
@@ -77,14 +80,22 @@ class MonsterAi extends CustomJSComponent {
     }
 
     onActionComplete() {
-        // call the callback, notifying the scheduler that we are done
+        // call the callback, notifying the scheduler that we are done, but
+        // wait until all pending activities have finished
         if (this.resolveTurn) {
-            this.DEBUG("End of turn.");
-            this.resolveTurn();
+            setImmediate(() => {
+                this.DEBUG("End of turn.");
+                this.resolveTurn();
+            });
         }
     }
 
     act() {
+        if (!this.alive) {
+            this.DEBUG("Returning from act because of death");
+            return;
+        }
+
         if (!this.chaseEnemy) {
             return;
         }
@@ -136,6 +147,7 @@ class MonsterAi extends CustomJSComponent {
             // the callback passed to the then method, which means that when this class gets an onTurnTaken
             // event, it will resolve the then.
             // See: http://ondras.github.io/rot.js/manual/#timing/engine for some more information.
+            this.DEBUG("Scheduling next action");
             return {
                 then: (resolve) => {
                     this.setTurnResolver(resolve);
@@ -158,6 +170,7 @@ class MonsterAi extends CustomJSComponent {
 
 
     onDie(data: SenderComponentTriggerAction) {
+        this.alive = false;
         this.DEBUG("Killed!");
         this.levelController.deregisterActor(this);
         // if (this.deathEffect) {
@@ -168,7 +181,6 @@ class MonsterAi extends CustomJSComponent {
         NodeEvents.trigger<LogMessageTriggerAction>(data.senderComponent.node, ComponentEvents.onLogAction, { message: `${entityComponent.screenName} dies.` });
         // this.levelController.killEnemy();
         NodeEvents.trigger(this.node, ComponentEvents.onDestroy);
-        Atomic.destroy(this.node);
     }
 
     onAttack(data: TargetComponentTriggerAction) {
@@ -185,7 +197,7 @@ class MonsterAi extends CustomJSComponent {
         this.DEBUG(`Bumped into ${data.targetComponent.node.name}`);
         // just attack, don't allow for picking up items or other bump actions
         if (entityComponent.attackable) {
-            NodeEvents.trigger<TargetComponentTriggerAction>(this.node, ComponentEvents.onAttack, { targetComponent: data.targetComponent  });
+            NodeEvents.trigger<TargetComponentTriggerAction>(this.node, ComponentEvents.onAttack, { targetComponent: data.targetComponent });
         }
     }
 
@@ -193,5 +205,9 @@ class MonsterAi extends CustomJSComponent {
         NodeEvents.trigger<SenderComponentTriggerAction>(this.node, ComponentEvents.onActionComplete, { senderComponent: this });
     }
 
+    onDestroy() {
+        this.DEBUG("Destroying node");
+        Atomic.destroy(this.node);
+    }
 }
 export = MonsterAi;

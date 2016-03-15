@@ -82,12 +82,12 @@ class GridMover extends CustomJSComponent {
             if (!this.levelController.isValidPos(newMapPos) ||
                 this.levelController.getTileAt(newMapPos).terrainType !== TileType.floor) {
                 // Queue up an action to notify the player that the move is blocked
-                this.queuePostMoveAction(() => {
+                //this.queuePostMoveAction(() => {
                     this.DEBUG("Blocked by terrain");
                     NodeEvents.trigger<LogMessageTriggerAction>(this.node, ComponentEvents.onLogAction, { message: "Blocked." });
                     NodeEvents.trigger<MovePositionTriggerAction>(this.node, ComponentEvents.onMoveBlocked, { from: mapPos, to: newMapPos });
                     NodeEvents.trigger(this.node, ComponentEvents.onMoveComplete);
-                });
+                //});
 
                 this.blocked = true;
                 this.moving = false;

@@ -16,11 +16,13 @@ var LevelGenerator = (function (_super) {
         this.inspectorFields = {
             width: 80,
             height: 25,
-            debug: false
+            debug: false,
+            creatureCount: 10
         };
         this.width = 80;
         this.height = 25;
         this.debug = false;
+        this.creatureCount = 10;
     }
     LevelGenerator.prototype.start = function () {
         PubSub.subscribe(Constants_1.BroadcastEvents.gameLevelGenerate, this.generateLevel.bind(this));
@@ -35,7 +37,7 @@ var LevelGenerator = (function (_super) {
         PubSub.publish(Constants_1.BroadcastEvents.gameLevelLoad, { level: levelData });
     };
     LevelGenerator.prototype.getGenerator = function () {
-        return new DefaultGenerator_1.default(this.width, this.height, this.debug);
+        return new DefaultGenerator_1.default(this.width, this.height, this.debug, this.creatureCount);
     };
     return LevelGenerator;
 }(CustomJSComponent_1.default));

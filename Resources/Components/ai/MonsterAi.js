@@ -22,6 +22,7 @@ var MonsterAi = (function (_super) {
             trackingRadius: 8,
             isHunting: false
         };
+        this.alive = true;
     }
     MonsterAi.prototype.resolveTurn = function () {
         // nothing to do
@@ -35,6 +36,7 @@ var MonsterAi = (function (_super) {
             _a[Constants_1.ComponentEvents.onAttack] = this.onAttack.bind(this),
             _a[Constants_1.ComponentEvents.onBumpInto] = this.onBumpInto.bind(this),
             _a[Constants_1.ComponentEvents.onMoveComplete] = this.onMoveComplete.bind(this),
+            _a[Constants_1.ComponentEvents.onDestroy] = this.onDestroy.bind(this),
             _a
         ));
         if (this.levelController) {
@@ -68,14 +70,22 @@ var MonsterAi = (function (_super) {
         this.resolveTurn = resolver;
     };
     MonsterAi.prototype.onActionComplete = function () {
-        // call the callback, notifying the scheduler that we are done
+        var _this = this;
+        // call the callback, notifying the scheduler that we are done, but
+        // wait until all pending activities have finished
         if (this.resolveTurn) {
-            this.DEBUG("End of turn.");
-            this.resolveTurn();
+            setImmediate(function () {
+                _this.DEBUG("End of turn.");
+                _this.resolveTurn();
+            });
         }
     };
     MonsterAi.prototype.act = function () {
         var _this = this;
+        if (!this.alive) {
+            this.DEBUG("Returning from act because of death");
+            return;
+        }
         if (!this.chaseEnemy) {
             return;
         }
@@ -115,6 +125,7 @@ var MonsterAi = (function (_super) {
             // the callback passed to the then method, which means that when this class gets an onTurnTaken
             // event, it will resolve the then.
             // See: http://ondras.github.io/rot.js/manual/#timing/engine for some more information.
+            this.DEBUG("Scheduling next action");
             return {
                 then: function (resolve) {
                     _this.setTurnResolver(resolve);
@@ -123,6 +134,7 @@ var MonsterAi = (function (_super) {
         }
     };
     MonsterAi.prototype.onDie = function (data) {
+        this.alive = false;
         this.DEBUG("Killed!");
         this.levelController.deregisterActor(this);
         // if (this.deathEffect) {
@@ -132,7 +144,6 @@ var MonsterAi = (function (_super) {
         NodeEvents_1.default.trigger(data.senderComponent.node, Constants_1.ComponentEvents.onLogAction, { message: entityComponent.screenName + " dies." });
         // this.levelController.killEnemy();
         NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onDestroy);
-        Atomic.destroy(this.node);
     };
     MonsterAi.prototype.onAttack = function (data) {
         this.DEBUG("Attacked " + data.targetComponent.node.name);
@@ -151,6 +162,10 @@ var MonsterAi = (function (_super) {
     };
     MonsterAi.prototype.onMoveComplete = function () {
         NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onActionComplete, { senderComponent: this });
+    };
+    MonsterAi.prototype.onDestroy = function () {
+        this.DEBUG("Destroying node");
+        Atomic.destroy(this.node);
     };
     return MonsterAi;
 }(CustomJSComponent_1.default));

@@ -62,10 +62,14 @@ var HeroAi = (function (_super) {
         };
     };
     HeroAi.prototype.onActionComplete = function () {
-        // call the callback, notifying the scheduler that we are done
+        var _this = this;
+        // call the callback, notifying the scheduler that we are done, but
+        // wait until all pending activities have finished
         if (this.resolveTurn) {
-            this.DEBUG("End of turn.");
-            this.resolveTurn();
+            setImmediate(function () {
+                _this.DEBUG("End of turn.");
+                _this.resolveTurn();
+            });
         }
     };
     HeroAi.prototype.setTurnResolver = function (resolver) {
@@ -99,6 +103,7 @@ var HeroAi = (function (_super) {
     HeroAi.prototype.onSkipTurn = function () {
         NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onLogAction, { message: "Waiting..." });
         NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onLogAction, { senderComponent: this });
+        NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onActionComplete, { senderComponent: this });
     };
     HeroAi.prototype.onDie = function (data) {
         this.DEBUG("Killed!");
@@ -115,6 +120,7 @@ var HeroAi = (function (_super) {
         this.DEBUG("Attacked " + data.targetComponent.node.name);
         NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onLogAction, { message: "You attack " + entityComponent.screenName });
         NodeEvents_1.default.trigger(this.node, Constants_1.ComponentEvents.onLogAction, { senderComponent: this });
+        NodeEvents_1.default.trigger(data.targetComponent.node, Constants_1.ComponentEvents.onHit, { senderComponent: this });
         // move will handle the turn taken
         // TODO: need to clean up the whole turn taking logic somehow, it could get really messy really quickly.
         // triggerEvent.trigger(this.node, 'onTurnTaken', this, this.node);

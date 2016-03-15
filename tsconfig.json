@@ -23,6 +23,7 @@
         "Resources/Components/ai/MonsterAi.ts",
         "Resources/Components/common/Entity.ts",
         "Resources/Components/common/GridMover.ts",
+        "Resources/Components/common/Health.ts",
         "Resources/Components/common/PlayerInputHandler.ts",
         "Resources/Components/common/Tile.ts",
         "Resources/Components/LevelGenerator.ts",
